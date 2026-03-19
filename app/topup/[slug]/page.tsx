@@ -1,7 +1,7 @@
 import TopupClient from "./TopupClient";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
-import { verifySession } from "@/lib/auth";
+import { verifySession } from "@/lib/session";
 
 type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
 

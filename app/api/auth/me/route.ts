@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "../../../../lib/prisma";
-import { verifySession } from "../../../../lib/auth";
+import { verifySession } from "../../../../lib/session";
 
 export async function GET() {
   const token = cookies().get("session")?.value;
