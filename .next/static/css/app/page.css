@@ -1,0 +1,446 @@
+/*!**************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./app/homepage.css ***!
+  \**************************************************************************************************************************************************************************************************************************************************************/
+/* =========================================================
+   HOMEPAGE CSS – CarenPedia (Takapedia-inspired)
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* ===== PAGE LAYOUT ===== */
+
+.homePage {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 60px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #08080d;
+  overflow-x: hidden;
+}
+
+/* Ambient glow */
+.homePage .bgGlow {
+  position: fixed;
+  inset: -200px;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(900px 500px at 15% 5%, rgba(59,130,246,.14), transparent 65%),
+    radial-gradient(700px 400px at 85% 15%, rgba(96,165,250,.08), transparent 55%),
+    radial-gradient(400px 400px at 50% 80%, rgba(59,130,246,.05), transparent 60%);
+}
+
+/* Subtle grid overlay */
+.homePage .gridFx {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(600px 300px at 50% 0%, rgba(0,0,0,.5), transparent 70%);
+          mask-image: radial-gradient(600px 300px at 50% 0%, rgba(0,0,0,.5), transparent 70%);
+  opacity: .3;
+}
+
+/* Shell container */
+.homePage .shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== SPACERS ===== */
+
+.homePage .spacer   { height: 20px; }
+.homePage .spacerLg { height: 36px; }
+
+/* ===== SECTION ===== */
+
+.homePage .homeSection {
+  margin-top: 32px;
+}
+
+.homePage .homeSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.homePage .homeSectionTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: rgba(255,255,255,.94);
+  letter-spacing: -.3px;
+}
+
+.homePage .homeSectionSub {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255,255,255,.5);
+  font-weight: 500;
+}
+
+/* ===== SEARCH ===== */
+
+.homePage .homeSearch {
+  width: 380px;
+  max-width: 100%;
+}
+
+.homePage .homeSearchInput {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.92);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.homePage .homeSearchInput::placeholder {
+  color: rgba(255,255,255,.35);
+}
+
+.homePage .homeSearchInput:focus {
+  border-color: rgba(59,130,246,.5);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+  background: rgba(255,255,255,.06);
+}
+
+/* ===== PROMO SLIDER / BANNER ===== */
+
+.homePage .promoBanner {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background:
+    radial-gradient(500px 250px at 20% 30%, rgba(59,130,246,.22), transparent 70%),
+    radial-gradient(400px 200px at 80% 60%, rgba(96,165,250,.12), transparent 60%),
+    linear-gradient(135deg, rgba(20,20,32,.95), rgba(14,18,28,.95));
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 28px 28px 22px;
+  min-height: 140px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  transition: border-color .25s ease;
+}
+
+.homePage .promoBanner:hover {
+  border-color: rgba(59,130,246,.2);
+}
+
+.homePage .promoTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.homePage .promoMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.homePage .promoPill {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(59,130,246,.16);
+  border: 1px solid rgba(59,130,246,.28);
+  color: rgba(200,220,255,.95);
+  letter-spacing: .3px;
+}
+
+.homePage .promoTitle {
+  font-size: 18px;
+  font-weight: 800;
+  color: rgba(255,255,255,.94);
+}
+
+.homePage .promoDots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.homePage .promoDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: all .2s ease;
+  background: rgba(255,255,255,.15);
+}
+
+.homePage .promoDot.active {
+  background: rgba(59,130,246,.95);
+  box-shadow: 0 0 8px rgba(59,130,246,.5);
+  width: 20px;
+}
+
+.homePage .promoDesc {
+  margin-top: 14px;
+  font-size: 14px;
+  color: rgba(255,255,255,.55);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* ===== FLASH SALE STRIP ===== */
+
+.homePage .flashStrip {
+  border-radius: 18px;
+  padding: 16px 18px;
+  background:
+    linear-gradient(135deg, rgba(59,130,246,.1), rgba(96,165,250,.05));
+  border: 1px solid rgba(59,130,246,.12);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.homePage .flashIcon {
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+
+.homePage .flashTitle {
+  font-weight: 800;
+  font-size: 14px;
+  color: rgba(255,255,255,.92);
+}
+
+.homePage .flashSub {
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* ===== GAME GRID ===== */
+
+.homePage .gameGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-gap: 16px;
+  gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .homePage .gameGrid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .homePage .gameGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .homePage .gameGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+}
+@media (max-width: 400px) {
+  .homePage .gameGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+}
+
+/* ===== MODERN GAME CARD (Simple & Clear) ===== */
+
+.modernGameCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              border-color 0.25s ease, 
+              box-shadow 0.25s ease,
+              background 0.25s ease;
+  cursor: pointer;
+}
+
+.modernGameCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), 
+              0 0 0 1px rgba(59, 130, 246, 0.15);
+}
+
+.modernGameCard:active {
+  transform: translateY(-1px);
+}
+
+/* Cover section (top half) */
+.mgCover {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, rgba(30, 40, 50, 0.8), rgba(15, 20, 25, 0.9));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+/* Hover glow inside cover */
+.mgGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.25), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.modernGameCard:hover .mgGlow {
+  opacity: 1;
+}
+
+/* Large clearer logo */
+.mgImage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover entire top area */
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modernGameCard:hover .mgImage {
+  transform: scale(1.08); /* Zoom effect on hover */
+}
+
+/* Fallback Logo Wrap */
+.mgLogoWrap {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.8));
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modernGameCard:hover .mgLogoWrap {
+  transform: scale(1.1);
+}
+
+.mgLogo {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* Tag positioned top-right */
+.mgTag {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.9);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+  z-index: 2;
+}
+
+/* Info section (bottom half) */
+.mgInfo {
+  padding: 12px 10px;
+  text-align: center;
+}
+
+.mgName {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.3;
+  margin-bottom: 4px;
+  /* Truncate if too long */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+.modernGameCard:hover .mgName {
+  color: #fff;
+}
+
+.mgAction {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(96, 165, 250, 0.7);
+  transition: color 0.2s ease;
+}
+
+.modernGameCard:hover .mgAction {
+  color: rgba(147, 197, 253, 1);
+}
+
+/* ===== FOOTER ===== */
+
+.homePage .homeFooter {
+  margin-top: 48px;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,.3);
+  font-weight: 500;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 640px) {
+  .homePage .shell {
+    padding: 0 14px;
+  }
+
+  .homePage .promoBanner {
+    padding: 20px 18px 16px;
+    border-radius: 18px;
+  }
+
+  .homePage .promoTitle {
+    font-size: 16px;
+  }
+
+  .homePage .homeSectionTitle {
+    font-size: 18px;
+  }
+
+  .homePage .homeSearch {
+    width: 100%;
+  }
+
+  .homePage .homeSectionHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+

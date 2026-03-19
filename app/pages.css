@@ -1,0 +1,364 @@
+/* =========================================================
+   PAGES CSS – Shared styles for general pages (non-admin)
+   Auth, Riwayat, Reseller, Kalkulator, Invoice
+   ========================================================= */
+
+/* ===== PAGE LAYOUT ===== */
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0; /* Ubah padding bottom karena footer akan mengambil space di bawah */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #08080d;
+  color: rgba(255,255,255,.92);
+  overflow-x: hidden;
+}
+
+.page .bgGlow {
+  position: fixed;
+  inset: -200px;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(800px 400px at 15% 5%, rgba(59,130,246,.12), transparent 65%),
+    radial-gradient(600px 350px at 85% 15%, rgba(96,165,250,.07), transparent 55%);
+}
+
+.page .gridFx {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(600px 300px at 50% 0%, rgba(0,0,0,.5), transparent 70%);
+  opacity: .25;
+}
+
+.page .shell {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 auto; /* Ini akan mendorong Footer ke bawah */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== SPACER ===== */
+.page .spacer { height: 16px; }
+
+/* ===== SECTION ===== */
+.page .section {
+  margin-top: 28px;
+}
+
+/* ===== TYPOGRAPHY ===== */
+
+.page .title {
+  font-size: 22px;
+  font-weight: 900;
+  color: rgba(255,255,255,.95);
+  letter-spacing: -.3px;
+}
+
+.page .subtitle {
+  margin-top: 6px;
+  font-size: 14px;
+  color: rgba(255,255,255,.5);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.page .kicker {
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.page .kicker a {
+  color: rgba(96,165,250,.95);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.page .kicker a:hover {
+  text-decoration: underline;
+}
+
+/* ===== TABLE (Premium Style) ===== */
+
+.page .tableWrap {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow-x: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 600px;
+}
+
+.page thead th {
+  padding: 16px 14px;
+  text-align: left;
+  color: rgba(255,255,255,.5);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.page tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  transition: background .15s ease;
+}
+
+.page tbody tr:last-child {
+  border-bottom: none;
+}
+
+.page tbody tr:hover {
+  background: rgba(255,255,255,.04);
+}
+
+.page tbody td {
+  padding: 16px 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,.9);
+  vertical-align: middle;
+}
+
+/* ===== BADGES ===== */
+
+.page .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.page .badge.success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.page .badge.warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.page .badge.danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* ===== AUTH UI (Premium Form Layouts) ===== */
+
+.page .authContainer {
+  max-width: 440px;
+  margin: 40px auto;
+  perspective: 1000px;
+}
+
+.page .authCard {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 
+    0 24px 48px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  transform-style: preserve-3d;
+  animation: authFadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes authFadeIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.page .authHeader {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.page .authIconWrap {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.05));
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  display: grid;
+  place-items: center;
+  color: #60a5fa;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+}
+
+.page .authIconWrap svg {
+  width: 32px;
+  height: 32px;
+}
+
+.page .authTitle {
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+.page .authSub {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+}
+
+.page .authInputWrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.page .authInputIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.3);
+  width: 18px;
+  height: 18px;
+  transition: color 0.2s ease;
+  pointer-events: none;
+}
+
+.page .input {
+  width: 100%;
+  border-radius: 14px;
+  padding: 14px 16px 14px 40px; /* adjusted for icon */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.95);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.page .input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.page .input:focus {
+  border-color: rgba(59, 130, 246, 0.6);
+  background: rgba(59, 130, 246, 0.05);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.page .input:focus + .authInputIcon,
+.page .authInputWrap:focus-within .authInputIcon {
+  color: rgba(96, 165, 250, 0.9);
+}
+
+.page .authDivider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 24px 0;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.page .authDivider::before,
+.page .authDivider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.page .authDivider::before { margin-right: 12px; }
+.page .authDivider::after { margin-left: 12px; }
+
+.page .authLink {
+  color: rgba(96, 165, 250, 0.9);
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.page .authLink:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.page .authFooter {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ===== FOOTER ===== */
+
+.page .footer {
+  margin-top: 48px;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,.3);
+  font-weight: 500;
+}
+
+.footerLink {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: rgba(59, 130, 246, 1);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 640px) {
+  .page .shell {
+    padding: 0 14px;
+  }
+
+  .page .title {
+    font-size: 20px;
+  }
+
+  .page .row {
+    flex-direction: column;
+  }
+}

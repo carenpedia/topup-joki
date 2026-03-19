@@ -1,0 +1,9 @@
+{
+  "/reseller/page": "app/reseller/page.js",
+  "/(auth)/masuk/page": "app/(auth)/masuk/page.js",
+  "/api/auth/me/route": "app/api/auth/me/route.js",
+  "/(auth)/daftar/page": "app/(auth)/daftar/page.js",
+  "/user/deposit/page": "app/user/deposit/page.js",
+  "/user/pricelist/page": "app/user/pricelist/page.js",
+  "/user/settings/page": "app/user/settings/page.js"
+}

@@ -1,0 +1,620 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =========================
+// ENUMS
+// =========================
+
+
+enum UserRole {
+  MEMBER
+  RESELLER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum Audience {
+  PUBLIC
+  MEMBER
+  RESELLER
+}
+
+enum ProductGroup {
+  BEST_SELLER
+  HEMAT
+  SULTAN
+}
+
+enum Provider {
+  DIGIFLAZZ
+  APIGAMES
+}
+
+enum OrderServiceType {
+  TOPUP
+  JOKI_ML
+  RESELLER_JOIN
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  PROCESSING
+  SUCCESS
+  FAILED
+  EXPIRED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CARENCOIN
+  GATEWAY
+}
+
+enum PaymentGateway {
+  XENDIT
+  TRIPAY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  EXPIRED
+  FAILED
+}
+
+enum DepositChannel {
+  GATEWAY
+  MANUAL
+}
+
+enum DepositStatus {
+  PENDING
+  PAID
+  APPROVED
+  REJECTED
+  EXPIRED
+  CANCELLED
+}
+
+enum CoinLedgerType {
+  DEPOSIT
+  PAYMENT
+  ADJUST
+  REFUND
+}
+
+enum PointLedgerType {
+  EARN
+  USE
+  ADJUST
+  REFUND
+}
+
+enum VoucherDiscountType {
+  PERCENT
+  FIXED
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  SUSPEND
+  APPROVE
+  REJECT
+  ASSIGN
+}
+
+// =========================
+// AUTH / USERS
+// =========================
+
+
+model User {
+  id           String     @id @default(cuid())
+  username     String     @unique
+  passwordHash String
+  resetTokens PasswordResetToken[]
+  whatsapp     String
+  role         UserRole   @default(MEMBER)
+  status       UserStatus @default(ACTIVE)
+
+  // Balances
+  carencoinBalance Int @default(0)
+  pointsBalance    Int @default(0)
+
+  // Reseller join
+  resellerJoinedAt DateTime?
+
+  // Relations
+  orders          Order[]
+  deposits        Deposit[]
+  carencoinLedger CarenCoinLedger[]
+  pointLedger     PointLedger[]
+  voucherUses     VoucherUse[]
+  auditLogs       AdminAuditLog[]   @relation("AdminActor")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role])
+  @@index([status])
+}
+
+// =========================
+// CATALOG: GAMES / CATEGORIES / PRODUCTS
+// =========================
+
+
+model Game {
+  id       String  @id @default(cuid())
+  key      String  @unique // e.g. "mobile-legends"
+  name     String
+  logoUrl  String?
+  isActive Boolean @default(true)
+
+  orders   Order[]
+  products Product[]
+  links    GameCategory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+model Category {
+  id        String  @id @default(cuid())
+  name      String  @unique
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  links GameCategory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+model GameCategory {
+  id         String @id @default(cuid())
+  gameId     String
+  categoryId String
+
+  game     Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, categoryId])
+  @@index([categoryId])
+}
+
+model Product {
+  id          String       @id @default(cuid())
+  gameId      String
+  name        String // e.g. "257 Diamonds"
+  group       ProductGroup
+  provider    Provider
+  providerSku String
+  isActive    Boolean      @default(true)
+
+  // Optional safety: minimal total payable (anti-rugi ekstrim), kalau kamu mau aktifkan.
+  // Kalau belum mau, biarkan null.
+  minPayable Int?
+
+  game       Game           @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  prices     ProductPrice[]
+  flashSales FlashSale[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+
+  @@index([gameId, isActive])
+  @@index([provider])
+  @@index([group])
+}
+
+model ProductPrice {
+  id        String   @id @default(cuid())
+  productId String
+  audience  Audience
+  price     Int
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, audience])
+  @@index([audience])
+}
+
+// =========================
+// PROMO: BANNERS / FLASHSALE / VOUCHERS
+// =========================
+
+model PromoBanner {
+  id        String  @id @default(cuid())
+  title     String?
+  imageUrl  String
+  // Link target: bisa ke game, promo page, atau URL eksternal
+  linkType  String // "GAME" | "URL" | "PROMO"
+  linkValue String // gameKey atau URL atau slug promo
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
+model FlashSale {
+  id         String   @id @default(cuid())
+  productId  String
+  flashPrice Int
+  startAt    DateTime
+  endAt      DateTime
+  isActive   Boolean  @default(true)
+  orders     Order[]
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId, isActive])
+  @@index([startAt, endAt])
+}
+
+model Voucher {
+  id            String              @id @default(cuid())
+  code          String              @unique
+  target        Audience // PUBLIC / MEMBER / RESELLER
+  discountType  VoucherDiscountType
+  discountValue Int // percent (1-100) atau fixed rupiah
+  minPurchase   Int                 @default(0)
+  maxDiscount   Int?
+  quotaTotal    Int?
+  quotaUsed     Int                 @default(0)
+  startAt       DateTime?
+  endAt         DateTime?
+  isActive      Boolean             @default(true)
+
+  uses   VoucherUse[]
+  orders Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([target])
+}
+
+model VoucherUse {
+  id        String   @id @default(cuid())
+  voucherId String
+  userId    String?
+  orderId   String?  @unique
+  usedAt    DateTime @default(now())
+
+  voucher Voucher @relation(fields: [voucherId], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  order   Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@index([voucherId])
+  @@index([userId])
+}
+
+ // =========================
+ // SETTINGS: PAYMENT FEES (untuk tampil harga final di card pembayaran)
+ // =========================
+ 
+
+model PaymentMethodFee {
+  id        String         @id @default(cuid())
+  gateway   PaymentGateway
+  methodKey String // e.g. "QRIS", "VA_BCA", "DANA", "OVO" (bebas sesuai implementasi)
+  label     String
+
+  feeFixed   Int            @default(0) // rupiah
+  feePercent Float
+  
+  minFee    Int?
+  maxFee    Int?
+
+  isActive  Boolean        @default(true)
+  sortOrder Int            @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([gateway, methodKey])
+  @@index([gateway, isActive])
+}
+
+ // =========================
+ // CARENCOIN: DEPOSIT + LEDGER
+ // =========================
+ 
+
+model Deposit {
+  id         String          @id @default(cuid())
+  userId     String
+  amount     Int
+  channel    DepositChannel
+  gateway    PaymentGateway?
+  gatewayRef String?
+  status     DepositStatus   @default(PENDING)
+
+  // Manual deposit
+  proofImageUrl String?
+  adminNote     String?
+
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ledgerEntries CarenCoinLedger[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
+  @@index([gateway, gatewayRef])
+}
+
+model CarenCoinLedger {
+  id           String         @id @default(cuid())
+  userId       String
+  type         CoinLedgerType
+  amount       Int // + masuk, - keluar
+  balanceAfter Int
+  reason       String?
+
+  refDepositId String?
+  refOrderId   String?
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deposit Deposit? @relation(fields: [refDepositId], references: [id], onDelete: SetNull)
+  order   Order?   @relation(fields: [refOrderId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([refOrderId])
+  @@index([refDepositId])
+}
+
+ // =========================
+ // POINTS: LEDGER (poin untuk potongan checkout)
+ // =========================
+ 
+
+model PointLedger {
+  id           String          @id @default(cuid())
+  userId       String
+  type         PointLedgerType
+  amount       Int // + earn, - use
+  balanceAfter Int
+  reason       String?
+
+  refOrderId String?
+  refUserId  String? // 
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order Order? @relation(fields: [refOrderId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([refOrderId])
+}
+
+
+ // =========================
+ // ORDERS / PAYMENTS / LOGS
+ // =========================
+ 
+
+model Order {
+  id      String @id @default(cuid())
+  orderNo String @unique
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  serviceType OrderServiceType @default(TOPUP)
+  status      OrderStatus      @default(PENDING_PAYMENT)
+
+  // TOPUP data
+  gameId      String?
+  productId   String?
+  inputUserId String?
+  inputServer String?
+
+  game    Game?    @relation(fields: [gameId], references: [id], onDelete: SetNull)
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  // Contacts (di form)
+  contactWhatsapp String
+  contactEmail    String?
+
+  // Promo rules:
+  // voucher dan flash sale tidak bisa bareng (akan divalidasi di backend)
+  voucherId         String?
+  voucherDiscount   Int     @default(0)
+  flashSaleId       String?
+  flashPriceApplied Int?
+
+  voucher   Voucher?   @relation(fields: [voucherId], references: [id], onDelete: SetNull)
+  flashSale FlashSale? @relation(fields: [flashSaleId], references: [id], onDelete: SetNull)
+
+  // Points (potongan checkout)
+  pointsUsed     Int @default(0)
+  pointsDiscount Int @default(0)
+
+  // Pricing breakdown
+  basePrice    Int @default(0) // harga awal sesuai role/audience
+  finalPayable Int @default(0) // harga yang dibayar user (final)
+
+  // Payment (NO MIXED)
+  paymentMethod PaymentMethod
+  carencoinUsed Int           @default(0)
+
+  paymentGateway    PaymentGateway?
+  gatewayMethodKey  String? // e.g. "QRIS", "VA_BCA"
+  gatewayFeeApplied Int             @default(0) // rupiah, untuk tampil "harga termasuk pajak" di gateway
+
+  voucherUse   VoucherUse?
+  coinLedgers  CarenCoinLedger[]
+  pointLedgers PointLedger[]
+
+  paidAt    DateTime?
+  expiresAt DateTime?
+
+  // Provider topup tracking (untuk TOPUP)
+  provider      Provider?
+  providerTrxId String?
+  providerRaw   Json?
+
+  payment    Payment?
+  topupLogs  TopupLog[]
+  jokiDetail JokiOrderDetail?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([userId, createdAt])
+  @@index([serviceType])
+  @@index([gameId])
+  @@index([productId])
+}
+
+model Payment {
+  id         String         @id @default(cuid())
+  orderId    String         @unique
+  gateway    PaymentGateway
+  gatewayRef String
+  status     PaymentStatus  @default(PENDING)
+  rawPayload Json?
+  paidAt     DateTime?
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([gateway, gatewayRef])
+  @@index([status])
+}
+
+model TopupLog {
+  id              String   @id @default(cuid())
+  orderId         String
+  provider        Provider
+  requestPayload  Json?
+  responsePayload Json?
+  statusSnapshot  String?
+  createdAt       DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+}
+
+
+ // =========================
+ // ADMIN: AUDIT LOG
+ // =========================
+
+model AdminAuditLog {
+  id         String      @id @default(cuid())
+  actorId    String
+  action     AuditAction
+  entityType String // e.g. "PRODUCT", "VOUCHER", "USER", "FLASH_SALE", "DEPOSIT"
+  entityId   String?
+  message    String?
+  meta       Json?
+
+  actor User @relation("AdminActor", fields: [actorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([actorId, createdAt])
+  @@index([entityType])
+}
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+enum JokiLoginVia {
+  MOONTON
+  GOOGLE
+  FACEBOOK
+  VK
+  TIKTOK
+  TELEGRAM
+}
+enum JokiStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model JokiOrderDetail {
+  id String @id @default(cuid())
+
+  // 1-1 relation ke Order
+  orderId String @unique
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  // 1) Masukkan Data Akun
+  loginVia       JokiLoginVia
+  userIdNickname String  // "User ID & Nickname"
+  loginId        String  // "Email / No.Hp / Moonton ID"
+  password       String  // Password (string)
+  noteForJoki    String? // Catatan untuk penjoki (opsional)
+
+  // Status pengerjaan jasa joki
+  status JokiStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 2) Request Hero (bisa banyak)
+  heroRequests JokiHeroRequest[]
+}
+
+model JokiHeroRequest {
+  id String @id @default(cuid())
+
+  jokiId String
+  joki   JokiOrderDetail @relation(fields: [jokiId], references: [id], onDelete: Cascade)
+
+  hero String // nama hero (string)
+
+  createdAt DateTime @default(now())
+
+  @@index([jokiId])
+}

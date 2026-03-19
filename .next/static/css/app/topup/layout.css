@@ -1,0 +1,560 @@
+/*!*****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./app/topup/topup.css ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************/
+/* =========================================================
+   TOPUP PAGE CSS – CarenPedia (Premium Redesign)
+   ========================================================= */
+
+.topupScope {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: rgba(255,255,255,.92);
+}
+
+/* ===== PAGE LAYOUT ===== */
+
+.topupScope .topupPage {
+  position: relative;
+  min-height: 100vh;
+  padding: 0 0 140px;
+  background: #08080d;
+}
+
+/* ambient glow */
+.topupScope .topupPage::before {
+  content: '';
+  position: fixed;
+  inset: -200px;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(800px 400px at 10% 5%, rgba(59,130,246,.12), transparent 65%),
+    radial-gradient(600px 350px at 90% 15%, rgba(96,165,250,.07), transparent 55%);
+}
+
+.topupScope .topupWrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.topupScope .spacer { height: 16px; }
+
+/* ===== HERO / GAME STRIP ===== */
+
+.topupScope .tpGameStrip {
+  margin-top: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.07);
+  background:
+    radial-gradient(600px 250px at 70% 60%, rgba(59,130,246,.08), transparent),
+    rgba(255,255,255,.03);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+}
+
+.topupScope .tpGameStripLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+}
+
+.topupScope .tpGameCover {
+  width: 100px;
+  height: 100px;
+  border-radius: 16px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 12px 30px rgba(0,0,0,.3);
+}
+
+.topupScope .tpGameCoverImg,
+.topupScope .tpGameCoverFallback {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.topupScope .tpGameCoverFallback {
+  background:
+    radial-gradient(60px 60px at 40% 30%, rgba(59,130,246,.3), transparent),
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+}
+
+.topupScope .tpGameName {
+  font-size: 24px;
+  font-weight: 900;
+  color: rgba(255,255,255,.96);
+  letter-spacing: -.2px;
+}
+
+.topupScope .tpGamePublisher {
+  margin-top: 4px;
+  color: rgba(255,255,255,.5);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.topupScope .tpGameBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.topupScope .tpGameBadge {
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.07);
+  color: rgba(255,255,255,.75);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ===== BENEFIT ROW ===== */
+
+.topupScope .tpBenefitRow {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-gap: 10px;
+  gap: 10px;
+}
+
+.topupScope .tpBenefitCard {
+  padding: 14px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  color: rgba(255,255,255,.7);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ===== FORM CARDS (STEPS) ===== */
+
+.topupScope .card {
+  border-radius: 18px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  overflow: hidden;
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+}
+
+.topupScope .contact-header {
+  display: flex;
+  height: 52px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.topupScope .contact-step {
+  width: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 16px;
+  color: rgba(255,255,255,.95);
+  background: linear-gradient(135deg, rgba(59,130,246,.9), rgba(37,99,235,.85));
+}
+
+.topupScope .contact-title-wrap {
+  flex: 1 1;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  background: rgba(255,255,255,.04);
+}
+
+.topupScope .contact-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(255,255,255,.92);
+  letter-spacing: .1px;
+}
+
+.topupScope .contact-body {
+  padding: 18px 20px;
+}
+
+.topupScope .contact-label {
+  display: block;
+  font-size: 12px;
+  color: rgba(255,255,255,.45);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.topupScope .contact-input {
+  width: 100%;
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.92);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.topupScope .contact-input::placeholder {
+  color: rgba(255,255,255,.3);
+}
+
+.topupScope .contact-input:focus {
+  border-color: rgba(59,130,246,.5);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+}
+
+.topupScope .contact-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(255,255,255,.4);
+  font-weight: 500;
+}
+
+.topupScope .cardMuted {
+  color: rgba(255,255,255,.5);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* ===== NOMINAL GRID ===== */
+
+.topupScope .nominalGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.topupScope .nominalGroupHeader {
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(255,255,255,.85);
+  margin-bottom: 10px;
+  letter-spacing: .2px;
+}
+
+.topupScope .tpNomGrid {
+  display: grid;
+  grid-gap: 12px;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 1024px) {
+  .topupScope .tpNomGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.topupScope .tpNomCard {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-align: left;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.07);
+  overflow: hidden;
+  min-height: 110px;
+  padding-bottom: 42px;
+  background: rgba(255,255,255,.04);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.topupScope .tpNomCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(59,130,246,.25);
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+
+.topupScope .tpNomCard.isActive {
+  border-color: rgba(59,130,246,.55);
+  background: rgba(59,130,246,.08);
+  box-shadow: 0 0 0 2px rgba(59,130,246,.15), 0 12px 30px rgba(0,0,0,.2);
+}
+
+.topupScope .tpNomTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 14px 0 14px;
+}
+
+.topupScope .tpNomName {
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 16px;
+  color: rgba(255,255,255,.9);
+  max-width: 78%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.topupScope .tpNomFlash {
+  font-size: 10px;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(59,130,246,.15);
+  border: 1px solid rgba(59,130,246,.3);
+  color: rgba(200,220,255,.95);
+  flex: 0 0 auto;
+}
+
+.topupScope .tpNomPriceRow {
+  padding: 8px 14px 0 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.topupScope .tpNomOld {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: .5;
+  text-decoration: line-through;
+  color: rgba(255,255,255,.6);
+}
+
+.topupScope .tpNomNow {
+  font-size: 16px;
+  font-weight: 800;
+  color: rgba(96,165,250,.95);
+  letter-spacing: .1px;
+}
+
+.topupScope .tpNomBottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 14px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  background: rgba(255,255,255,.02);
+}
+
+.topupScope .tpNomHint {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topupScope .tpNomInstant {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.85);
+  color: rgba(15,23,42,.92);
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: .4px;
+  flex: 0 0 auto;
+}
+
+.topupScope .tpNomBolt {
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* ===== PAYMENT BUTTONS ===== */
+
+.topupScope .row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.topupScope .authBtn {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .18s ease;
+}
+
+.topupScope .authBtnGhost {
+  background: rgba(255,255,255,.05);
+  color: rgba(255,255,255,.88);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.topupScope .authBtnGhost:hover {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.12);
+}
+
+.topupScope .authBtn:active {
+  transform: translateY(1px);
+}
+
+/* ===== STICKY CHECKOUT ===== */
+
+.topupScope .stickyWrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  padding: 12px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.6));
+  pointer-events: none;
+}
+
+.topupScope .stickyBar {
+  pointer-events: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 16px;
+  background: rgba(14,14,20,.92);
+  border: 1px solid rgba(255,255,255,.08);
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 -4px 30px rgba(0,0,0,.3);
+}
+
+.topupScope .stickyLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.topupScope .stickyStatus {
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topupScope .stickyTotalRow {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.topupScope .stickyLabel {
+  font-size: 12px;
+  color: rgba(255,255,255,.45);
+  font-weight: 600;
+}
+
+.topupScope .stickyTotal {
+  font-size: 16px;
+  font-weight: 900;
+  color: rgba(255,255,255,.95);
+}
+
+.topupScope .stickyBtn {
+  border: none;
+  border-radius: 12px;
+  padding: 13px 18px;
+  min-width: 170px;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  font-family: inherit;
+  background: linear-gradient(135deg, rgba(59,130,246,.95), rgba(37,99,235,.9));
+  cursor: pointer;
+  transition: all .18s ease;
+  box-shadow: 0 6px 20px rgba(37,99,235,.25);
+}
+
+.topupScope .stickyBtn:hover {
+  box-shadow: 0 8px 28px rgba(37,99,235,.35);
+  transform: translateY(-1px);
+}
+
+.topupScope .stickyBtn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 920px) {
+  .topupScope .tpGameStripLeft {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .topupScope .tpBenefitRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .topupScope .tpGameName {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .topupScope .topupWrap {
+    padding: 0 14px;
+  }
+
+  .topupScope .tpBenefitRow {
+    grid-template-columns: 1fr;
+  }
+
+  .topupScope .tpGameName {
+    font-size: 18px;
+  }
+
+  .topupScope .tpGameCover {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+  }
+
+  .topupScope .stickyBar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .topupScope .stickyBtn {
+    width: 100%;
+    min-width: 0;
+  }
+}

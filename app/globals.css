@@ -1,0 +1,369 @@
+/* =========================================================
+   GLOBAL CSS (aman untuk seluruh website)
+   ========================================================= */
+
+@import url('./components/styles.css');
+@import url('./pages.css');
+
+
+:root{
+  --bg0: #0b0e14;
+  --bg1: #0e1320;
+  --card: rgba(255,255,255,.06);
+  --card2: rgba(255,255,255,.08);
+  --line: rgba(255,255,255,.10);
+
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(229,231,235,.60);
+
+  --primary: rgba(59,130,246,.95);
+  --primary2: rgba(56,189,248,.95);
+
+  --radius: 16px;
+}
+
+*{ box-sizing:border-box; }
+html, body { height:100%; }
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 520px at 20% 0%, rgba(56,189,248,.14), rgba(0,0,0,0)),
+    radial-gradient(1000px 520px at 80% 10%, rgba(59,130,246,.12), rgba(0,0,0,0)),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+}
+
+/* Link & buttons baseline */
+a{ color: inherit; text-decoration:none; }
+button{ font: inherit; }
+
+/* Utility global sederhana */
+.container{
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 16px 18px;
+}
+
+/* ===========================
+   TOAST (Global Pro)
+=========================== */
+
+.toastStack{
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast{
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-width: 220px;
+  max-width: 360px;
+
+  padding: 10px 12px;
+  border-radius: 14px;
+
+  background: rgba(18, 18, 24, 0.92);
+  border: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 18px 70px rgba(0,0,0,.45);
+
+  transform: translateY(8px);
+  opacity: 0;
+  animation: toastIn 180ms ease forwards;
+}
+
+@keyframes toastIn{
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.toastIcon{
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.toastMsg{
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(255,255,255,.90);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Variants */
+.toast--success{
+  border-color: rgba(34,197,94,.22);
+  box-shadow: 0 18px 70px rgba(0,0,0,.45), 0 0 0 3px rgba(34,197,94,.10);
+}
+.toast--success .toastIcon{
+  background: rgba(34,197,94,.18);
+  border-color: rgba(34,197,94,.24);
+}
+
+.toast--error{
+  border-color: rgba(239,68,68,.22);
+  box-shadow: 0 18px 70px rgba(0,0,0,.45), 0 0 0 3px rgba(239,68,68,.10);
+}
+.toast--error .toastIcon{
+  background: rgba(239,68,68,.18);
+  border-color: rgba(239,68,68,.24);
+}
+
+.toast--warn{
+  border-color: rgba(245,158,11,.22);
+  box-shadow: 0 18px 70px rgba(0,0,0,.45), 0 0 0 3px rgba(245,158,11,.10);
+}
+.toast--warn .toastIcon{
+  background: rgba(245,158,11,.18);
+  border-color: rgba(245,158,11,.24);
+}
+
+.toast--info{
+  border-color: rgba(59,130,246,.22);
+  box-shadow: 0 18px 70px rgba(0,0,0,.45), 0 0 0 3px rgba(59,130,246,.10);
+}
+.toast--info .toastIcon{
+  background: rgba(59,130,246,.18);
+  border-color: rgba(59,130,246,.24);
+}
+
+@media (max-width: 420px){
+  .toastStack{ right: 10px; bottom: 10px; }
+  .toast{ min-width: 190px; max-width: 300px; }
+}
+/* ============================= */
+/* GLOBAL TOAST SYSTEM PRO */
+/* ============================= */
+
+.toastStack {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toastStack.bottom-right {
+  right: 16px;
+  bottom: 16px;
+}
+
+.toastStack.top-center {
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.toast {
+  pointer-events: none;
+  min-width: 220px;
+  max-width: 380px;
+
+  padding: 10px 14px;
+  border-radius: 14px;
+
+  background: rgba(20, 20, 28, 0.96);
+  border: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+
+  animation: toastIn 180ms ease forwards;
+}
+
+@keyframes toastIn {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.toastIcon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 12px;
+  color: white;
+  background: rgba(255,255,255,.08);
+}
+
+.toastMsg {
+  font-size: 13px;
+  font-weight: 800;
+  color: white;
+}
+
+/* VARIANTS */
+
+.toast--success {
+  border-color: rgba(34,197,94,.25);
+}
+
+.toast--error {
+  border-color: rgba(239,68,68,.25);
+}
+
+.toast--warn {
+  border-color: rgba(245,158,11,.25);
+}
+
+.toast--info {
+  border-color: rgba(59,130,246,.25);
+}
+
+/* CRITICAL TOP CENTER */
+.toast--critical {
+  background: rgba(239,68,68,.95);
+  border: none;
+  color: white;
+  font-weight: 900;
+  padding: 14px 18px;
+  border-radius: 16px;
+  box-shadow: 0 20px 80px rgba(239,68,68,.35);
+}
+/* ===========================
+   GLOBAL TOP LOADING BAR
+=========================== */
+
+/* ===== Premium Global Loading Bar ===== */
+.gbar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.gbar--on{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gbar__track{
+  height: 3px;
+  width: 100%;
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  position: relative;
+}
+
+.gbar__fill{
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  /* gradient + glow */
+  background: linear-gradient(90deg,
+    rgba(80,160,255,.0),
+    rgba(80,160,255,.9),
+    rgba(160,220,255,1)
+  );
+  box-shadow: 0 0 14px rgba(80,160,255,.55);
+  /* ini yang bikin “buttery” */
+  transition: transform .18s cubic-bezier(.22,1,.36,1);
+  will-change: transform;
+}
+
+/* shimmer tipis bergerak */
+.gbar__shimmer{
+  position:absolute;
+  top:0;
+  left:-30%;
+  height:100%;
+  width:30%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255,255,255,.22),
+    transparent
+  );
+  filter: blur(.2px);
+  animation: gbarShimmer 1.15s ease-in-out infinite;
+  opacity: .9;
+  mix-blend-mode: screen;
+}
+
+@keyframes gbarShimmer{
+  0%{ transform: translateX(0); }
+  100%{ transform: translateX(430%); }
+}
+
+/* === SHINE TIP PREMIUM === */
+.gbar__tip{
+  position:absolute;
+  top:-8px;
+  width: 42px;
+  height: 18px;
+  pointer-events:none;
+  transform: translateX(-50%);
+}
+
+/* glow utama */
+.gbar__tip::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:999px;
+  background: radial-gradient(circle at 30% 50%,
+    rgba(200,240,255,.95),
+    rgba(80,160,255,.45) 40%,
+    rgba(80,160,255,0) 75%
+  );
+  filter: blur(2px);
+  opacity:.85;
+}
+
+/* streak shine */
+.gbar__tip::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  left:0;
+  width:100%;
+  height:2px;
+  transform:translateY(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.95),
+    transparent
+  );
+  filter: blur(.5px);
+  animation: gbarTipPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes gbarTipPulse{
+  0%{ opacity:.4; transform:translateY(-50%) scaleX(.7); }
+  50%{ opacity:1; transform:translateY(-50%) scaleX(1); }
+  100%{ opacity:.4; transform:translateY(-50%) scaleX(.7); }
+}
