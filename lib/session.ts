@@ -10,11 +10,13 @@ export type SessionPayload = {
 const COOKIE_NAME = "session";
 
 // Wajib ada di .env: AUTH_SECRET="random panjang"
-const secret = process.env.AUTH_SECRET;
-if (!secret) {
-    throw new Error("128ard128n4b1l4k4zu41ly010603f02030");
+function getSecretKey() {
+    const secret = process.env.AUTH_SECRET;
+    if (!secret) {
+        throw new Error("128ard128n4b1l4k4zu41ly010603f02030");
+    }
+    return new TextEncoder().encode(secret);
 }
-const KEY = new TextEncoder().encode(secret);
 
 /* =========================
  * Session JWT (cookie 'session')
@@ -25,11 +27,11 @@ export async function signSession(payload: SessionPayload) {
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
         .setExpirationTime("7d")
-        .sign(KEY);
+        .sign(getSecretKey());
 }
 
 export async function verifySession(token: string): Promise<SessionPayload> {
-    const { payload } = await jwtVerify(token, KEY);
+    const { payload } = await jwtVerify(token, getSecretKey());
     const userId = String(payload.userId || "");
     const role = String(payload.role || "") as SessionPayload["role"];
     const status = payload.status as SessionPayload["status"];
