@@ -6,6 +6,8 @@
  * Verifikasi: HMAC-SHA256(raw body, TRIPAY_PRIVATE_KEY)
  */
 
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyCallback } from "@/lib/tripay";

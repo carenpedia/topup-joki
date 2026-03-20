@@ -7,6 +7,8 @@
  *   ?brand=MOBILE_LEGEND (opsional, filter brand)
  */
 
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from "next/server";
 import { getPriceList } from "@/lib/digiflazz";
 

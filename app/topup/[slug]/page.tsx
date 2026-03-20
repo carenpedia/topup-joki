@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import TopupClient from "./TopupClient";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";

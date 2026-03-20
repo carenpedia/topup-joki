@@ -5,6 +5,8 @@
  * Verifikasi: Compare header `x-callback-token` dengan XENDIT_CALLBACK_TOKEN
  */
 
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyWebhook } from "@/lib/xendit";
