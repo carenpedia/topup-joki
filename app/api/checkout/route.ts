@@ -185,7 +185,7 @@ export async function POST(req: Request) {
           where: { id: dbUser.id },
           data: { carencoinBalance: { decrement: finalPayable } },
         }),
-        prisma.carencoinLedger.create({
+        prisma.carenCoinLedger.create({
           data: {
             userId: dbUser.id,
             type: "PAYMENT",
@@ -244,7 +244,7 @@ export async function POST(req: Request) {
           gateway: "TRIPAY",
           gatewayRef: tripayTx.reference,
           status: "PENDING",
-          rawPayload: tripayTx as unknown as Record<string, unknown>,
+          rawPayload: tripayTx as any,
         },
       });
 
@@ -278,7 +278,7 @@ export async function POST(req: Request) {
           gateway: "XENDIT",
           gatewayRef: xenditInv.id,
           status: "PENDING",
-          rawPayload: xenditInv as unknown as Record<string, unknown>,
+          rawPayload: xenditInv as any,
         },
       });
 

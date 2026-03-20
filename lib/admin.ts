@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { verifySession } from "./auth";
+import { verifySession } from "./session";
 
 export async function requireAdmin() {
   const token = cookies().get("session")?.value;

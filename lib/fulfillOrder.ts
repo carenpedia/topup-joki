@@ -75,7 +75,7 @@ export async function fulfillOrder(orderId: string): Promise<{ success: boolean;
           buyer_sku_code: order.product.providerSku,
           customer_no: customerNo,
         },
-        responsePayload: result as unknown as Record<string, unknown>,
+        responsePayload: result as any,
         statusSnapshot: result.status,
       },
     });
@@ -89,7 +89,7 @@ export async function fulfillOrder(orderId: string): Promise<{ success: boolean;
       data: {
         provider: order.product.provider,
         providerTrxId: result.ref_id || null,
-        providerRaw: result as unknown as Record<string, unknown>,
+        providerRaw: result as any,
         status: isSuccess ? "SUCCESS" : isPending ? "PROCESSING" : "FAILED",
       },
     });
