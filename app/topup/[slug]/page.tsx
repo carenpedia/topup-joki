@@ -19,12 +19,53 @@ function publisherFromSlug(slug: string) {
 }
 
 export default async function TopupGamePage({ params }: { params: { slug: string } }) {
-  const slug = params.slug;
-  const token = cookies().get("session")?.value;
+  let slug = "";
+  try {
+    slug = params.slug;
+  } catch {
+    slug = "";
+  }
 
-  const game = await prisma.game.findUnique({
-    where: { key: slug },
-  });
+  if (!slug) {
+    return (
+      <main className="topupPage">
+        <div className="topupWrap">
+          <div className="card" style={{ padding: 16 }}>
+            <div className="cardTitle">Halaman tidak valid</div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // Read cookies FIRST, before any async call
+  let token: string | undefined;
+  try {
+    const cookieStore = cookies();
+    token = cookieStore.get("session")?.value;
+  } catch {
+    token = undefined;
+  }
+
+  let game: { id: string; key: string; name: string; logoUrl: string | null; isActive: boolean } | null = null;
+
+  try {
+    game = await prisma.game.findUnique({
+      where: { key: slug },
+    });
+  } catch (err) {
+    console.error("[TopupPage] Prisma error:", err);
+    return (
+      <main className="topupPage">
+        <div className="topupWrap">
+          <div className="card" style={{ padding: 16 }}>
+            <div className="cardTitle">Terjadi kesalahan server</div>
+            <div className="cardMuted">Silakan coba lagi nanti.</div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   if (!game || !game.isActive) {
     return (
