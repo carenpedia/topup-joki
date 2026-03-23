@@ -20,6 +20,7 @@ function publisherFromSlug(slug: string) {
 
 export default async function TopupGamePage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
+  const token = cookies().get("session")?.value;
 
   const game = await prisma.game.findUnique({
     where: { key: slug },
@@ -38,7 +39,6 @@ export default async function TopupGamePage({ params }: { params: { slug: string
     );
   }
 
-  const token = cookies().get("session")?.value;
   let audience: Audience = "PUBLIC";
 
   if (token) {
