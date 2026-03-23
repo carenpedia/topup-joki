@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Externalize packages that require native bindings
-  serverExternalPackages: ['bcryptjs', '@prisma/client'],
-  
+  // Externalize packages that require native bindings (Next.js 14 syntax)
+  experimental: {
+    serverComponentsExternalPackages: ['bcryptjs', '@prisma/client'],
+  },
+
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
