@@ -10,7 +10,7 @@ export async function GET(req: Request) {
     const take = Math.min(Number(searchParams.get("take") || 200), 500);
 
     const where: any = {
-      serviceType: "JOKI", // penting: hanya order jasa
+      serviceType: "JOKI_ML", // sesuai Prisma enum OrderServiceType
     };
 
     if (q) {
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
     }
 
     if (status !== "ALL") {
-      where.status = status; // contoh: PENDING_PAYMENT / PAID / FAILED
+      where.status = status;
     }
 
     const rows = await prisma.order.findMany({
@@ -38,6 +38,7 @@ export async function GET(req: Request) {
         contactWhatsapp: true,
         createdAt: true,
         user: { select: { username: true } },
+        jokiDetail: { select: { status: true } },
       },
     });
 
@@ -49,6 +50,7 @@ export async function GET(req: Request) {
         whatsapp: r.contactWhatsapp || "-",
         total: r.finalPayable || 0,
         status: r.status,
+        jokiStatus: r.jokiDetail?.status || null,
         createdAt: r.createdAt.toISOString(),
       })),
     });
