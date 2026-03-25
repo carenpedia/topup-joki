@@ -165,6 +165,7 @@ model Game {
   name     String
   logoUrl  String?
   isActive Boolean @default(true)
+  hasJoki  Boolean @default(false) // apakah game ini support joki
 
   orders   Order[]
   products Product[]

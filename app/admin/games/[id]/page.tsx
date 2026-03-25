@@ -10,6 +10,7 @@ type Game = {
   name: string;
   logoUrl: string | null;
   isActive: boolean;
+  hasJoki: boolean;
 };
 
 export default function AdminGameEditPage() {
@@ -27,6 +28,7 @@ export default function AdminGameEditPage() {
   const [name, setName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [isActive, setIsActive] = useState(true);
+  const [hasJoki, setHasJoki] = useState(false);
 
   async function load() {
     setErr(null);
@@ -46,6 +48,7 @@ export default function AdminGameEditPage() {
     setName(item.name);
     setLogoUrl(item.logoUrl ?? "");
     setIsActive(item.isActive);
+    setHasJoki(item.hasJoki);
 
     setLoading(false);
   }
@@ -71,6 +74,7 @@ export default function AdminGameEditPage() {
           name: n,
           logoUrl: logoUrl.trim() ? logoUrl.trim() : null,
           isActive,
+          hasJoki,
         }),
       });
 
@@ -170,6 +174,15 @@ export default function AdminGameEditPage() {
                     <option value="1">ACTIVE</option>
                     <option value="0">OFF</option>
                   </select>
+                </div>
+
+                <div>
+                  <label className="contact-label">Fitur Joki</label>
+                  <select className="contact-input" value={hasJoki ? "1" : "0"} onChange={(e) => setHasJoki(e.target.value === "1")}>
+                    <option value="0">❌ Tidak Support Joki</option>
+                    <option value="1">✅ Support Joki</option>
+                  </select>
+                  <p className="contact-hint" style={{ marginTop: 4 }}>Aktifkan agar game ini muncul di halaman /joki/[key]</p>
                 </div>
               </div>
 

@@ -29,6 +29,7 @@ export async function PATCH(req: Request, ctx: { params: { id: string } }) {
       name,
       logoUrl,
       isActive: body.isActive ?? undefined,
+      hasJoki: body.hasJoki ?? undefined,
     },
   });
 

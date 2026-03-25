@@ -41,7 +41,7 @@ export default async function JokiGamePage({ params }: { params: { slug: string 
     token = undefined;
   }
 
-  let game: { id: string; key: string; name: string; logoUrl: string | null; isActive: boolean } | null = null;
+  let game: { id: string; key: string; name: string; logoUrl: string | null; isActive: boolean; hasJoki: boolean } | null = null;
 
   try {
     game = await prisma.game.findUnique({ where: { key: slug } });
@@ -66,6 +66,22 @@ export default async function JokiGamePage({ params }: { params: { slug: string 
           <div className="card" style={{ padding: 16 }}>
             <div className="cardTitle">Game tidak ditemukan / nonaktif</div>
             <div className="cardMuted">Slug: {slug}</div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!game.hasJoki) {
+    return (
+      <main className="topupPage">
+        <div className="topupWrap">
+          <div className="card" style={{ padding: 16 }}>
+            <div className="cardTitle">Fitur Joki Tidak Tersedia</div>
+            <div className="cardMuted">
+              Game <strong>{game.name}</strong> belum mengaktifkan fitur joki.
+              Silakan hubungi admin untuk informasi lebih lanjut.
+            </div>
           </div>
         </div>
       </main>

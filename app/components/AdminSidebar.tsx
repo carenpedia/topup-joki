@@ -13,10 +13,12 @@ const nav = [
   { href: "/admin/vouchers", label: "Vouchers" },
   { href: "/admin/payment-method-fees", label: "Payment Fees" },
   { href: "/admin/orders", label: "Orders" },
+  { href: "/admin/joki-orders", label: "🎮 Joki Orders" },
   { href: "/admin/users", label: "Users" },
   { href: "/admin/deposits", label: "Deposits" },
   { href: "/admin/audit-logs", label: "Audit Logs" },
 ];
+
 
 export default function AdminSidebar() {
   const pathname = usePathname();
