@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 async function main() {
   const username = "admin";
   const whatsapp = "08123456789";
-  const plainPassword = "admin123"; // ganti sesuai mau kamu
+  const plainPassword = "skyview321"; // ganti sesuai mau kamu
 
   const exists = await prisma.user.findUnique({ where: { username } });
   if (exists) {
