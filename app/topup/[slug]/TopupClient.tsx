@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 
@@ -17,6 +18,7 @@ type Props = {
   audience?: Audience;
   heroImage?: string | null;
   publisher?: string;
+  hasJoki?: boolean;
 };
 
 type NominalRow = {
@@ -80,7 +82,9 @@ export default function TopupClient({
   audience: audienceProp,
   heroImage,
   publisher = "Official Publisher",
+  hasJoki = false,
 }: Props) {
+  const router = useRouter();
   const [userId, setUserId] = useState("");
   const [server, setServer] = useState("");
 
@@ -302,7 +306,51 @@ export default function TopupClient({
           <div className="tpBenefitCard">💳 Aman & Terpercaya</div>
           <div className="tpBenefitCard">⚡ Cepat & Otomatis</div>
         </div>
+
+        {/* Tab Switcher: Top Up / Joki */}
+        {hasJoki && (
+          <div style={{
+            display: "flex",
+            background: "rgba(255,255,255,.06)",
+            border: "1px solid rgba(255,255,255,.10)",
+            borderRadius: 16,
+            padding: 4,
+            marginTop: 4,
+          }}>
+            <div style={{
+              flex: 1,
+              textAlign: "center",
+              padding: "11px 16px",
+              borderRadius: 12,
+              background: "linear-gradient(135deg, rgba(59,130,246,.95), rgba(37,99,235,.95))",
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: 14,
+              cursor: "default",
+              boxShadow: "0 2px 14px rgba(59,130,246,.40)",
+            }}>
+              💎 Top Up
+            </div>
+            <Link
+              href={`/joki/${game.key}`}
+              style={{
+                flex: 1,
+                textAlign: "center",
+                padding: "11px 16px",
+                borderRadius: 12,
+                color: "rgba(255,255,255,.60)",
+                fontWeight: 700,
+                fontSize: 14,
+                textDecoration: "none",
+                display: "block",
+              }}
+            >
+              🎮 Joki
+            </Link>
+          </div>
+        )}
       </div>
+
 
 
       <div className="topupWrap">

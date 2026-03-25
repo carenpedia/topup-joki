@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
@@ -238,7 +239,49 @@ export default function JokiClient({ game, audience: audienceProp, heroImage }: 
           <div className="tpBenefitCard">🏆 Dijamin Naik</div>
           <div className="tpBenefitCard">💳 Pembayaran Aman</div>
         </div>
+
+        {/* Tab Switcher */}
+        <div style={{
+          display: "flex",
+          background: "rgba(255,255,255,.06)",
+          border: "1px solid rgba(255,255,255,.10)",
+          borderRadius: 16,
+          padding: 4,
+          marginTop: 4,
+        }}>
+          <Link
+            href={`/topup/${game.key}`}
+            style={{
+              flex: 1,
+              textAlign: "center",
+              padding: "11px 16px",
+              borderRadius: 12,
+              color: "rgba(255,255,255,.60)",
+              fontWeight: 700,
+              fontSize: 14,
+              textDecoration: "none",
+              display: "block",
+            }}
+          >
+            💎 Top Up
+          </Link>
+          <div style={{
+            flex: 1,
+            textAlign: "center",
+            padding: "11px 16px",
+            borderRadius: 12,
+            background: "linear-gradient(135deg, rgba(139,92,246,.95), rgba(109,40,217,.95))",
+            color: "#fff",
+            fontWeight: 800,
+            fontSize: 14,
+            cursor: "default",
+            boxShadow: "0 2px 14px rgba(139,92,246,.40)",
+          }}>
+            🎮 Joki
+          </div>
+        </div>
       </div>
+
 
       <div className="topupWrap">
 

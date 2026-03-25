@@ -38,7 +38,6 @@ export default async function TopupGamePage({ params }: { params: { slug: string
     );
   }
 
-  // Read cookies FIRST, before any async call
   let token: string | undefined;
   try {
     const cookieStore = cookies();
@@ -47,12 +46,11 @@ export default async function TopupGamePage({ params }: { params: { slug: string
     token = undefined;
   }
 
-  let game: { id: string; key: string; name: string; logoUrl: string | null; isActive: boolean } | null = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let game: any = null;
 
   try {
-    game = await prisma.game.findUnique({
-      where: { key: slug },
-    });
+    game = await prisma.game.findUnique({ where: { key: slug } });
   } catch (err) {
     console.error("[TopupPage] Prisma error:", err);
     return (
@@ -81,7 +79,6 @@ export default async function TopupGamePage({ params }: { params: { slug: string
   }
 
   let audience: Audience = "PUBLIC";
-
   if (token) {
     try {
       const s = await verifySession(token);
@@ -93,14 +90,11 @@ export default async function TopupGamePage({ params }: { params: { slug: string
 
   return (
     <TopupClient
-      game={{
-        id: game.id,
-        key: game.key,
-        name: game.name,
-      }}
+      game={{ id: game.id, key: game.key, name: game.name }}
       audience={audience}
       heroImage={game.logoUrl ?? null}
       publisher={publisherFromSlug(game.key)}
+      hasJoki={game.hasJoki}
     />
   );
 }
