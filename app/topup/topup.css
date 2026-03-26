@@ -49,8 +49,8 @@
   overflow: hidden;
   border: 1px solid #52525b;
   background:
-    radial-gradient(600px 250px at 70% 60%, rgba(59, 130, 246, .08), transparent),
-    rgba(255, 255, 255, .03);
+    radial-gradient(600px 250px at 70% 60%, rgba(59, 130, 246, .06), transparent),
+    linear-gradient(145deg, #202225 0%, #151618 100%);
   backdrop-filter: blur(8px);
 }
 
@@ -139,11 +139,10 @@
 
 .topupScope .card {
   border-radius: 20px;
-  background: rgba(255, 255, 255, .025);
+  background: linear-gradient(145deg, #202225 0%, #151618 100%);
   border: 1px solid #52525b;
   overflow: hidden;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, .15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .25);
 }
 
 .topupScope .contact-header {
@@ -169,7 +168,7 @@
   display: flex;
   align-items: center;
   padding: 0 18px;
-  background: rgba(255, 255, 255, .04);
+  background: rgba(0, 0, 0, .15);
 }
 
 .topupScope .contact-title {
