@@ -315,7 +315,7 @@ export default function TopupClient({
             border: "1px solid rgba(255,255,255,.10)",
             borderRadius: 16,
             padding: 4,
-            marginTop: 4,
+            marginTop: 24,
           }}>
             <div style={{
               flex: 1,
@@ -351,7 +351,7 @@ export default function TopupClient({
         )}
       </div>
 
-
+      <div style={{ height: 32 }} />
 
       <div className="topupWrap">
         <div className="card">

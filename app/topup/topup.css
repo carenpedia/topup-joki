@@ -37,7 +37,7 @@
   padding: 0 20px;
 }
 
-.topupScope .spacer { height: 28px; } /* Diperbesar agar jaraknya lebih lega */
+.topupScope .spacer { height: 16px; }
 
 /* ===== HERO / GAME STRIP ===== */
 
@@ -142,7 +142,6 @@
   overflow: hidden;
   backdrop-filter: blur(8px);
   box-shadow: 0 4px 20px rgba(0,0,0,.15);
-  margin-bottom: 24px; /* Tambahan space bawah */
 }
 
 .topupScope .contact-header {

@@ -247,7 +247,7 @@ export default function JokiClient({ game, audience: audienceProp, heroImage }: 
           border: "1px solid rgba(255,255,255,.10)",
           borderRadius: 16,
           padding: 4,
-          marginTop: 4,
+          marginTop: 24,
         }}>
           <Link
             href={`/topup/${game.key}`}
@@ -282,8 +282,7 @@ export default function JokiClient({ game, audience: audienceProp, heroImage }: 
         </div>
       </div>
 
-
-      <div className="topupWrap">
+      <div style={{ height: 32 }} />      <div className="topupWrap">
 
         {/* Step 1 — Data Akun */}
         <div className="card">
