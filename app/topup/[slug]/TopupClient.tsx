@@ -162,7 +162,7 @@ export default function TopupClient({
     return () => {
       alive = false;
     };
-  }, [game.key, audienceProp, selectedItemId]);
+  }, [game.key, audienceProp]);
 
   const selectedItem = useMemo(() => {
     if (!selectedItemId) return null;

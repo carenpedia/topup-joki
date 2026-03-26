@@ -244,13 +244,19 @@
 
 .topupScope .tpNomGrid {
   display: grid;
-  gap: 12px;
+  gap: 14px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .topupScope .tpNomGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1024px) {
   .topupScope .tpNomGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -260,11 +266,13 @@
   position: relative;
   text-align: left;
   border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.06);
+  border: 1.5px solid transparent;
   overflow: hidden;
   min-height: 110px;
   padding-bottom: 38px;
-  background: linear-gradient(160deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,.01) 100%);
+  background: 
+    linear-gradient(160deg, rgba(30,35,45,.8) 0%, rgba(20,25,35,.6) 100%) padding-box,
+    linear-gradient(135deg, rgba(156,163,175,0.6) 0%, rgba(59,130,246,0.8) 100%) border-box;
   backdrop-filter: blur(10px);
   transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
@@ -272,14 +280,16 @@
 
 .topupScope .tpNomCard:hover {
   transform: translateY(-3px);
-  border-color: rgba(96,165,250,.4);
-  background: linear-gradient(160deg, rgba(59,130,246,.08) 0%, rgba(37,99,235,.02) 100%);
+  background: 
+    linear-gradient(160deg, rgba(40,50,70,.85) 0%, rgba(30,40,60,.7) 100%) padding-box,
+    linear-gradient(135deg, rgba(209,213,219,0.8) 0%, rgba(96,165,250,1) 100%) border-box;
   box-shadow: 0 10px 30px rgba(59,130,246,.15);
 }
 
 .topupScope .tpNomCard.isActive {
-  border-color: rgba(59,130,246,.7);
-  background: linear-gradient(160deg, rgba(59,130,246,.12) 0%, rgba(37,99,235,.06) 100%);
+  background: 
+    linear-gradient(160deg, rgba(30,58,138,.3) 0%, rgba(30,64,175,.2) 100%) padding-box,
+    linear-gradient(135deg, rgba(243,244,246,1) 0%, rgba(59,130,246,1) 100%) border-box;
   box-shadow: 0 0 0 1px rgba(59,130,246,.3), 0 12px 30px rgba(37,99,235,.25);
 }
 
@@ -293,9 +303,9 @@
 
 .topupScope .tpNomName {
   font-weight: 800;
-  font-size: 13px;
-  line-height: 16px;
-  color: rgba(255,255,255,.9);
+  font-size: 14px;
+  line-height: 1.35;
+  color: rgba(255,255,255,1);
   max-width: 78%;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -532,6 +542,23 @@
 
   .topupScope .tpBenefitRow {
     grid-template-columns: 1fr;
+  }
+
+  .topupScope .tpNomGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .topupScope .tpNomName {
+    font-size: 12.5px;
+  }
+
+  .topupScope .tpNomNow {
+    font-size: 14.5px;
+  }
+
+  .topupScope .tpNomCard {
+    min-height: 100px;
   }
 
   .topupScope .tpGameName {
