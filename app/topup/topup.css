@@ -4,7 +4,7 @@
 
 .topupScope {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: rgba(255,255,255,.92);
+  color: rgba(255, 255, 255, .92);
 }
 
 /* ===== PAGE LAYOUT ===== */
@@ -24,8 +24,8 @@
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(800px 400px at 10% 5%, rgba(59,130,246,.12), transparent 65%),
-    radial-gradient(600px 350px at 90% 15%, rgba(96,165,250,.07), transparent 55%);
+    radial-gradient(800px 400px at 10% 5%, rgba(59, 130, 246, .12), transparent 65%),
+    radial-gradient(600px 350px at 90% 15%, rgba(96, 165, 250, .07), transparent 55%);
 }
 
 .topupScope .topupWrap {
@@ -37,7 +37,9 @@
   padding: 0 20px;
 }
 
-.topupScope .spacer { height: 16px; }
+.topupScope .spacer {
+  height: 16px;
+}
 
 /* ===== HERO / GAME STRIP ===== */
 
@@ -45,10 +47,10 @@
   margin-top: 0;
   border-radius: 20px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,.07);
+  border: 1px solid rgba(255, 255, 255, .07);
   background:
-    radial-gradient(600px 250px at 70% 60%, rgba(59,130,246,.08), transparent),
-    rgba(255,255,255,.03);
+    radial-gradient(600px 250px at 70% 60%, rgba(59, 130, 246, .08), transparent),
+    rgba(255, 255, 255, .03);
   backdrop-filter: blur(8px);
 }
 
@@ -65,8 +67,8 @@
   border-radius: 16px;
   overflow: hidden;
   flex: 0 0 auto;
-  border: 1px solid rgba(255,255,255,.1);
-  box-shadow: 0 12px 30px rgba(0,0,0,.3);
+  border: 1px solid rgba(255, 255, 255, .1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .3);
 }
 
 .topupScope .tpGameCoverImg,
@@ -78,20 +80,20 @@
 
 .topupScope .tpGameCoverFallback {
   background:
-    radial-gradient(60px 60px at 40% 30%, rgba(59,130,246,.3), transparent),
-    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    radial-gradient(60px 60px at 40% 30%, rgba(59, 130, 246, .3), transparent),
+    linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03));
 }
 
 .topupScope .tpGameName {
   font-size: 24px;
   font-weight: 900;
-  color: rgba(255,255,255,.96);
+  color: rgba(255, 255, 255, .96);
   letter-spacing: -.2px;
 }
 
 .topupScope .tpGamePublisher {
   margin-top: 4px;
-  color: rgba(255,255,255,.5);
+  color: rgba(255, 255, 255, .5);
   font-weight: 600;
   font-size: 14px;
 }
@@ -106,9 +108,9 @@
 .topupScope .tpGameBadge {
   padding: 7px 12px;
   border-radius: 999px;
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.07);
-  color: rgba(255,255,255,.75);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .07);
+  color: rgba(255, 255, 255, .75);
   font-size: 12px;
   font-weight: 700;
 }
@@ -125,9 +127,9 @@
 .topupScope .tpBenefitCard {
   padding: 14px 14px;
   border-radius: 14px;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.06);
-  color: rgba(255,255,255,.7);
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid rgba(255, 255, 255, .06);
+  color: rgba(255, 255, 255, .7);
   font-size: 12px;
   font-weight: 700;
   text-align: center;
@@ -137,18 +139,18 @@
 
 .topupScope .card {
   border-radius: 20px;
-  background: rgba(255,255,255,.025);
-  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255, 255, 255, .025);
+  border: 1px solid rgba(255, 255, 255, .08);
   overflow: hidden;
   backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .15);
 }
 
 .topupScope .contact-header {
   display: flex;
   height: 52px;
   overflow: hidden;
-  border-bottom: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
 }
 
 .topupScope .contact-step {
@@ -158,8 +160,8 @@
   justify-content: center;
   font-weight: 900;
   font-size: 16px;
-  color: rgba(255,255,255,.95);
-  background: linear-gradient(135deg, rgba(59,130,246,.9), rgba(37,99,235,.85));
+  color: rgba(255, 255, 255, .95);
+  background: linear-gradient(135deg, rgba(59, 130, 246, .9), rgba(37, 99, 235, .85));
 }
 
 .topupScope .contact-title-wrap {
@@ -167,14 +169,14 @@
   display: flex;
   align-items: center;
   padding: 0 18px;
-  background: rgba(255,255,255,.04);
+  background: rgba(255, 255, 255, .04);
 }
 
 .topupScope .contact-title {
   margin: 0;
   font-size: 14px;
   font-weight: 800;
-  color: rgba(255,255,255,.92);
+  color: rgba(255, 255, 255, .92);
   letter-spacing: .1px;
 }
 
@@ -185,7 +187,7 @@
 .topupScope .contact-label {
   display: block;
   font-size: 12px;
-  color: rgba(255,255,255,.45);
+  color: rgba(255, 255, 255, .45);
   font-weight: 600;
   margin-bottom: 8px;
 }
@@ -194,9 +196,9 @@
   width: 100%;
   border-radius: 12px;
   padding: 12px 14px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.04);
-  color: rgba(255,255,255,.92);
+  border: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .04);
+  color: rgba(255, 255, 255, .92);
   font-family: inherit;
   font-size: 14px;
   font-weight: 600;
@@ -205,23 +207,23 @@
 }
 
 .topupScope .contact-input::placeholder {
-  color: rgba(255,255,255,.3);
+  color: rgba(255, 255, 255, .3);
 }
 
 .topupScope .contact-input:focus {
-  border-color: rgba(59,130,246,.5);
-  box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+  border-color: rgba(59, 130, 246, .5);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .1);
 }
 
 .topupScope .contact-hint {
   margin-top: 10px;
   font-size: 12px;
-  color: rgba(255,255,255,.4);
+  color: rgba(255, 255, 255, .4);
   font-weight: 500;
 }
 
 .topupScope .cardMuted {
-  color: rgba(255,255,255,.5);
+  color: rgba(255, 255, 255, .5);
   font-size: 14px;
   line-height: 1.45;
 }
@@ -237,7 +239,7 @@
 .topupScope .nominalGroupHeader {
   font-size: 13px;
   font-weight: 800;
-  color: rgba(255,255,255,.85);
+  color: rgba(255, 255, 255, .85);
   margin-bottom: 10px;
   letter-spacing: .2px;
 }
@@ -270,9 +272,9 @@
   overflow: hidden;
   min-height: 110px;
   padding-bottom: 38px;
-  background: 
-    linear-gradient(160deg, rgba(30,35,45,.8) 0%, rgba(20,25,35,.6) 100%) padding-box,
-    linear-gradient(135deg, rgba(156,163,175,0.6) 0%, rgba(59,130,246,0.8) 100%) border-box;
+  background:
+    linear-gradient(160deg, rgba(30, 35, 45, .8) 0%, rgba(20, 25, 35, .6) 100%) padding-box,
+    linear-gradient(135deg, rgba(156, 163, 175, 0.6) 0%, rgba(49, 65, 92, 0.8) 100%) border-box;
   backdrop-filter: blur(10px);
   transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
@@ -280,17 +282,17 @@
 
 .topupScope .tpNomCard:hover {
   transform: translateY(-3px);
-  background: 
-    linear-gradient(160deg, rgba(40,50,70,.85) 0%, rgba(30,40,60,.7) 100%) padding-box,
-    linear-gradient(135deg, rgba(209,213,219,0.8) 0%, rgba(96,165,250,1) 100%) border-box;
-  box-shadow: 0 10px 30px rgba(59,130,246,.15);
+  background:
+    linear-gradient(160deg, rgba(40, 50, 70, .85) 0%, rgba(30, 40, 60, .7) 100%) padding-box,
+    linear-gradient(135deg, rgba(209, 213, 219, 0.8) 0%, rgba(96, 165, 250, 1) 100%) border-box;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, .15);
 }
 
 .topupScope .tpNomCard.isActive {
-  background: 
-    linear-gradient(160deg, rgba(30,58,138,.3) 0%, rgba(30,64,175,.2) 100%) padding-box,
-    linear-gradient(135deg, rgba(243,244,246,1) 0%, rgba(59,130,246,1) 100%) border-box;
-  box-shadow: 0 0 0 1px rgba(59,130,246,.3), 0 12px 30px rgba(37,99,235,.25);
+  background:
+    linear-gradient(160deg, rgba(30, 58, 138, .3) 0%, rgba(30, 64, 175, .2) 100%) padding-box,
+    linear-gradient(135deg, rgba(243, 244, 246, 1) 0%, rgba(59, 130, 246, 1) 100%) border-box;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, .3), 0 12px 30px rgba(37, 99, 235, .25);
 }
 
 .topupScope .tpNomTop {
@@ -305,7 +307,7 @@
   font-weight: 800;
   font-size: 14px;
   line-height: 1.35;
-  color: rgba(255,255,255,1);
+  color: rgba(255, 255, 255, 1);
   max-width: 78%;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -322,7 +324,7 @@
   border: none;
   color: #fff;
   flex: 0 0 auto;
-  box-shadow: 0 2px 8px rgba(239,68,68,.3);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, .3);
 }
 
 .topupScope .tpNomPriceRow {
@@ -338,13 +340,13 @@
   font-weight: 600;
   opacity: .5;
   text-decoration: line-through;
-  color: rgba(255,255,255,.6);
+  color: rgba(255, 255, 255, .6);
 }
 
 .topupScope .tpNomNow {
   font-size: 16px;
   font-weight: 800;
-  color: rgba(96,165,250,.95);
+  color: rgba(96, 165, 250, .95);
   letter-spacing: .1px;
 }
 
@@ -359,14 +361,14 @@
   justify-content: space-between;
   gap: 10px;
   padding: 0 16px;
-  border-top: 1px solid rgba(255,255,255,.04);
-  background: rgba(0,0,0,.15);
+  border-top: 1px solid rgba(255, 255, 255, .04);
+  background: rgba(0, 0, 0, .15);
 }
 
 .topupScope .tpNomHint {
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255,255,255,.4);
+  color: rgba(255, 255, 255, .4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -383,7 +385,7 @@
   background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   color: #fff;
   flex: 0 0 auto;
-  box-shadow: 0 2px 8px rgba(245,158,11,.3);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, .3);
   position: absolute;
   top: 12px;
   right: 12px;
@@ -414,14 +416,14 @@
 }
 
 .topupScope .authBtnGhost {
-  background: rgba(255,255,255,.05);
-  color: rgba(255,255,255,.88);
-  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255, 255, 255, .05);
+  color: rgba(255, 255, 255, .88);
+  border: 1px solid rgba(255, 255, 255, .08);
 }
 
 .topupScope .authBtnGhost:hover {
-  background: rgba(255,255,255,.08);
-  border-color: rgba(255,255,255,.12);
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(255, 255, 255, .12);
 }
 
 .topupScope .authBtn:active {
@@ -437,7 +439,7 @@
   bottom: 0;
   z-index: 50;
   padding: 12px;
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,.6));
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .6));
   pointer-events: none;
 }
 
@@ -446,15 +448,15 @@
   max-width: 1200px;
   margin: 0 auto;
   border-radius: 16px;
-  background: rgba(14,14,20,.92);
-  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(14, 14, 20, .92);
+  border: 1px solid rgba(255, 255, 255, .08);
   backdrop-filter: blur(14px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
   padding: 14px 16px;
-  box-shadow: 0 -4px 30px rgba(0,0,0,.3);
+  box-shadow: 0 -4px 30px rgba(0, 0, 0, .3);
 }
 
 .topupScope .stickyLeft {
@@ -466,7 +468,7 @@
 
 .topupScope .stickyStatus {
   font-size: 12px;
-  color: rgba(255,255,255,.5);
+  color: rgba(255, 255, 255, .5);
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -481,14 +483,14 @@
 
 .topupScope .stickyLabel {
   font-size: 12px;
-  color: rgba(255,255,255,.45);
+  color: rgba(255, 255, 255, .45);
   font-weight: 600;
 }
 
 .topupScope .stickyTotal {
   font-size: 16px;
   font-weight: 900;
-  color: rgba(255,255,255,.95);
+  color: rgba(255, 255, 255, .95);
 }
 
 .topupScope .stickyBtn {
@@ -500,14 +502,14 @@
   font-size: 14px;
   color: #fff;
   font-family: inherit;
-  background: linear-gradient(135deg, rgba(59,130,246,.95), rgba(37,99,235,.9));
+  background: linear-gradient(135deg, rgba(59, 130, 246, .95), rgba(37, 99, 235, .9));
   cursor: pointer;
   transition: all .18s ease;
-  box-shadow: 0 6px 20px rgba(37,99,235,.25);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, .25);
 }
 
 .topupScope .stickyBtn:hover {
-  box-shadow: 0 8px 28px rgba(37,99,235,.35);
+  box-shadow: 0 8px 28px rgba(37, 99, 235, .35);
   transform: translateY(-1px);
 }
 
