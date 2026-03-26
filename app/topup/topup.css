@@ -282,16 +282,14 @@
 
 .topupScope .tpNomCard:hover {
   transform: translateY(-3px);
-  background:
-    linear-gradient(160deg, rgba(40, 50, 70, .85) 0%, rgba(30, 40, 60, .7) 100%) padding-box,
-    linear-gradient(135deg, rgba(209, 213, 219, 0.8) 0%, rgba(96, 165, 250, 1) 100%) border-box;
+  border-color: rgba(96, 165, 250, .4);
+  background: linear-gradient(160deg, rgba(59, 130, 246, .08) 0%, rgba(37, 99, 235, .02) 100%);
   box-shadow: 0 10px 30px rgba(59, 130, 246, .15);
 }
 
 .topupScope .tpNomCard.isActive {
-  background:
-    linear-gradient(160deg, rgba(30, 58, 138, .3) 0%, rgba(30, 64, 175, .2) 100%) padding-box,
-    linear-gradient(135deg, rgba(243, 244, 246, 1) 0%, rgba(59, 130, 246, 1) 100%) border-box;
+  border-color: rgba(59, 130, 246, .7);
+  background: linear-gradient(160deg, rgba(59, 130, 246, .12) 0%, rgba(37, 99, 235, .06) 100%);
   box-shadow: 0 0 0 1px rgba(59, 130, 246, .3), 0 12px 30px rgba(37, 99, 235, .25);
 }
 
