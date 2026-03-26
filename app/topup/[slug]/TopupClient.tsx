@@ -443,7 +443,7 @@ export default function TopupClient({
                               <div className="tpNomTop">
                                 <div className="tpNomName">{p.name}</div>
                                 {isFlash ? (
-                                  <span className="tpNomFlash">FLASH</span>
+                                  <span className="tpNomFlash">FLASH SALE</span>
                                 ) : null}
                               </div>
 
@@ -473,9 +473,8 @@ export default function TopupClient({
                                     : "Klik untuk pilih"}
                                 </span>
 
-                                <span className="tpNomInstant">
+                                <span className="tpNomInstant" title="Proses Instant Cepat">
                                   <span className="tpNomBolt">⚡</span>
-                                  INSTANT
                                 </span>
                               </div>
                             </button>

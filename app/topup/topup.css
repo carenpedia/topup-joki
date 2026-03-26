@@ -37,7 +37,7 @@
   padding: 0 20px;
 }
 
-.topupScope .spacer { height: 16px; }
+.topupScope .spacer { height: 28px; } /* Diperbesar agar jaraknya lebih lega */
 
 /* ===== HERO / GAME STRIP ===== */
 
@@ -136,11 +136,13 @@
 /* ===== FORM CARDS (STEPS) ===== */
 
 .topupScope .card {
-  border-radius: 18px;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 20px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.08);
   overflow: hidden;
   backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  margin-bottom: 24px; /* Tambahan space bawah */
 }
 
 .topupScope .contact-header {
@@ -258,36 +260,36 @@
   flex-direction: column;
   position: relative;
   text-align: left;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.06);
   overflow: hidden;
   min-height: 110px;
-  padding-bottom: 42px;
-  background: rgba(255,255,255,.04);
-  backdrop-filter: blur(6px);
-  transition: all .2s ease;
+  padding-bottom: 38px;
+  background: linear-gradient(160deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,.01) 100%);
+  backdrop-filter: blur(10px);
+  transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
 
 .topupScope .tpNomCard:hover {
-  transform: translateY(-2px);
-  border-color: rgba(59,130,246,.25);
-  background: rgba(255,255,255,.06);
-  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  transform: translateY(-3px);
+  border-color: rgba(96,165,250,.4);
+  background: linear-gradient(160deg, rgba(59,130,246,.08) 0%, rgba(37,99,235,.02) 100%);
+  box-shadow: 0 10px 30px rgba(59,130,246,.15);
 }
 
 .topupScope .tpNomCard.isActive {
-  border-color: rgba(59,130,246,.55);
-  background: rgba(59,130,246,.08);
-  box-shadow: 0 0 0 2px rgba(59,130,246,.15), 0 12px 30px rgba(0,0,0,.2);
+  border-color: rgba(59,130,246,.7);
+  background: linear-gradient(160deg, rgba(59,130,246,.12) 0%, rgba(37,99,235,.06) 100%);
+  box-shadow: 0 0 0 1px rgba(59,130,246,.3), 0 12px 30px rgba(37,99,235,.25);
 }
 
 .topupScope .tpNomTop {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
-  padding: 14px 14px 0 14px;
+  gap: 8px;
+  padding: 16px 16px 0;
 }
 
 .topupScope .tpNomName {
@@ -305,12 +307,13 @@
 .topupScope .tpNomFlash {
   font-size: 10px;
   font-weight: 900;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(59,130,246,.15);
-  border: 1px solid rgba(59,130,246,.3);
-  color: rgba(200,220,255,.95);
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+  border: none;
+  color: #fff;
   flex: 0 0 auto;
+  box-shadow: 0 2px 8px rgba(239,68,68,.3);
 }
 
 .topupScope .tpNomPriceRow {
@@ -341,41 +344,44 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 42px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 0 14px;
-  border-top: 1px solid rgba(255,255,255,.06);
-  background: rgba(255,255,255,.02);
+  padding: 0 16px;
+  border-top: 1px solid rgba(255,255,255,.04);
+  background: rgba(0,0,0,.15);
 }
 
 .topupScope .tpNomHint {
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255,255,255,.45);
+  color: rgba(255,255,255,.4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: .2px;
 }
 
 .topupScope .tpNomInstant {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.85);
-  color: rgba(15,23,42,.92);
-  font-weight: 900;
-  font-size: 10px;
-  letter-spacing: .4px;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #fff;
   flex: 0 0 auto;
+  box-shadow: 0 2px 8px rgba(245,158,11,.3);
+  position: absolute;
+  top: 12px;
+  right: 12px;
 }
 
 .topupScope .tpNomBolt {
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
 }
 
