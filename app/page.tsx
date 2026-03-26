@@ -24,9 +24,9 @@ export default function Home() {
     <main className="homePage">
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
+      <Navbar />
 
       <div className="shell">
-        <Navbar />
 
         {/* Banner promo slider */}
         <PromoSlider />

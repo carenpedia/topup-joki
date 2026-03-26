@@ -7,8 +7,8 @@ export default function DaftarPage() {
     <main className="page">
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
+      <Navbar />
       <div className="shell">
-        <Navbar />
         <DaftarClient />
       </div>
       <Footer />

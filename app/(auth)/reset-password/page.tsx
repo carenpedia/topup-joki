@@ -40,8 +40,8 @@ export default function ResetPasswordPage() {
     <main className="page">
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
+      <Navbar />
       <div className="shell">
-        <Navbar />
         <div className="section" style={{ maxWidth: 520, margin: "0 auto" }}>
           <div className="title">Reset Password</div>
 

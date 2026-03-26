@@ -6,8 +6,8 @@ export default function Reseller() {
     <main className="page">
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
+      <Navbar />
       <div className="shell">
-        <Navbar />
 
         {/* HERO SECTION */}
         <div className="section" style={{ textAlign: "center", marginTop: 60, marginBottom: 80 }}>

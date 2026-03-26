@@ -6,8 +6,8 @@ export default function Admin() {
     <main className="page">
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
+      <Navbar />
       <div className="shell">
-        <Navbar />
         <div className="section">
           <div className="title">Admin</div>
           <div className="subtitle">Manage banner, game/nominal, member/reseller, flash sale, order, voucher.</div>

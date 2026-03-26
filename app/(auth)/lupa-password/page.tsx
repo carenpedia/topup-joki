@@ -7,8 +7,8 @@ export default function LupaPasswordPage() {
     <main className="page">
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
+      <Navbar />
       <div className="shell">
-        <Navbar />
         <LupaPasswordClient />
       </div>
       <Footer />

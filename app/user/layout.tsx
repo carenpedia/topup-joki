@@ -13,8 +13,8 @@ export default function UserLayout({
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
       
+      <Navbar />
       <div className="shell" style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-        <Navbar />
         
         <div style={{ 
           marginTop: 40,

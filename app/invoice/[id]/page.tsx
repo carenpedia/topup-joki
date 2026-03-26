@@ -41,8 +41,8 @@ export default function Invoice({ params }: { params: { id: string } }) {
     <main className="page">
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
+      <Navbar />
       <div className="shell">
-        <Navbar />
 
         <div className="section">
           <div className="title">Invoice</div>

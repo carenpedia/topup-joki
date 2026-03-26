@@ -26,8 +26,8 @@ export default function Riwayat() {
     <main className="page">
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
+      <Navbar />
       <div className="shell">
-        <Navbar />
 
         <div className="section" style={{ maxWidth: 640, margin: "40px auto" }}>
           <div className="authCard" style={{ padding: "32px 40px" }}>

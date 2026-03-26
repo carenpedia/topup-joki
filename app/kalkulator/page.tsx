@@ -33,8 +33,8 @@ export default function Kalkulator() {
     <main className="page">
       <div className="bgGlow" aria-hidden="true" />
       <div className="gridFx" aria-hidden="true" />
+      <Navbar />
       <div className="shell">
-        <Navbar />
 
         <div className="section" style={{ maxWidth: 800, margin: "40px auto" }}>
           <div className="authCard" style={{ padding: "40px", position: "relative", overflow: "hidden" }}>
