@@ -207,8 +207,8 @@ export default function JokiClient({ game, audience: audienceProp, heroImage }: 
 
   return (
     <main className="topupPage">
+      <Navbar />
       <div className="topupWrap">
-        <Navbar />
         <div className="spacer" />
 
         {/* Game Strip */}

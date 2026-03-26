@@ -268,8 +268,8 @@ export default function TopupClient({
 
   return (
     <main className="topupPage">
+      <Navbar />
       <div className="topupWrap">
-        <Navbar />
 
         <div className="spacer" />
 
