@@ -13,7 +13,9 @@
   position: relative;
   min-height: 100vh;
   padding: 0 0 140px;
-  background: #2F3136;
+  background: radial-gradient(circle at top left, #2a2d36, transparent 40%),
+    radial-gradient(circle at top right, #2a2d36, transparent 40%),
+    #1F2128;
 }
 
 /* ambient glow */
