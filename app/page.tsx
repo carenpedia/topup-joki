@@ -33,8 +33,9 @@ export default function Home() {
 
         <div className="spacerLg" />
 
-        {/* Search + Flash Sale */}
+        {/* Games + Flash Sale */}
         <div className="homeSection">
+          <div className="homeSectionHeader">
             <div>
               <div className="homeSectionTitle">Top Up Game</div>
               <div className="homeSectionSub">
