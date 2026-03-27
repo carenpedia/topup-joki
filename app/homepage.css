@@ -11,7 +11,8 @@
   min-height: 100vh;
   padding-bottom: 60px;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: #1a1b1f; /* Darker grey to match screenshot */
+  background: #1a1b1f;
+  /* Darker grey to match screenshot */
 }
 
 /* Ambient glow (Dimatikan sesuai request solid background) */
@@ -28,15 +29,21 @@
 .homePage .shell {
   position: relative;
   z-index: 1;
-  max-width: 1400px; /* Increased from 1200px for a fuller look */
+  max-width: 1300px;
+  /* Increased from 1200px for a fuller look */
   margin: 0 auto;
   padding: 0 24px;
 }
 
 /* ===== SPACERS ===== */
 
-.homePage .spacer   { height: 20px; }
-.homePage .spacerLg { height: 36px; }
+.homePage .spacer {
+  height: 20px;
+}
+
+.homePage .spacerLg {
+  height: 36px;
+}
 
 /* ===== SECTION ===== */
 
@@ -56,14 +63,14 @@
 .homePage .homeSectionTitle {
   font-size: 20px;
   font-weight: 800;
-  color: rgba(255,255,255,.94);
+  color: rgba(255, 255, 255, .94);
   letter-spacing: -.3px;
 }
 
 .homePage .homeSectionSub {
   margin-top: 4px;
   font-size: 13px;
-  color: rgba(255,255,255,.5);
+  color: rgba(255, 255, 255, .5);
   font-weight: 500;
 }
 
@@ -78,9 +85,9 @@
   width: 100%;
   padding: 13px 16px;
   border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.04);
-  color: rgba(255,255,255,.92);
+  border: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .04);
+  color: rgba(255, 255, 255, .92);
   font-size: 14px;
   font-weight: 500;
   font-family: inherit;
@@ -89,13 +96,13 @@
 }
 
 .homePage .homeSearchInput::placeholder {
-  color: rgba(255,255,255,.35);
+  color: rgba(255, 255, 255, .35);
 }
 
 .homePage .homeSearchInput:focus {
-  border-color: rgba(59,130,246,.5);
-  box-shadow: 0 0 0 3px rgba(59,130,246,.12);
-  background: rgba(255,255,255,.06);
+  border-color: rgba(59, 130, 246, .5);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .12);
+  background: rgba(255, 255, 255, .06);
 }
 
 /* ===== PROMO SLIDER / BANNER ===== */
@@ -105,23 +112,23 @@
   border-radius: 22px;
   overflow: hidden;
   background:
-    radial-gradient(500px 250px at 20% 30%, rgba(59,130,246,.22), transparent 70%),
-    radial-gradient(400px 200px at 80% 60%, rgba(96,165,250,.12), transparent 60%),
-    linear-gradient(135deg, rgba(20,20,32,.95), rgba(14,18,28,.95));
-  border: 1px solid rgba(255,255,255,.08);
+    radial-gradient(500px 250px at 20% 30%, rgba(59, 130, 246, .22), transparent 70%),
+    radial-gradient(400px 200px at 80% 60%, rgba(96, 165, 250, .12), transparent 60%),
+    linear-gradient(135deg, rgba(20, 20, 32, .95), rgba(14, 18, 28, .95));
+  border: 1px solid rgba(255, 255, 255, .08);
   padding: 40px 36px 30px;
   min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-shadow:
-    0 20px 60px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.04);
+    0 20px 60px rgba(0, 0, 0, .35),
+    inset 0 1px 0 rgba(255, 255, 255, .04);
   transition: border-color .25s ease;
 }
 
 .homePage .promoBanner:hover {
-  border-color: rgba(59,130,246,.2);
+  border-color: rgba(59, 130, 246, .2);
 }
 
 .homePage .promoTop {
@@ -143,16 +150,16 @@
   font-weight: 800;
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(59,130,246,.16);
-  border: 1px solid rgba(59,130,246,.28);
-  color: rgba(200,220,255,.95);
+  background: rgba(59, 130, 246, .16);
+  border: 1px solid rgba(59, 130, 246, .28);
+  color: rgba(200, 220, 255, .95);
   letter-spacing: .3px;
 }
 
 .homePage .promoTitle {
   font-size: 24px;
   font-weight: 800;
-  color: rgba(255,255,255,.94);
+  color: rgba(255, 255, 255, .94);
 }
 
 .homePage .promoDots {
@@ -168,19 +175,19 @@
   border: none;
   cursor: pointer;
   transition: all .2s ease;
-  background: rgba(255,255,255,.15);
+  background: rgba(255, 255, 255, .15);
 }
 
 .homePage .promoDot.active {
-  background: rgba(59,130,246,.95);
-  box-shadow: 0 0 8px rgba(59,130,246,.5);
+  background: rgba(59, 130, 246, .95);
+  box-shadow: 0 0 8px rgba(59, 130, 246, .5);
   width: 20px;
 }
 
 .homePage .promoDesc {
   margin-top: 20px;
   font-size: 15px;
-  color: rgba(255,255,255,.65);
+  color: rgba(255, 255, 255, .65);
   font-weight: 500;
   line-height: 1.6;
 }
@@ -190,8 +197,8 @@
 .homePage .flashStrip {
   border-radius: 18px;
   padding: 16px 20px;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.06);
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid rgba(255, 255, 255, .06);
   display: flex;
   align-items: center;
   gap: 14px;
@@ -205,12 +212,12 @@
 .homePage .flashTitle {
   font-weight: 800;
   font-size: 14px;
-  color: rgba(255,255,255,.92);
+  color: rgba(255, 255, 255, .92);
 }
 
 .homePage .flashSub {
   font-size: 12px;
-  color: rgba(255,255,255,.5);
+  color: rgba(255, 255, 255, .5);
   font-weight: 500;
   margin-top: 2px;
 }
@@ -222,11 +229,13 @@
   align-items: center;
   gap: 12px;
   overflow-x: auto;
-  padding-bottom: 8px; /* For scrollbar */
+  padding-bottom: 8px;
+  /* For scrollbar */
   margin-top: 32px;
   margin-bottom: 12px;
   scrollbar-width: none;
 }
+
 .homeTabsStrip::-webkit-scrollbar {
   display: none;
 }
@@ -253,7 +262,7 @@
   background: #3b82f6;
   color: #fff;
   border-color: #3b82f6;
-  box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 /* ===== GAME CARD HORIZONTAL (Blue Theme Populer) ===== */
@@ -265,19 +274,24 @@
 }
 
 @media (max-width: 1100px) {
-  .gameGridHorizontal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gameGridHorizontal {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
-  .gameGridHorizontal { grid-template-columns: minmax(0, 1fr); }
+  .gameGridHorizontal {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .gameCardHorizontal {
   position: relative;
   display: flex;
   text-decoration: none;
-  background: #23252a; /* Slightly lighter than page bg */
-  border: 1px solid rgba(255,255,255,.05);
+  background: #23252a;
+  /* Slightly lighter than page bg */
+  border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 18px;
   padding: 14px;
   gap: 16px;
@@ -287,7 +301,7 @@
 .gameCardHorizontal:hover {
   background: #2b2d33;
   border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 12px 24px rgba(0,0,0,.3);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, .3);
   transform: translateY(-2px);
 }
 
@@ -301,8 +315,10 @@
   border: 1px solid transparent;
   transition: border-color .25s ease;
 }
+
 .gameCardHorizontal:hover .gchImageCol {
-  border-color: rgba(59, 130, 246, 0.5); /* Inner border highlight */
+  border-color: rgba(59, 130, 246, 0.5);
+  /* Inner border highlight */
 }
 
 .gchImage {
@@ -311,14 +327,16 @@
   object-fit: cover;
   transition: transform .4s ease;
 }
+
 .gameCardHorizontal:hover .gchImage {
-  transform: scale(1.05); /* Slight zoom */
+  transform: scale(1.05);
+  /* Slight zoom */
 }
 
 .gchLogoWrap {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(59,130,246,.8), rgba(37,99,235,.6));
+  background: linear-gradient(135deg, rgba(59, 130, 246, .8), rgba(37, 99, 235, .6));
   display: grid;
   place-items: center;
 }
@@ -343,7 +361,12 @@
   border-top-right-radius: 8px;
   box-shadow: 2px -2px 8px rgba(239, 68, 68, 0.4);
 }
-.gchF1 { color: #fef08a; } /* Small yellow highlight in flash sale */
+
+.gchF1 {
+  color: #fef08a;
+}
+
+/* Small yellow highlight in flash sale */
 
 .gchContentCol {
   flex: 1;
@@ -356,14 +379,14 @@
 .gchName {
   font-size: 15px;
   font-weight: 800;
-  color: rgba(255,255,255,.96);
+  color: rgba(255, 255, 255, .96);
   margin-bottom: 4px;
   line-height: 1.3;
 }
 
 .gchPublisher {
   font-size: 12px;
-  color: rgba(255,255,255,.55);
+  color: rgba(255, 255, 255, .55);
   font-weight: 600;
 }
 
@@ -377,9 +400,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(59,130,246,.15);
+  background: rgba(59, 130, 246, .15);
   color: #60a5fa;
-  border: 1px solid rgba(59,130,246,.3);
+  border: 1px solid rgba(59, 130, 246, .3);
   padding: 8px 14px;
   border-radius: 10px;
   font-size: 13px;
@@ -417,8 +440,8 @@
 .gchAbbr {
   font-size: 11px;
   font-weight: 800;
-  color: rgba(255,255,255,.4);
-  background: rgba(255,255,255,.05);
+  color: rgba(255, 255, 255, .4);
+  background: rgba(255, 255, 255, .05);
   padding: 6px 8px;
   border-radius: 8px;
 }
@@ -432,18 +455,37 @@
 }
 
 @media (max-width: 1100px) {
-  .homePage .gameGrid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .homePage .gameGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }
+
 @media (max-width: 860px) {
-  .homePage .gameGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .homePage .gameGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
+
 @media (max-width: 600px) {
-  .homePage .gameGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .homePage .gameGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
 }
+
 @media (max-width: 440px) {
+
   /* Ensuring 3 items per row even on small mobile screens as requested */
-  .homePage .gameGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .modernGameCard { border-radius: 12px; } /* Slightly sharper for small cards */
+  .homePage .gameGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .modernGameCard {
+    border-radius: 12px;
+  }
+
+  /* Slightly sharper for small cards */
 }
 
 /* ===== MODERN GAME CARD (Simple & Clear) ===== */
@@ -504,12 +546,14 @@
   z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Cover entire top area */
+  object-fit: cover;
+  /* Cover entire top area */
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .modernGameCard:hover .mgImage {
-  transform: scale(1.08); /* Zoom effect on hover */
+  transform: scale(1.08);
+  /* Zoom effect on hover */
 }
 
 /* Fallback Logo Wrap */
@@ -535,7 +579,7 @@
   font-size: 22px;
   font-weight: 900;
   letter-spacing: -0.5px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Tag positioned top-right */
@@ -596,7 +640,7 @@
   padding: 20px 0;
   text-align: center;
   font-size: 13px;
-  color: rgba(255,255,255,.3);
+  color: rgba(255, 255, 255, .3);
   font-weight: 500;
 }
 
