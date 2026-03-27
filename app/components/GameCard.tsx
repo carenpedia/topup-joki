@@ -1,7 +1,64 @@
 import Link from "next/link";
 import type { Game } from "./data";
 
-export default function GameCard({ game }: { game: Game }) {
+function getPublisher(slug: string) {
+  if (slug === "mobile-legends") return "Moonton";
+  if (slug === "free-fire") return "Garena";
+  if (slug === "pubg-mobile") return "Tencent Games";
+  if (slug === "genshin-impact" || slug === "honkai-star-rail") return "HoYoverse";
+  if (slug === "valorant") return "Riot Games";
+  if (slug === "codm") return "Activision";
+  return "Global Publisher";
+}
+
+function getAbbr(slug: string) {
+  if (slug === "mobile-legends") return "MLBB";
+  if (slug === "free-fire") return "FF";
+  if (slug === "pubg-mobile") return "PUBGM";
+  if (slug === "genshin-impact") return "GENSHIN";
+  if (slug === "valorant") return "VAL";
+  if (slug === "honkai-star-rail") return "HSR";
+  if (slug === "codm") return "CODM";
+  return slug.substring(0, 4).toUpperCase();
+}
+
+export default function GameCard({ game, variant = "vertical" }: { game: Game; variant?: "vertical" | "horizontal" }) {
+  if (variant === "horizontal") {
+    return (
+      <Link href={`/topup/${game.slug}`} className="gameCardHorizontal group">
+        <div className="gchImageCol">
+          {game.imageUrl ? (
+            <img src={game.imageUrl} alt={game.name} className="gchImage" />
+          ) : (
+            <div className="gchLogoWrap"><div className="gchLogo">{game.logoText}</div></div>
+          )}
+          {game.tag === "Hemat" && (
+            <div className="gchFlashTag">
+               <span className="gchF1">FLASH</span><br/><span className="gchF2">SALE</span>
+            </div>
+          )}
+        </div>
+        
+        <div className="gchContentCol">
+          <div className="gchInfo">
+            <div className="gchName">{game.name}</div>
+            <div className="gchPublisher">{getPublisher(game.slug)}</div>
+          </div>
+          
+          <div className="gchActionRow">
+            <div className="gchTopupBtn">
+              <div className="gchPlusIcon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </div>
+              <span>TOP UP</span>
+            </div>
+            <div className="gchAbbr">{getAbbr(game.slug)}</div>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <Link href={`/topup/${game.slug}`} className="modernGameCard group">
       <div className="mgCover">

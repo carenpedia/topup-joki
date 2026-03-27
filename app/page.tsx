@@ -59,22 +59,33 @@ export default function Home() {
         {populer.length > 0 && (
           <div className="homeSection">
             <div className="homeSectionHeader">
-              <div className="homeSectionTitle">🔥 Game Populer</div>
+              <div>
+                <div className="homeSectionTitle">🔥 POPULER SEKARANG!</div>
+                <div className="homeSectionSub">Berikut adalah beberapa produk yang paling populer saat ini.</div>
+              </div>
             </div>
-            <div className="gameGrid">
+            <div className="gameGridHorizontal">
               {populer.map((g) => (
-                <GameCard key={g.slug} game={g} />
+                <GameCard key={g.slug} game={g} variant="horizontal" />
               ))}
             </div>
           </div>
         )}
 
+        {/* Tabs Kategori Custom */}
+        <div className="homeTabsStrip">
+          <div className="homeTab active">Top Up</div>
+          <div className="homeTab">Kebutuhan MLBB</div>
+          <div className="homeTab">Kebutuhan Roblox</div>
+          <div className="homeTab">JOIN RESELLER</div>
+          <div className="homeTab">Aplikasi Premium</div>
+          <div className="homeTab">Voucher</div>
+          <div className="homeTab">Hiburan</div>
+        </div>
+
         {/* Kategori: Lain */}
         {lain.length > 0 && (
-          <div className="homeSection">
-            <div className="homeSectionHeader">
-              <div className="homeSectionTitle">🎮 Game Lain</div>
-            </div>
+          <div className="homeSection" style={{ marginTop: 24 }}>
             <div className="gameGrid">
               {lain.map((g) => (
                 <GameCard key={g.slug} game={g} />
