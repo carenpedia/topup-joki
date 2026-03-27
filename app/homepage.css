@@ -61,7 +61,7 @@
 }
 
 .homePage .homeSectionTitle {
-  font-size: 20px;
+  font-size: 18px; /* Slightly smaller as requested */
   font-weight: 800;
   color: rgba(255, 255, 255, .94);
   letter-spacing: -.3px;
@@ -116,8 +116,8 @@
     radial-gradient(400px 200px at 80% 60%, rgba(96, 165, 250, .12), transparent 60%),
     linear-gradient(135deg, rgba(20, 20, 32, .95), rgba(14, 18, 28, .95));
   border: 1px solid rgba(255, 255, 255, .08);
-  padding: 40px 36px 30px;
-  min-height: 200px;
+  padding: 50px 44px 40px; /* Increased padding */
+  min-height: 280px; /* Increased from 200px */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -241,11 +241,11 @@
 }
 
 .homeTab {
-  padding: 12px 20px;
+  padding: 10px 18px;
   border-radius: 10px;
   background: #2b2d33;
   color: #fff;
-  font-size: 14px;
+  font-size: 13px; /* Slightly smaller as requested */
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
@@ -281,7 +281,8 @@
 
 @media (max-width: 760px) {
   .gameGridHorizontal {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Changed to 2 columns for mobile */
+    gap: 12px;
   }
 }
 
