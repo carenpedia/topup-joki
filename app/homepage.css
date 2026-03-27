@@ -28,9 +28,9 @@
 .homePage .shell {
   position: relative;
   z-index: 1;
-  max-width: 1200px;
+  max-width: 1400px; /* Increased from 1200px for a fuller look */
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
 /* ===== SPACERS ===== */
@@ -440,8 +440,10 @@
 @media (max-width: 600px) {
   .homePage .gameGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 }
-@media (max-width: 400px) {
-  .homePage .gameGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 440px) {
+  /* Ensuring 3 items per row even on small mobile screens as requested */
+  .homePage .gameGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .modernGameCard { border-radius: 12px; } /* Slightly sharper for small cards */
 }
 
 /* ===== MODERN GAME CARD (Simple & Clear) ===== */
