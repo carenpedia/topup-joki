@@ -125,8 +125,11 @@
     radial-gradient(400px 200px at 80% 60%, rgba(96,165,250,.12), transparent 60%),
     linear-gradient(135deg, rgba(20,20,32,.95), rgba(14,18,28,.95));
   border: 1px solid rgba(255,255,255,.08);
-  padding: 28px 28px 22px;
-  min-height: 140px;
+  padding: 40px 36px 30px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   box-shadow:
     0 20px 60px rgba(0,0,0,.35),
     inset 0 1px 0 rgba(255,255,255,.04);
@@ -163,7 +166,7 @@
 }
 
 .homePage .promoTitle {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 800;
   color: rgba(255,255,255,.94);
 }
@@ -191,11 +194,11 @@
 }
 
 .homePage .promoDesc {
-  margin-top: 14px;
-  font-size: 14px;
-  color: rgba(255,255,255,.55);
+  margin-top: 20px;
+  font-size: 15px;
+  color: rgba(255,255,255,.65);
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* ===== FLASH SALE STRIP ===== */
@@ -416,20 +419,17 @@
   }
 
   .homePage .promoBanner {
-    padding: 20px 18px 16px;
-    border-radius: 18px;
+    padding: 30px 24px 24px;
+    border-radius: 20px;
+    min-height: 160px;
   }
 
   .homePage .promoTitle {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   .homePage .homeSectionTitle {
     font-size: 18px;
-  }
-
-  .homePage .homeSearch {
-    width: 100%;
   }
 
   .homePage .homeSectionHeader {

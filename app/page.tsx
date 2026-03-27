@@ -35,21 +35,11 @@ export default function Home() {
 
         {/* Search + Flash Sale */}
         <div className="homeSection">
-          <div className="homeSectionHeader">
             <div>
-              <div className="homeSectionTitle">Top up Game</div>
+              <div className="homeSectionTitle">Top Up Game</div>
               <div className="homeSectionSub">
-                Cari game, cek promo, lalu lanjut checkout.
+                Cari game, cek promo, lalu lanjut bayar dengan cepat.
               </div>
-            </div>
-
-            <div className="homeSearch">
-              <input
-                className="homeSearchInput"
-                placeholder="Search game… (ML, FF, PUBG)"
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-              />
             </div>
           </div>
 
