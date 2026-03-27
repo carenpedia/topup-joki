@@ -14,7 +14,6 @@
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: #08080d;
   color: rgba(255,255,255,.92);
-  overflow-x: hidden;
 }
 
 .page .bgGlow {
