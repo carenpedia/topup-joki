@@ -476,41 +476,83 @@ body {
   gap: 4px;
 }
 
-.siteMobileNavItem {
-  position: relative;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(255,255,255,.7);
+.siteMobileNavItemPremium {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   padding: 12px 14px;
+  border-radius: 16px;
+  text-decoration: none;
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.04);
+  transition: all .2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.siteMobileNavItemPremium:active,
+.siteMobileNavItemPremium:hover {
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.1);
+  transform: translateY(-2px);
+}
+
+.siteMobileNavItemPremium.active {
+  background: linear-gradient(135deg, rgba(59,130,246,.12), rgba(37,99,235,.03));
+  border-color: rgba(59,130,246,.3);
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+
+.siteMobileNavItemIconWrap {
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
-  border: 1px solid transparent;
-  background: transparent;
-  transition: all .15s ease;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.05);
+  color: rgba(255,255,255,.7);
+  flex: 0 0 auto;
+  transition: all .2s ease;
 }
 
-.siteMobileNavItem:hover {
-  color: rgba(255,255,255,.95);
-  background: rgba(255,255,255,.04);
-  border-color: rgba(255,255,255,.06);
+.siteMobileNavItemIconWrap svg {
+  width: 22px;
+  height: 22px;
 }
 
-.siteMobileNavItem.active {
-  color: rgba(255,255,255,.98);
-  background: rgba(59,130,246,.1);
-  border-color: rgba(59,130,246,.2);
+.siteMobileNavItemPremium.active .siteMobileNavItemIconWrap {
+  background: rgba(59,130,246,.2);
+  color: #60a5fa;
+  box-shadow: 0 4px 14px rgba(59,130,246,.3);
 }
 
-.siteMobileNavItem.active::after {
-  content: "";
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 6px;
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
-  box-shadow: 0 0 10px rgba(96,165,250,.3);
+.siteMobileNavItemText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: rgba(255,255,255,.92);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.siteMobileNavItemPremium.active .siteMobileNavItemText {
+  color: #fff;
+}
+
+.siteMobileNavItemSub {
+  color: rgba(255,255,255,.45);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.siteMobileNavItemChevron {
+  width: 18px;
+  height: 18px;
+  color: rgba(255,255,255,.2);
+  flex: 0 0 auto;
+}
+
+.siteMobileNavItemPremium.active .siteMobileNavItemChevron {
+  color: rgba(96,165,250,.8);
 }
 
 .siteMobileAuth {
