@@ -430,18 +430,30 @@ body {
 
 /* ---------- Mobile Panel ---------- */
 .siteMobilePanel {
-  display: none;
+  position: absolute;
+  top: 100%;
+  left: 14px;
+  right: 14px;
   margin-top: 10px;
   padding: 14px;
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,.08);
-  background: rgba(14,14,20,.96);
-  box-shadow: 0 20px 60px rgba(0,0,0,.4);
-  backdrop-filter: blur(14px);
+  background: rgba(28, 29, 33, 0.98);
+  box-shadow: 0 24px 60px rgba(0,0,0,.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 99;
 }
 
 .siteMobilePanel.isOpen {
-  display: block;
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .siteMobileLocale {
