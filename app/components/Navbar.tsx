@@ -49,6 +49,7 @@ export default function Navbar() {
   const [searchLoading, setSearchLoading] = useState(false);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const searchRef = useRef<HTMLFormElement | null>(null);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
@@ -93,6 +94,14 @@ export default function Navbar() {
 
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -158,7 +167,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="siteTopbar" ref={mobileMenuRef}>
+    <header className={`siteTopbar ${isScrolled ? "isScrolled" : ""}`} ref={mobileMenuRef}>
       <div className="siteTopbarRow">
         <Link href="/" className="siteBrand" aria-label="CarenPedia">
           <div className="siteBrandLogo">C</div>
