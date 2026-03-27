@@ -291,36 +291,37 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div className={`siteMobilePanel ${mobileMenuOpen ? "isOpen" : ""}`}>
-        <div className="siteMobileLocale" style={{ marginBottom: 16 }}>
-          <svg style={{ width:18, height:18, marginRight:8, color:"rgba(255,255,255,0.7)" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-          ID / IDR
-        </div>
+      <>
+        <div 
+          className={`siteMobileOverlay ${mobileMenuOpen ? "isOpen" : ""}`} 
+          onClick={() => setMobileMenuOpen(false)}
+        />
+        <div className={`siteMobilePanel ${mobileMenuOpen ? "isOpen" : ""}`}>
+          <div className="siteMobileLocale" style={{ marginBottom: 16 }}>
+            <svg style={{ width:18, height:18, marginRight:8, color:"rgba(255,255,255,0.7)" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            ID / IDR
+          </div>
 
-        <nav className="siteMobileNav">
-          {items.map((it) => {
-            const active = isActivePath(pathname, it.href);
+          <nav className="siteMobileNav">
+            {items.map((it) => {
+              const active = isActivePath(pathname, it.href);
 
-            return (
-              <Link
-                key={it.href}
-                href={it.href}
-                className={`siteMobileNavItemPremium ${active ? "active" : ""}`}
-              >
-                <div className="siteMobileNavItemIconWrap">
-                  {it.icon}
-                </div>
-                <div className="siteMobileNavItemText">
-                  {it.label}
-                  <div className="siteMobileNavItemSub">
-                    {it.href === "/" ? "Jelajahi produk" : it.href === "/riwayat" ? "Cek pesananmu" : it.href === "/reseller" ? "Harga super murah" : "Tools game gratis"}
+              return (
+                <Link
+                  key={it.href}
+                  href={it.href}
+                  className={`siteMobileNavItemPlain ${active ? "active" : ""}`}
+                >
+                  <div className="siteMobileNavItemIconWrapPlain">
+                    {it.icon}
                   </div>
-                </div>
-                <svg className="siteMobileNavItemChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </Link>
-            );
-          })}
-        </nav>
+                  <div className="siteMobileNavItemTextPlain">
+                    {it.label}
+                  </div>
+                </Link>
+              );
+            })}
+          </nav>
 
         <div className="siteMobileAuth">
           {loading ? (
@@ -358,6 +359,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
+      </>
     </header>
   );
 }
