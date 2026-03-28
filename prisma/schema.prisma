@@ -164,6 +164,7 @@ model Game {
   key      String  @unique // e.g. "mobile-legends"
   name     String
   logoUrl  String?
+  bannerUrl String? // Banner image for the top-up page hero section
   isActive Boolean @default(true)
   hasJoki  Boolean @default(false) // apakah game ini support joki
 

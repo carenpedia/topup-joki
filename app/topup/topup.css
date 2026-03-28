@@ -34,69 +34,174 @@
   height: 16px;
 }
 
-/* ===== HERO / GAME STRIP ===== */
+/* ===== NEW HERO / GAME BANNER (Match Screenshot) ===== */
 
-.topupScope .tpGameStrip {
-  margin-top: 0;
-  border-radius: 20px;
+.topupScope .tpNewHero {
+  position: relative;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.topupScope .tpNewHeroBanner {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  background: #111;
   overflow: hidden;
-  border: 1px solid #52525b;
-  background:
-    radial-gradient(600px 250px at 70% 60%, rgba(59, 130, 246, .06), transparent),
-    linear-gradient(145deg, #202225 0%, #151618 100%);
-  backdrop-filter: blur(8px);
 }
 
-.topupScope .tpGameStripLeft {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 24px;
+@media (max-width: 760px) {
+  .topupScope .tpNewHeroBanner {
+    height: 160px;
+  }
 }
 
-.topupScope .tpGameCover {
-  width: 100px;
-  height: 100px;
-  border-radius: 16px;
-  overflow: hidden;
-  flex: 0 0 auto;
-  border: 1px solid rgba(255, 255, 255, .1);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, .3);
-}
-
-.topupScope .tpGameCoverImg,
-.topupScope .tpGameCoverFallback {
+.topupScope .tpNewHeroBannerImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.topupScope .tpGameCoverFallback {
-  background:
-    radial-gradient(60px 60px at 40% 30%, rgba(59, 130, 246, .3), transparent),
-    linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03));
+.topupScope .tpNewHeroBannerFallback {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
-.topupScope .tpGameName {
-  font-size: 24px;
+.topupScope .tpNewHeroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26, 27, 31, 1) 0%, rgba(26, 27, 31, 0) 50%);
+}
+
+.topupScope .tpNewHeroContent {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+  margin-top: -80px; /* Overlap to banner */
+  z-index: 10;
+}
+
+@media (max-width: 760px) {
+  .topupScope .tpNewHeroContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: -50px;
+  }
+}
+
+.topupScope .tpNewHeroLogoCard {
+  flex: 0 0 160px;
+  width: 160px;
+  height: 160px;
+  background: #23252a;
+  border-radius: 20px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+@media (max-width: 760px) {
+  .topupScope .tpNewHeroLogoCard {
+    flex: 0 0 110px;
+    width: 110px;
+    height: 110px;
+    border-radius: 16px;
+  }
+}
+
+.topupScope .tpNewHeroLogoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.topupScope .tpNewHeroLogoFallback {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 48px;
   font-weight: 900;
-  color: rgba(255, 255, 255, .96);
-  letter-spacing: -.2px;
+  color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
 }
 
-.topupScope .tpGamePublisher {
-  margin-top: 4px;
-  color: rgba(255, 255, 255, .5);
-  font-weight: 600;
+.topupScope .tpNewHeroInfo {
+  flex: 1;
+  padding-bottom: 8px;
+}
+
+.topupScope .tpNewHeroTitle {
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 760px) {
+  .topupScope .tpNewHeroTitle {
+    font-size: 20px;
+  }
+}
+
+.topupScope .tpNewHeroPublisher {
   font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 18px;
 }
 
-.topupScope .tpGameBadges {
+.topupScope .tpNewHeroFeatures {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 20px;
 }
+
+@media (max-width: 760px) {
+  .topupScope .tpNewHeroFeatures {
+    gap: 12px;
+  }
+}
+
+.topupScope .tpNewFeatureItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 760px) {
+  .topupScope .tpNewFeatureItem {
+    font-size: 11px;
+  }
+}
+
+.topupScope .tpNewFeatureIcon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topupScope .tpNewFeatureIcon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Old Strip styles removal (Disabled/Cleaned up) */
+.topupScope .tpGameStrip { display: none; }
+
 
 .topupScope .tpGameBadge {
   padding: 7px 12px;

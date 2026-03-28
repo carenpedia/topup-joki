@@ -92,7 +92,8 @@ export default async function TopupGamePage({ params }: { params: { slug: string
     <TopupClient
       game={{ id: game.id, key: game.key, name: game.name }}
       audience={audience}
-      heroImage={game.logoUrl ?? null}
+      logoUrl={game.logoUrl ?? null}
+      bannerUrl={game.bannerUrl ?? null}
       publisher={publisherFromSlug(game.key)}
       hasJoki={game.hasJoki}
     />

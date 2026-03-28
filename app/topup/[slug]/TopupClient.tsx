@@ -16,7 +16,8 @@ type Props = {
     name: string;
   };
   audience?: Audience;
-  heroImage?: string | null;
+  logoUrl?: string | null;
+  bannerUrl?: string | null;
   publisher?: string;
   hasJoki?: boolean;
 };
@@ -80,7 +81,8 @@ function groupTitle(g: string) {
 export default function TopupClient({
   game,
   audience: audienceProp,
-  heroImage,
+  logoUrl,
+  bannerUrl,
   publisher = "Official Publisher",
   hasJoki = false,
 }: Props) {
@@ -269,36 +271,58 @@ export default function TopupClient({
   return (
     <main className="topupPage">
       <Navbar />
-      <div className="topupWrap">
 
-        <div className="spacer" />
+      <div className="tpNewHero">
+        <div className="tpNewHeroBanner">
+          {bannerUrl ? (
+            <img src={bannerUrl} alt={game.name} className="tpNewHeroBannerImg" />
+          ) : (
+            <div className="tpNewHeroBannerFallback" />
+          )}
+          <div className="tpNewHeroOverlay" />
+        </div>
 
-        <div className="tpGameStrip">
-          <div className="tpGameStripLeft">
-            <div className="tpGameCover">
-              {heroImage ? (
-                <img
-                  src={heroImage}
-                  alt={game.name}
-                  className="tpGameCoverImg"
-                />
+        <div className="topupWrap">
+          <div className="tpNewHeroContent">
+            <div className="tpNewHeroLogoCard">
+              {logoUrl ? (
+                <img src={logoUrl} alt={game.name} className="tpNewHeroLogoImg" />
               ) : (
-                <div className="tpGameCoverFallback" />
+                <div className="tpNewHeroLogoFallback">{game.name[0]}</div>
               )}
             </div>
 
-            <div className="tpGameMeta">
-              <div className="tpGameName">{game.name}</div>
-              <div className="tpGamePublisher">{publisher}</div>
+            <div className="tpNewHeroInfo">
+              <h1 className="tpNewHeroTitle">{game.name}</h1>
+              <p className="tpNewHeroPublisher">{publisher}</p>
 
-              <div className="tpGameBadges">
-                <span className="tpGameBadge">⚡ Proses Cepat</span>
-                <span className="tpGameBadge">💬 Chat 24/7</span>
-                <span className="tpGameBadge">🛡️ Pembayaran Aman</span>
+              <div className="tpNewHeroFeatures">
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#facc15" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  </div>
+                  <span>Proses Cepat</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                  </div>
+                  <span>Layanan Chat 24/7</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  </div>
+                  <span>Pembayaran Aman!</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="topupWrap">
+        <div className="spacer" />
 
         <div className="tpBenefitRow">
           <div className="tpBenefitCard">🛡️ Jaminan Layanan</div>
