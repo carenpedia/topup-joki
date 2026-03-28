@@ -2,7 +2,7 @@
    HOMEPAGE CSS – CarenPedia (Takapedia-inspired)
    ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap');
 
 /* ===== PAGE LAYOUT ===== */
 
@@ -10,9 +10,8 @@
   position: relative;
   min-height: 100vh;
   padding-bottom: 60px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
   background: #1a1b1f;
-  /* Darker grey to match screenshot */
 }
 
 /* Ambient glow (Dimatikan sesuai request solid background) */
@@ -61,10 +60,11 @@
 }
 
 .homePage .homeSectionTitle {
-  font-size: 18px; /* Slightly smaller as requested */
-  font-weight: 800;
-  color: rgba(255, 255, 255, .94);
-  letter-spacing: -.3px;
+  font-size: 17px;
+  text-transform: uppercase; /* Match screenshot CAPITALS */
+  font-weight: 900;
+  color: rgba(255, 255, 255, .98);
+  letter-spacing: .5px;
 }
 
 .homePage .homeSectionSub {
@@ -429,26 +429,28 @@
 .gchTopupBtn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(59, 130, 246, .15);
+  gap: 6px;
+  background: rgba(124, 166, 98, 0.15); /* Tint of green/blue mix depending on preference, sticking to requested blue but softer */
+  background: rgba(59, 130, 246, .12);
   color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, .3);
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-size: 13px;
+  border: 1px solid rgba(59, 130, 246, .25);
+  padding: 6px 12px; /* Smaller as requested */
+  border-radius: 8px;
+  font-size: 12px; /* Smaller as requested */
   font-weight: 800;
-  letter-spacing: .3px;
+  letter-spacing: .4px;
   transition: all .2s ease;
 }
 
 @media (max-width: 760px) {
   .gchTopupBtn {
-    justify-content: center; /* Center button text on mobile */
-    padding: 10px;
-    background: #7ca662; /* Using the green color from screenshot for the button if requested? Wait, user asked for blue overall. I'll stick to blue but match style. */
-    background: rgba(96, 165, 250, 0.2); 
+    justify-content: center;
+    padding: 7px 10px; /* Smaller mobile button */
+    background: #7ca662; 
+    background: rgba(59, 130, 246, 0.25);
     color: #fff;
     border: none;
+    font-size: 11.5px;
   }
 }
 
