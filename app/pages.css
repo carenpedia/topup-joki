@@ -10,33 +10,14 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: 0; /* Ubah padding bottom karena footer akan mengambil space di bawah */
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: #08080d;
+  padding-bottom: 0;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  background: #1a1b1f;
   color: rgba(255,255,255,.92);
 }
 
-.page .bgGlow {
-  position: fixed;
-  inset: -200px;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(800px 400px at 15% 5%, rgba(59,130,246,.12), transparent 65%),
-    radial-gradient(600px 350px at 85% 15%, rgba(96,165,250,.07), transparent 55%);
-}
-
-.page .gridFx {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image:
-    linear-gradient(to right, rgba(255,255,255,.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,.025) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(600px 300px at 50% 0%, rgba(0,0,0,.5), transparent 70%);
-  opacity: .25;
+.page .bgGlow, .page .gridFx {
+  display: none;
 }
 
 .page .shell {

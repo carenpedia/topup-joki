@@ -3,7 +3,7 @@
    ========================================================= */
 
 .topupScope {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
   color: rgba(255, 255, 255, .92);
 }
 
@@ -13,21 +13,12 @@
   position: relative;
   min-height: 100vh;
   padding: 0 0 140px;
-  background: radial-gradient(circle at top left, #2a2d36, transparent 40%),
-    radial-gradient(circle at top right, #2a2d36, transparent 40%),
-    #1F2128;
+  background: #1a1b1f; /* Consistent with homepage */
 }
 
-/* ambient glow */
+/* ambient glow (Disabled) */
 .topupScope .topupPage::before {
-  content: '';
-  position: fixed;
-  inset: -200px;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(800px 400px at 10% 5%, rgba(59, 130, 246, .12), transparent 65%),
-    radial-gradient(600px 350px at 90% 15%, rgba(96, 165, 250, .07), transparent 55%);
+  display: none;
 }
 
 .topupScope .topupWrap {
