@@ -295,6 +295,27 @@ export default function TopupClient({
             <div className="tpNewHeroInfo">
               <h1 className="tpNewHeroTitle">{game.name}</h1>
               <p className="tpNewHeroPublisher">{publisher}</p>
+
+              <div className="tpNewHeroFeatures">
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#facc15" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  </div>
+                  <span>Proses Sekejap</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                  </div>
+                  <span>Layanan Chat 24/7</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  </div>
+                  <span>Aman & Terpercaya</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -302,13 +323,6 @@ export default function TopupClient({
 
       <div className="topupWrap">
         <div className="spacer" />
-
-        <div className="tpBenefitRow">
-          <div className="tpBenefitCard">🛡️ Jaminan Layanan</div>
-          <div className="tpBenefitCard">📞 Layanan 24 Jam</div>
-          <div className="tpBenefitCard">💳 Aman & Terpercaya</div>
-          <div className="tpBenefitCard">⚡ Cepat & Otomatis</div>
-        </div>
 
         {/* Tab Switcher: Top Up / Joki */}
         {hasJoki && (
