@@ -299,6 +299,15 @@
   transition: all .25s ease;
 }
 
+@media (max-width: 760px) {
+  .gameCardHorizontal {
+    flex-direction: column; /* Stack vertically on mobile */
+    gap: 10px;
+    padding: 10px;
+    border-radius: 16px;
+  }
+}
+
 .gameCardHorizontal:hover {
   background: #2b2d33;
   border-color: rgba(59, 130, 246, 0.4);
@@ -315,6 +324,15 @@
   background: #111;
   border: 1px solid transparent;
   transition: border-color .25s ease;
+}
+
+@media (max-width: 760px) {
+  .gchImageCol {
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9; /* Wide aspect for mobile image as per screenshot */
+  }
 }
 
 .gameCardHorizontal:hover .gchImageCol {
@@ -397,6 +415,17 @@
   align-items: flex-end;
 }
 
+@media (max-width: 760px) {
+  .gchActionRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .gchAbbr {
+    display: none; /* Hide abbr on mobile cards to keep it clean like screenshot */
+  }
+}
+
 .gchTopupBtn {
   display: flex;
   align-items: center;
@@ -410,6 +439,17 @@
   font-weight: 800;
   letter-spacing: .3px;
   transition: all .2s ease;
+}
+
+@media (max-width: 760px) {
+  .gchTopupBtn {
+    justify-content: center; /* Center button text on mobile */
+    padding: 10px;
+    background: #7ca662; /* Using the green color from screenshot for the button if requested? Wait, user asked for blue overall. I'll stick to blue but match style. */
+    background: rgba(96, 165, 250, 0.2); 
+    color: #fff;
+    border: none;
+  }
 }
 
 .gchPlusIcon {
