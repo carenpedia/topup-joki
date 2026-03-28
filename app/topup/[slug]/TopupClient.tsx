@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 
-type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
+export type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
 type PaymentMethod = "CarenCoin" | "Payment Gateway";
 
 type Props = {
@@ -135,10 +135,10 @@ export default function TopupClient({
           finalPrice: Number(p.finalPrice || 0),
           flash: p.flash
             ? {
-                id: String(p.flash.id),
-                flashPrice: Number(p.flash.flashPrice || 0),
-                endAt: p.flash.endAt ? String(p.flash.endAt) : undefined,
-              }
+              id: String(p.flash.id),
+              flashPrice: Number(p.flash.flashPrice || 0),
+              endAt: p.flash.endAt ? String(p.flash.endAt) : undefined,
+            }
             : null,
         }));
 
@@ -313,7 +313,7 @@ export default function TopupClient({
                   <div className="tpNewFeatureIcon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                   </div>
-                  <span>Proses Sekejap</span>
+                  <span>Proses satset</span>
                 </div>
               </div>
             </div>
@@ -452,9 +452,8 @@ export default function TopupClient({
                             <button
                               key={p.id}
                               type="button"
-                              className={`tpNomCard ${
-                                active ? "isActive" : ""
-                              }`}
+                              className={`tpNomCard ${active ? "isActive" : ""
+                                }`}
                               onClick={() => setSelectedItemId(p.id)}
                             >
                               <div className="tpNomTop">
@@ -485,8 +484,8 @@ export default function TopupClient({
                                 <span className="tpNomHint">
                                   {isFlash && p.flash?.endAt
                                     ? `Berakhir: ${new Date(
-                                        p.flash.endAt
-                                      ).toLocaleString("id-ID")}`
+                                      p.flash.endAt
+                                    ).toLocaleString("id-ID")}`
                                     : "Klik untuk pilih"}
                                 </span>
 
@@ -658,9 +657,8 @@ export default function TopupClient({
 
             <div className="stickyStatus" style={{ opacity: 0.85 }}>
               {selectedItem
-                ? `${game.name} • ${selectedItem.name} • ${paymentMethod}${
-                    voucherApplied ? ` • Voucher` : ""
-                  }`
+                ? `${game.name} • ${selectedItem.name} • ${paymentMethod}${voucherApplied ? ` • Voucher` : ""
+                }`
                 : `${game.name} • pilih nominal`}
             </div>
           </div>

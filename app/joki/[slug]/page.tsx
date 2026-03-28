@@ -1,10 +1,10 @@
 export const dynamic = 'force-dynamic';
-import JokiClient from "./JokiClient";
+import JokiClient, { Audience } from "./JokiClient";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { verifySession } from "@/lib/session";
-
-type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
 function roleToAudience(role?: string): Audience {
   if (role === "RESELLER") return "RESELLER";
@@ -13,10 +13,16 @@ function roleToAudience(role?: string): Audience {
   return "PUBLIC";
 }
 
-export default async function JokiGamePage({ params }: { params: { slug: string } }) {
+function publisherFromSlug(slug: string) {
+  if (slug === "mobile-legends") return "Moonton";
+  return "Official Publisher";
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function JokiGamePage({ params }: { params: any }) {
   let slug = "";
   try {
-    slug = params.slug;
+    slug = params?.slug || "";
   } catch {
     slug = "";
   }
@@ -24,11 +30,14 @@ export default async function JokiGamePage({ params }: { params: { slug: string 
   if (!slug) {
     return (
       <main className="topupPage">
+        <Navbar />
         <div className="topupWrap">
+          <div className="spacer" />
           <div className="card" style={{ padding: 16 }}>
             <div className="cardTitle">Halaman tidak valid</div>
           </div>
         </div>
+        <Footer />
       </main>
     );
   }
@@ -41,20 +50,35 @@ export default async function JokiGamePage({ params }: { params: { slug: string 
     token = undefined;
   }
 
-  let game: { id: string; key: string; name: string; logoUrl: string | null; isActive: boolean; hasJoki: boolean } | null = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let game: any = null;
 
   try {
-    game = await prisma.game.findUnique({ where: { key: slug } });
+    game = await prisma.game.findUnique({ 
+      where: { key: slug },
+      select: {
+        id: true,
+        key: true,
+        name: true,
+        logoUrl: true,
+        bannerUrl: true,
+        isActive: true,
+        hasJoki: true,
+      }
+    });
   } catch (err) {
     console.error("[JokiPage] Prisma error:", err);
     return (
       <main className="topupPage">
+        <Navbar />
         <div className="topupWrap">
+          <div className="spacer" />
           <div className="card" style={{ padding: 16 }}>
             <div className="cardTitle">Terjadi kesalahan server</div>
             <div className="cardMuted">Silakan coba lagi nanti.</div>
           </div>
         </div>
+        <Footer />
       </main>
     );
   }
@@ -62,12 +86,15 @@ export default async function JokiGamePage({ params }: { params: { slug: string 
   if (!game || !game.isActive) {
     return (
       <main className="topupPage">
+        <Navbar />
         <div className="topupWrap">
+          <div className="spacer" />
           <div className="card" style={{ padding: 16 }}>
             <div className="cardTitle">Game tidak ditemukan / nonaktif</div>
             <div className="cardMuted">Slug: {slug}</div>
           </div>
         </div>
+        <Footer />
       </main>
     );
   }
@@ -75,7 +102,9 @@ export default async function JokiGamePage({ params }: { params: { slug: string 
   if (!game.hasJoki) {
     return (
       <main className="topupPage">
+        <Navbar />
         <div className="topupWrap">
+          <div className="spacer" />
           <div className="card" style={{ padding: 16 }}>
             <div className="cardTitle">Fitur Joki Tidak Tersedia</div>
             <div className="cardMuted">
@@ -84,6 +113,7 @@ export default async function JokiGamePage({ params }: { params: { slug: string 
             </div>
           </div>
         </div>
+        <Footer />
       </main>
     );
   }
@@ -102,7 +132,9 @@ export default async function JokiGamePage({ params }: { params: { slug: string 
     <JokiClient
       game={{ id: game.id, key: game.key, name: game.name }}
       audience={audience}
-      heroImage={game.logoUrl ?? null}
+      logoUrl={game.logoUrl ?? null}
+      bannerUrl={game.bannerUrl ?? null}
+      publisher={publisherFromSlug(game.key)}
     />
   );
 }

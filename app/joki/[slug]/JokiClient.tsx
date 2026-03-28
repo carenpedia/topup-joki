@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 
-type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
+export type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
 
 type Props = {
   game: { id: string; key: string; name: string };
   audience?: Audience;
-  heroImage?: string | null;
+  logoUrl?: string | null;
+  bannerUrl?: string | null;
+  publisher?: string;
 };
 
 type NominalRow = {
@@ -43,7 +45,13 @@ function groupTitle(g: string) {
   return "Lainnya";
 }
 
-export default function JokiClient({ game, audience: audienceProp, heroImage }: Props) {
+export default function JokiClient({
+  game,
+  audience: audienceProp,
+  logoUrl,
+  bannerUrl,
+  publisher = "Professional Joki",
+}: Props) {
   const router = useRouter();
 
   // Step 1 — Data Akun
@@ -208,37 +216,58 @@ export default function JokiClient({ game, audience: audienceProp, heroImage }: 
   return (
     <main className="topupPage">
       <Navbar />
-      <div className="topupWrap">
-        <div className="spacer" />
 
-        {/* Game Strip */}
-        <div className="tpGameStrip">
-          <div className="tpGameStripLeft">
-            <div className="tpGameCover">
-              {heroImage ? (
-                <img src={heroImage} alt={game.name} className="tpGameCoverImg" />
+      <div className="tpNewHero">
+        <div className="tpNewHeroBanner">
+          {bannerUrl ? (
+            <img src={bannerUrl} alt={game.name} className="tpNewHeroBannerImg" />
+          ) : (
+            <div className="tpNewHeroBannerFallback" />
+          )}
+          <div className="tpNewHeroOverlay" />
+        </div>
+
+        <div className="topupWrap">
+          <div className="tpNewHeroContent">
+            <div className="tpNewHeroLogoCard">
+              {logoUrl ? (
+                <img src={logoUrl} alt={game.name} className="tpNewHeroLogoImg" />
               ) : (
-                <div className="tpGameCoverFallback" />
+                <div className="tpNewHeroLogoFallback">{game.name[0]}</div>
               )}
             </div>
-            <div className="tpGameMeta">
-              <div className="tpGameName">{game.name}</div>
-              <div className="tpGamePublisher">Jasa Joki</div>
-              <div className="tpGameBadges">
-                <span className="tpGameBadge">🎮 Penjoki Berpengalaman</span>
-                <span className="tpGameBadge">🔒 Data Aman</span>
-                <span className="tpGameBadge">⚡ Proses Cepat</span>
+
+            <div className="tpNewHeroInfo">
+              <h1 className="tpNewHeroTitle">{game.name}</h1>
+              <p className="tpNewHeroPublisher">{publisher}</p>
+
+              <div className="tpNewHeroFeatures">
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  </div>
+                  <span>Aman & Terpercaya</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  </div>
+                  <span>Layanan 24 Jam</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  </div>
+                  <span>Proses satset</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="tpBenefitRow">
-          <div className="tpBenefitCard">🛡️ Akun Aman Terjaga</div>
-          <div className="tpBenefitCard">📞 Update Progress</div>
-          <div className="tpBenefitCard">🏆 Dijamin Naik</div>
-          <div className="tpBenefitCard">💳 Pembayaran Aman</div>
-        </div>
+      <div className="topupWrap">
+        <div className="spacer" />
 
         {/* Tab Switcher */}
         <div style={{

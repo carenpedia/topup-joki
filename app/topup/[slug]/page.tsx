@@ -1,10 +1,10 @@
 export const dynamic = 'force-dynamic';
-import TopupClient from "./TopupClient";
+import TopupClient, { Audience } from "./TopupClient";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { verifySession } from "@/lib/session";
-
-type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
 function roleToAudience(role?: string): Audience {
   if (role === "RESELLER") return "RESELLER";
@@ -18,10 +18,11 @@ function publisherFromSlug(slug: string) {
   return "Official Publisher";
 }
 
-export default async function TopupGamePage({ params }: { params: { slug: string } }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function TopupGamePage({ params }: { params: any }) {
   let slug = "";
   try {
-    slug = params.slug;
+    slug = params?.slug || "";
   } catch {
     slug = "";
   }
@@ -29,11 +30,14 @@ export default async function TopupGamePage({ params }: { params: { slug: string
   if (!slug) {
     return (
       <main className="topupPage">
+        <Navbar />
         <div className="topupWrap">
+          <div className="spacer" />
           <div className="card" style={{ padding: 16 }}>
             <div className="cardTitle">Halaman tidak valid</div>
           </div>
         </div>
+        <Footer />
       </main>
     );
   }
@@ -55,12 +59,15 @@ export default async function TopupGamePage({ params }: { params: { slug: string
     console.error("[TopupPage] Prisma error:", err);
     return (
       <main className="topupPage">
+        <Navbar />
         <div className="topupWrap">
+          <div className="spacer" />
           <div className="card" style={{ padding: 16 }}>
             <div className="cardTitle">Terjadi kesalahan server</div>
             <div className="cardMuted">Silakan coba lagi nanti.</div>
           </div>
         </div>
+        <Footer />
       </main>
     );
   }
@@ -68,12 +75,15 @@ export default async function TopupGamePage({ params }: { params: { slug: string
   if (!game || !game.isActive) {
     return (
       <main className="topupPage">
+        <Navbar />
         <div className="topupWrap">
+          <div className="spacer" />
           <div className="card" style={{ padding: 16 }}>
             <div className="cardTitle">Game tidak ditemukan / nonaktif</div>
             <div className="cardMuted">Slug: {slug}</div>
           </div>
         </div>
+        <Footer />
       </main>
     );
   }
