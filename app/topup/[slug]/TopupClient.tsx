@@ -299,21 +299,21 @@ export default function TopupClient({
               <div className="tpNewHeroFeatures">
                 <div className="tpNewFeatureItem">
                   <div className="tpNewFeatureIcon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#facc15" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                  </div>
-                  <span>Proses Sekejap</span>
-                </div>
-                <div className="tpNewFeatureItem">
-                  <div className="tpNewFeatureIcon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                  </div>
-                  <span>Layanan Chat 24/7</span>
-                </div>
-                <div className="tpNewFeatureItem">
-                  <div className="tpNewFeatureIcon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                   </div>
                   <span>Aman & Terpercaya</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  </div>
+                  <span>Layanan 24 Jam</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  </div>
+                  <span>Proses Sekejap</span>
                 </div>
               </div>
             </div>
