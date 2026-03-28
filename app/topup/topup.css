@@ -45,9 +45,11 @@
 .topupScope .tpNewHeroBanner {
   position: relative;
   width: 100%;
-  height: 240px;
+  height: 250px;
   background: #111;
+  border-radius: 16px;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 @media (max-width: 760px) {
@@ -78,29 +80,31 @@
   position: relative;
   display: flex;
   align-items: flex-end;
-  gap: 28px;
-  margin-top: -80px; /* Overlap to banner */
+  gap: 24px;
+  margin-top: -60px; /* Precise overlap */
   z-index: 10;
+  padding: 0 10px;
 }
 
 @media (max-width: 760px) {
   .topupScope .tpNewHeroContent {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    margin-top: -50px;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    margin-top: -55px;
   }
 }
 
 .topupScope .tpNewHeroLogoCard {
-  flex: 0 0 160px;
-  width: 160px;
-  height: 160px;
-  background: #23252a;
-  border-radius: 20px;
-  padding: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  flex: 0 0 130px;
+  width: 130px;
+  height: 130px;
+  background: #1a1b1f; /* Same as page bg for seamless integration */
+  border-radius: 16px;
+  padding: 0;
+  border: 4px solid #1a1b1f; /* Thick bezel for premium look */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
   overflow: hidden;
 }
 
@@ -109,7 +113,6 @@
     flex: 0 0 110px;
     width: 110px;
     height: 110px;
-    border-radius: 16px;
   }
 }
 
@@ -138,25 +141,26 @@
 }
 
 .topupScope .tpNewHeroTitle {
-  font-size: 26px;
-  font-weight: 900;
+  font-size: 32px;
+  font-weight: 950; /* Super bold like buayastore */
   color: #fff;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+  line-height: 1;
 }
 
 @media (max-width: 760px) {
   .topupScope .tpNewHeroTitle {
-    font-size: 20px;
+    font-size: 24px;
   }
 }
 
 .topupScope .tpNewHeroPublisher {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.5);
-  margin-bottom: 18px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0;
 }
 
 .topupScope .tpNewHeroFeatures {
