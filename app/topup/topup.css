@@ -241,11 +241,11 @@
 
 .topupScope .card {
   border-radius: 20px;
-  background: rgba(37, 38, 44, 0.85); /* Lighter than #1a1b1f with opacity */
+  background: rgba(44, 45, 58, 0.9); /* Solid-looking dark navy/grey but with opacity for blur */
   border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(12px); /* Blur effect as requested */
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(14px); /* Extra blur for premium feel */
 }
 
 .topupScope .contact-header {
@@ -327,18 +327,19 @@
 }
 
 .topupScope .nominalGroupHeader {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 900;
   color: #fff;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding-left: 4px;
 }
 
 .topupScope .nominalGroupHeader::before {
   content: "⚡";
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .topupScope .tpNomGrid {
@@ -347,15 +348,10 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-@media (min-width: 768px) {
-  .topupScope .tpNomGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
 @media (min-width: 1024px) {
   .topupScope .tpNomGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)); /* Force 3 columns like screenshot */
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columns like screenshot */
+    gap: 20px;
   }
 }
 
@@ -364,61 +360,65 @@
   flex-direction: column;
   position: relative;
   text-align: left;
-  border-radius: 12px; /* Match screenshot 12px */
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
-  min-height: 120px;
+  min-height: 125px;
   padding-bottom: 40px;
-  background: linear-gradient(180deg, #323344 0%, #252636 100%);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #2d2f44; /* Exact solid-ish navy from image */
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .topupScope .tpNomCard:hover {
   transform: translateY(-2px);
-  border-color: rgba(59, 130, 246, 0.3);
-  filter: brightness(1.1);
+  filter: brightness(1.15);
+  border-color: rgba(59, 130, 246, 0.4);
 }
 
 .topupScope .tpNomCard.isActive {
   border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6, 0 10px 30px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 0 1.5px #3b82f6, 0 10px 40px rgba(59, 130, 246, 0.3);
 }
 
 .topupScope .tpNomTop {
-  padding: 14px 14px 4px;
+  padding: 14px 14px 0;
 }
 
 .topupScope .tpNomName {
   font-weight: 700;
   font-size: 14px;
   color: #fff;
-  margin-bottom: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 12px;
+  display: block;
 }
 
-.topupScope .tpNomInfoRow {
+.topupScope .tpNomMain {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  padding: 0 14px;
 }
 
 .topupScope .tpNomIcon {
-  width: 24px;
-  height: 24px;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.8;
+}
+
+.topupScope .tpNomIcon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .topupScope .tpNomPriceNow {
-  font-size: 18px;
-  font-weight: 900;
-  color: #3b82f6; /* Blue as requested */
-  letter-spacing: -0.2px;
+  font-size: 20px;
+  font-weight: 950;
+  color: #3b82f6; /* Blue as explicitly requested */
+  letter-spacing: -0.5px;
 }
 
 .topupScope .tpNomBottom {
@@ -429,10 +429,9 @@
   height: 40px;
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Align badge to right like screenshot */
-  padding: 0 12px;
-  background: rgba(0, 0, 0, 0.25);
-  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  justify-content: flex-end; /* Align badge to right */
+  padding: 0 14px;
+  background: rgba(0, 0, 0, 0.35); /* Darker strip like image */
 }
 
 .topupScope .tpInstanBadge {
@@ -441,45 +440,33 @@
   padding: 3px 6px;
   display: flex;
   align-items: center;
-  gap: 4px;
-  zoom: 0.85; /* Make it fit nicely */
+  gap: 5px;
+  transform: scale(0.9);
+  transform-origin: right;
 }
 
 .topupScope .tpInstanBadge svg {
-  width: 12px;
-  height: 12px;
-  fill: #10b981; /* Green bolt */
+  width: 14px;
+  height: 14px;
+  fill: #10b981;
 }
 
 .topupScope .tpInstanText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-}
-
-.topupScope .tpInstanText span:first-child {
-  font-size: 7px;
-  font-weight: 800;
-  color: #000;
-  text-transform: uppercase;
-  opacity: 0.6;
-}
-
-.topupScope .tpInstanText span:last-child {
   font-size: 10px;
   font-weight: 950;
   color: #000;
   text-transform: uppercase;
+  letter-spacing: 0.2px;
 }
 
 .topupScope .tpNomFlash {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 10px;
+  right: 10px;
   font-size: 9px;
   font-weight: 900;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 3px 7px;
+  border-radius: 5px;
   background: #ef4444;
   color: #fff;
   z-index: 5;

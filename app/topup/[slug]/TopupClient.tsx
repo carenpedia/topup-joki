@@ -461,19 +461,22 @@ export default function TopupClient({
                               ) : null}
 
                               <div className="tpNomTop">
-                                <div className="tpNomName">{p.name}</div>
-                                <div className="tpNomInfoRow">
-                                  <div className="tpNomIcon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                      <path d="M6 3h12l4 8-10 10L2 11l4-8z"></path>
-                                      <path d="M12 3v18"></path>
-                                      <path d="M2 11h20"></path>
-                                    </svg>
-                                  </div>
-                                  <span className="tpNomPriceNow">
-                                    {rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}
-                                  </span>
+                                <span className="tpNomName">{p.name}</span>
+                              </div>
+
+                              <div className="tpNomMain">
+                                <div className="tpNomIcon">
+                                  {/* High Fidelity Diamond Icon */}
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M6 3h12l4 8-10 10L2 11l4-8z"></path>
+                                    <path d="M12 3v18"></path>
+                                    <path d="M2 11h20"></path>
+                                    <path d="M6 3L12 11L18 3"></path>
+                                  </svg>
                                 </div>
+                                <span className="tpNomPriceNow">
+                                  {rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}
+                                </span>
                               </div>
 
                               <div className="tpNomBottom">
@@ -481,10 +484,7 @@ export default function TopupClient({
                                   <svg viewBox="0 0 24 24">
                                     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
                                   </svg>
-                                  <div className="tpInstanText">
-                                    <span>Pengiriman</span>
-                                    <span>INSTAN</span>
-                                  </div>
+                                  <span className="tpInstanText">INSTAN</span>
                                 </div>
                               </div>
                             </button>
