@@ -10,11 +10,10 @@ export type SessionPayload = {
 const COOKIE_NAME = "session";
 
 // Wajib ada di .env: AUTH_SECRET="random panjang"
+const DEFAULT_SECRET = "128ard128n4b1l4k4zu41ly010603f02030";
+
 function getSecretKey() {
-    const secret = process.env.AUTH_SECRET;
-    if (!secret) {
-        throw new Error("128ard128n4b1l4k4zu41ly010603f02030");
-    }
+    const secret = process.env.AUTH_SECRET || DEFAULT_SECRET;
     return new TextEncoder().encode(secret);
 }
 

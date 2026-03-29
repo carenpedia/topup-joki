@@ -22,21 +22,26 @@ export async function middleware(req: NextRequest) {
   try {
     const s = await verifySession(token);
 
-    // hanya ADMIN boleh akses /admin dan /api/admin
     if ((isAdminRoute || isAdminApi) && s.role !== "ADMIN") {
-      const url = req.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+      return NextResponse.redirect(new URL("/", req.url));
     }
 
-    return NextResponse.next();
+    const res = NextResponse.next();
+    res.headers.set("x-middleware-cache", "no-cache");
+    return res;
   } catch {
-    const url = req.nextUrl.clone();
-    url.pathname = "/masuk";
-    return NextResponse.redirect(url);
+    const loginUrl = new URL("/masuk", req.url);
+    loginUrl.searchParams.set("next", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/akun/:path*", "/api/admin/:path*"],
+  matcher: [
+    "/admin",
+    "/admin/:path*",
+    "/akun",
+    "/akun/:path*",
+    "/api/admin/:path*",
+  ],
 };
