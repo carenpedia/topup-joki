@@ -17,6 +17,7 @@ export async function POST(req: Request) {
   const token = await signSession({ 
     userId: user.id, 
     role: user.role, 
+    status: user.status,
    });
 
   const res = NextResponse.json({

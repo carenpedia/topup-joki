@@ -9,16 +9,15 @@ async function main() {
   const whatsapp = "08123456789";
   const plainPassword = "skyview321"; // ganti sesuai mau kamu
 
-  const exists = await prisma.user.findUnique({ where: { username } });
-  if (exists) {
-    console.log("✅ Admin sudah ada:", exists.username);
-    return;
-  }
-
   const passwordHash = await bcrypt.hash(plainPassword, 10);
 
-  const admin = await prisma.user.create({
-    data: {
+  const admin = await prisma.user.upsert({
+    where: { username },
+    update: {
+      passwordHash,
+      whatsapp,
+    },
+    create: {
       username,
       whatsapp,
       passwordHash,
@@ -34,7 +33,7 @@ async function main() {
     },
   });
 
-  console.log("✅ Admin created:", admin);
+  console.log("✅ Admin seeded (created/updated):", admin.username);
 }
 
 main()

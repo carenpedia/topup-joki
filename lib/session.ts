@@ -34,7 +34,7 @@ export async function verifySession(token: string): Promise<SessionPayload> {
     const { payload } = await jwtVerify(token, getSecretKey());
     const userId = String(payload.userId || "");
     const role = String(payload.role || "") as SessionPayload["role"];
-    const status = payload.status as SessionPayload["status"];
+    const status = (payload.status as SessionPayload["status"]) || "ACTIVE"; // Fallback to ACTIVE
 
     if (status === "SUSPENDED") {
         throw new Error("Akun kamu sedang diblokir Admin, Silahkan Hubungi CS/Admin.");
