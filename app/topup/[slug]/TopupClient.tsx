@@ -456,42 +456,36 @@ export default function TopupClient({
                                 }`}
                               onClick={() => setSelectedItemId(p.id)}
                             >
+                              {isFlash ? (
+                                <span className="tpNomFlash">FLASH SALE</span>
+                              ) : null}
+
                               <div className="tpNomTop">
                                 <div className="tpNomName">{p.name}</div>
-                                {isFlash ? (
-                                  <span className="tpNomFlash">FLASH SALE</span>
-                                ) : null}
-                              </div>
-
-                              <div className="tpNomPriceRow">
-                                {isFlash ? (
-                                  <>
-                                    <span className="tpNomOld">
-                                      {rupiah(p.basePrice)}
-                                    </span>
-                                    <span className="tpNomNow">
-                                      {rupiah(p.finalPrice)}
-                                    </span>
-                                  </>
-                                ) : (
-                                  <span className="tpNomNow">
-                                    {rupiah(p.finalPrice)}
+                                <div className="tpNomInfoRow">
+                                  <div className="tpNomIcon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                      <path d="M6 3h12l4 8-10 10L2 11l4-8z"></path>
+                                      <path d="M12 3v18"></path>
+                                      <path d="M2 11h20"></path>
+                                    </svg>
+                                  </div>
+                                  <span className="tpNomPriceNow">
+                                    {rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}
                                   </span>
-                                )}
+                                </div>
                               </div>
 
                               <div className="tpNomBottom">
-                                <span className="tpNomHint">
-                                  {isFlash && p.flash?.endAt
-                                    ? `Berakhir: ${new Date(
-                                      p.flash.endAt
-                                    ).toLocaleString("id-ID")}`
-                                    : "Klik untuk pilih"}
-                                </span>
-
-                                <span className="tpNomInstant" title="Proses Instant Cepat">
-                                  <span className="tpNomBolt">⚡</span>
-                                </span>
+                                <div className="tpInstanBadge">
+                                  <svg viewBox="0 0 24 24">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                                  </svg>
+                                  <div className="tpInstanText">
+                                    <span>Pengiriman</span>
+                                    <span>INSTAN</span>
+                                  </div>
+                                </div>
                               </div>
                             </button>
                           );
