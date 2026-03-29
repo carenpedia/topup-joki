@@ -17,6 +17,7 @@ const nav = [
   { href: "/admin/users", label: "Users" },
   { href: "/admin/deposits", label: "Deposits" },
   { href: "/admin/audit-logs", label: "Audit Logs" },
+  { href: "/user/profile", label: "👤 Profil Saya" },
 ];
 
 

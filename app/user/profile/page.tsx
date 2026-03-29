@@ -56,15 +56,18 @@ export default function UserProfile() {
           {profile.role === "RESELLER" && (
              <div style={{ position: "absolute", top: 0, right: 0, background: "linear-gradient(90deg, #f59e0b, #d97706)", color: "#fff", fontSize: 11, fontWeight: 900, padding: "6px 24px", transform: "translate(25%, 50%) rotate(45deg)", boxShadow: "0 4px 12px rgba(245, 158, 11, 0.4)", letterSpacing: 1 }}>VIP RESELLER</div>
           )}
+          {profile.role === "ADMIN" && (
+             <div style={{ position: "absolute", top: 0, right: 0, background: "linear-gradient(90deg, #6b7280, #111827)", color: "#fff", fontSize: 11, fontWeight: 900, padding: "6px 24px", transform: "translate(25%, 50%) rotate(45deg)", boxShadow: "0 4px 12px rgba(0,0,0,0.5)", letterSpacing: 1, border: "1px solid rgba(255,255,255,0.1)" }}>ADMIN PANEL</div>
+          )}
 
-          <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>Saldo Carencoin</div>
+          <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>{profile.role === "ADMIN" ? "Sisa Kredit / Saldo" : "Saldo Carencoin"}</div>
           <div style={{ fontSize: 40, fontWeight: 900, color: "#fff", marginBottom: 24, display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ color: "#f59e0b" }}>🪙</span> 
+            <span style={{ color: profile.role === "ADMIN" ? "#94a3b8" : "#f59e0b" }}>🪙</span> 
             {profile.carencoin.toLocaleString("id-ID")}
           </div>
 
           <div style={{ display: "flex", gap: 12 }}>
-            <Link href="/user/deposit" style={{ flex: 1, padding: "12px", background: "#3b82f6", color: "#fff", borderRadius: 12, fontWeight: 700, fontSize: 13, textAlign: "center", textDecoration: "none" }}>Isi Saldo</Link>
+            <Link href="/user/deposit" style={{ flex: 1, padding: "12px", background: profile.role === "ADMIN" ? "rgba(255,255,255,0.1)" : "#3b82f6", color: "#fff", borderRadius: 12, fontWeight: 700, fontSize: 13, textAlign: "center", textDecoration: "none" }}>{profile.role === "ADMIN" ? "Topup Kredit" : "Isi Saldo"}</Link>
             <Link href="/user/history" style={{ flex: 1, padding: "12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", borderRadius: 12, fontWeight: 700, fontSize: 13, textAlign: "center", textDecoration: "none" }}>Mutasi</Link>
           </div>
         </div>
@@ -83,11 +86,11 @@ export default function UserProfile() {
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
              <div>
                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontWeight: 600, marginBottom: 4 }}>Namapengguna</div>
-               <div style={{ fontSize: 15, fontWeight: 600 }}>{profile.name}</div>
+               <div style={{ fontSize: 15, fontWeight: 600 }}>{profile.name} <span style={{ fontSize:10, color: "#3b82f6", opacity:.8 }}>({profile.role})</span></div>
              </div>
              <div>
-               <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontWeight: 600, marginBottom: 4 }}>Email / Kontak</div>
-               <div style={{ fontSize: 15, fontWeight: 600 }}>{profile.email} &bull; {profile.whatsapp}</div>
+               <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontWeight: 600, marginBottom: 4 }}>WhatsApp</div>
+               <div style={{ fontSize: 15, fontWeight: 600 }}>{profile.whatsapp}</div>
              </div>
              <div>
                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontWeight: 600, marginBottom: 4 }}>Bergabung Sejak</div>
@@ -98,7 +101,7 @@ export default function UserProfile() {
       </div>
 
       {/* VIP CTA/BANNER */}
-      {profile.role === "MEMBER" ? (
+      {profile.role === "ADMIN" ? null : profile.role === "MEMBER" ? (
         <div style={{ 
           background: "linear-gradient(90deg, rgba(16,185,129,0.15), rgba(5,150,105,0.05))", 
           border: "1px solid rgba(16,185,129,0.3)", 
