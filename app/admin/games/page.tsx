@@ -96,21 +96,22 @@ export default function AdminGamesList() {
 
         <div className="contact-body">
           {/* Filters */}
-          <div style={{ display: "grid", gridTemplateColumns: "1.4fr .8fr auto", gap: 10 }}>
+          <div className="admin-filter-bar">
             <input
               className="contact-input"
               placeholder="Cari name/key (ex: mobile)"
+              style={{ flex: 1.4 }}
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
 
-            <select className="contact-input" value={active} onChange={(e) => setActive(e.target.value)}>
+            <select className="contact-input" style={{ flex: 0.8 }} value={active} onChange={(e) => setActive(e.target.value)}>
               <option value="">Status: Semua</option>
               <option value="1">Active</option>
               <option value="0">Off</option>
             </select>
 
-            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+            <div className="auto-width" style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
               <button className="voucherBtn" type="button" onClick={load}>
                 Filter
               </button>

@@ -1324,6 +1324,7 @@ body {
   margin-bottom: 6px;
 
   background: linear-gradient(90deg, #3b82f6, #2563eb);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -1695,4 +1696,109 @@ body {
 .admin-actions-right {
   display: flex;
   gap: 10px;
+}
+
+/* RESPONSIVE ADMIN LAYOUT */
+.adminLayout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 950px) {
+  .adminLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adminSidebar {
+  position: sticky;
+  top: 16px;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 950px) {
+  .adminSidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    width: 280px;
+    background: var(--bg-main);
+    padding: 20px;
+    transform: translateX(-100%);
+    box-shadow: 10px 0 40px rgba(0,0,0,0.5);
+    border-right: 1px solid var(--border-soft);
+  }
+  
+  .adminSidebar.isOpen {
+    transform: translateX(0);
+  }
+}
+
+.adminOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.adminOverlay.isOpen {
+  opacity: 1;
+  visibility: visible;
+}
+
+.adminMain {
+  min-width: 0; /* avoid overflow in grid */
+}
+
+.adminHamburger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.07);
+  background: rgba(255,255,255,.04);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  margin-right: 10px;
+}
+
+@media (max-width: 950px) {
+  .adminHamburger {
+    display: inline-flex;
+  }
+}
+
+.adminHamburger span {
+  width: 18px;
+  height: 2px;
+  background: #fff;
+  border-radius: 999px;
+  transition: all 0.3s ease;
+}
+
+/* ADMIN PAGE UTILITIES */
+.contact-row, .admin-filter-bar {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  align-items: center !important;
+}
+
+@media (max-width: 768px) {
+  .contact-row > *, .admin-filter-bar > * {
+    flex: 1 0 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
 }

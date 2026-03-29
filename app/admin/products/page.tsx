@@ -129,10 +129,10 @@ export default function AdminProductsList() {
 
         <div className="contact-body">
           {/* Filters */}
-          <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr .9fr .8fr auto", gap: 10 }}>
-            <input className="contact-input" placeholder="Cari nama / SKU" value={q} onChange={(e) => setQ(e.target.value)} />
+          <div className="admin-filter-bar">
+            <input className="contact-input" placeholder="Cari nama / SKU" style={{ flex: 1.4 }} value={q} onChange={(e) => setQ(e.target.value)} />
 
-            <select className="contact-input" value={gameId} onChange={(e) => setGameId(e.target.value)}>
+            <select className="contact-input" style={{ flex: 1 }} value={gameId} onChange={(e) => setGameId(e.target.value)}>
               <option value="">Game: Semua</option>
               {games.map((g) => (
                 <option key={g.id} value={g.id}>
@@ -141,20 +141,20 @@ export default function AdminProductsList() {
               ))}
             </select>
 
-            <select className="contact-input" value={group} onChange={(e) => setGroup(e.target.value)}>
+            <select className="contact-input" style={{ flex: 0.9 }} value={group} onChange={(e) => setGroup(e.target.value)}>
               <option value="">Group: Semua</option>
               <option value="BEST_SELLER">BEST_SELLER</option>
               <option value="HEMAT">HEMAT</option>
               <option value="SULTAN">SULTAN</option>
             </select>
 
-            <select className="contact-input" value={active} onChange={(e) => setActive(e.target.value)}>
+            <select className="contact-input" style={{ flex: 0.8 }} value={active} onChange={(e) => setActive(e.target.value)}>
               <option value="">Status: Semua</option>
               <option value="1">Active</option>
               <option value="0">Off</option>
             </select>
 
-            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+            <div className="auto-width" style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
               <button className="voucherBtn" type="button" onClick={load}>
                 Filter
               </button>

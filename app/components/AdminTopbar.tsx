@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-export default function AdminTopbar() {
+export default function AdminTopbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   const router = useRouter();
 
   async function handleLogout() {
@@ -19,12 +19,19 @@ export default function AdminTopbar() {
         marginBottom: 18,
       }}
     >
-      <div>
-        <div style={{ fontSize: 18, fontWeight: 950 }}>
-          CarenPedia Admin
-        </div>
-        <div style={{ fontSize: 12, color: "rgba(255,255,255,.6)" }}>
-          Dashboard Management
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <button className="adminHamburger" onClick={onToggleSidebar}>
+          <span />
+          <span />
+          <span />
+        </button>
+        <div>
+          <div style={{ fontSize: 18, fontWeight: 950 }}>
+            CarenPedia Admin
+          </div>
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,.6)" }}>
+            Dashboard Management
+          </div>
         </div>
       </div>
 

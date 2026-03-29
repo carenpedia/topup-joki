@@ -1,26 +1,28 @@
 import Link from "next/link";
-import Navbar from "../components/Navbar";
 
 export default function Admin() {
   return (
-    <main className="page">
-      <div className="bgGlow" aria-hidden="true" />
-      <div className="gridFx" aria-hidden="true" />
-      <Navbar />
-      <div className="shell">
-        <div className="section">
-          <div className="title">Admin</div>
+    <div className="contact-section">
+      <div className="contact-card">
+        <div className="contact-header">
+          <div className="contact-step">A</div>
+          <div className="contact-title-wrap">
+            <h4 className="contact-title">Admin Dashboard</h4>
+          </div>
+        </div>
+
+        <div className="contact-body">
           <div className="subtitle">Manage banner, game/nominal, member/reseller, flash sale, order, voucher.</div>
 
           <div className="spacer" />
-          <div className="row">
-            <Link className="btn btnPrimary" href="/admin/banners">Banner Slider</Link>
-            <Link className="btn btnGhost" href="/admin/games">Game & Nominal</Link>
-            <Link className="btn btnGhost" href="/admin/orders">Orders</Link>
-            <Link className="btn btnGhost" href="/admin/vouchers">Vouchers</Link>
+          <div className="contact-row">
+            <Link className="btn-ghost btn-xs" href="/admin/banners">Banner Slider</Link>
+            <Link className="btn-ghost btn-xs" href="/admin/games">Game & Nominal</Link>
+            <Link className="btn-ghost btn-xs" href="/admin/orders">Orders</Link>
+            <Link className="btn-ghost btn-xs" href="/admin/vouchers">Vouchers</Link>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
