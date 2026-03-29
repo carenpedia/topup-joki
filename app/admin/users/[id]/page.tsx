@@ -26,6 +26,39 @@ export default function AdminUserDetailPage() {
   const [updating, setUpdating] = useState(false);
   const [err, setErr] = useState("");
 
+  const [balanceAmount, setBalanceAmount] = useState("");
+  const [balanceReason, setBalanceReason] = useState("");
+
+  async function updateBalance() {
+    if (!row) return;
+    const amount = parseInt(balanceAmount);
+    if (isNaN(amount)) {
+      alert("Masukkan jumlah angka yang valid.");
+      return;
+    }
+
+    setUpdating(true);
+    setErr("");
+    try {
+      const res = await fetch(`/api/admin/users/${id}/balance`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount, reason: balanceReason }),
+      });
+      const j = await res.json();
+      if (!res.ok) throw new Error(j?.error || "Gagal update saldo");
+      
+      alert(`Berhasil memperbarui saldo. Saldo baru: ${j.balance}`);
+      setBalanceAmount("");
+      setBalanceReason("");
+      load(); // Reload data
+    } catch (e: any) {
+      setErr(e?.message || "Gagal update saldo");
+    } finally {
+      setUpdating(false);
+    }
+  }
+
   async function load() {
     setLoading(true);
     setErr("");
@@ -133,11 +166,15 @@ export default function AdminUserDetailPage() {
                 </div>
                 <div className="order-kv">
                   <div className="order-k">Role</div>
-                  <div className="order-v">{row.role}</div>
+                  <div className="order-v">
+                    <span className={`pill ${row.role === "RESELLER" ? "pill--blue" : "pill--muted"}`}>{row.role}</span>
+                  </div>
                 </div>
                 <div className="order-kv">
                   <div className="order-k">Status</div>
-                  <div className="order-v">{row.status}</div>
+                  <div className="order-v">
+                    <span className={`pill ${row.status === "ACTIVE" ? "pill--active" : "pill--danger"}`}>{row.status}</span>
+                  </div>
                 </div>
               </div>
 
@@ -148,16 +185,18 @@ export default function AdminUserDetailPage() {
                   <div className="order-card-title">Balances</div>
                   <div className="order-line">
                     <span className="order-label">CarenCoin</span>
-                    <span className="order-value">{row.carencoinBalance}</span>
+                    <span className="order-value" style={{ fontSize: 18, fontWeight: 900, color: "#f59e0b" }}>
+                      🪙 {row.carencoinBalance.toLocaleString("id-ID")}
+                    </span>
                   </div>
                   <div className="order-line">
                     <span className="order-label">Points</span>
-                    <span className="order-value">{row.pointsBalance}</span>
+                    <span className="order-value">{row.pointsBalance.toLocaleString("id-ID")}</span>
                   </div>
                 </div>
 
                 <div className="order-card">
-                  <div className="order-card-title">Reseller</div>
+                  <div className="order-card-title">Reseller Info</div>
                   <div className="order-line">
                     <span className="order-label">Joined At</span>
                     <span className="order-value">
@@ -181,9 +220,54 @@ export default function AdminUserDetailPage() {
 
               <div style={{ height: 18 }} />
 
+              {/* Kelola Saldo (Adjustment) */}
+              <div 
+                className="order-card" 
+                style={{ 
+                  background: "rgba(59, 130, 246, 0.05)", 
+                  border: "1px solid rgba(59, 130, 246, 0.2)" 
+                }}
+              >
+                <div className="order-card-title" style={{ color: "#60a5fa" }}>Kelola Saldo Manual</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "flex-end" }}>
+                  <div style={{ flex: 1, minWidth: 200 }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.6, marginBottom: 4 }}>Jumlah Coin (+/-)</div>
+                    <input 
+                      type="number" 
+                      className="contact-input" 
+                      placeholder="e.g. 10000 atau -5000" 
+                      value={balanceAmount}
+                      onChange={(e) => setBalanceAmount(e.target.value)}
+                    />
+                  </div>
+                  <div style={{ flex: 2, minWidth: 240 }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.6, marginBottom: 4 }}>Alasan / Catatan</div>
+                    <input 
+                      type="text" 
+                      className="contact-input" 
+                      placeholder="Contoh: Bonus Event atau Koreksi Top-up" 
+                      value={balanceReason}
+                      onChange={(e) => setBalanceReason(e.target.value)}
+                    />
+                  </div>
+                  <button 
+                    className="btn btnPrimary btn-sm" 
+                    onClick={updateBalance} 
+                    disabled={updating}
+                  >
+                    {updating ? "Processing..." : "Update Saldo"}
+                  </button>
+                </div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 8 }}>
+                  Gunakan angka positif untuk menambah saldo, dan negatif (-) untuk mengurangi.
+                </div>
+              </div>
+
+              <div style={{ height: 18 }} />
+
               <div className="admin-actions">
                 <button className="btn-ghost btn-sm" onClick={load} disabled={updating}>
-                  Refresh
+                  Refresh Page
                 </button>
 
                 <div className="admin-actions-right" style={{ gap: 10 }}>
