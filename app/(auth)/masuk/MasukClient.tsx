@@ -2,6 +2,7 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { SUPPORT_WHATSAPP } from "../../components/data";
 
 export default function MasukClient() {
   const router = useRouter();
@@ -93,8 +94,17 @@ export default function MasukClient() {
 
         <div className="authFooter">
           Belum punya akun? <a href="/daftar" className="authLink">Daftar sekarang</a>
-          <div style={{ marginTop: 12 }}>
+          <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
             <a href="/lupa-password" className="authLink" style={{ fontWeight: 500, fontSize: 12 }}>Lupa Password?</a>
+            <a 
+              href={`https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent("Halo Admin CarenPedia, saya butuh bantuan terkait akun saya.")}`} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="authLink" 
+              style={{ fontWeight: 500, fontSize: 12, color: "rgba(96,165,250,0.8)" }}
+            >
+              Butuh Bantuan? Hubungi Admin
+            </a>
           </div>
         </div>
       </div>

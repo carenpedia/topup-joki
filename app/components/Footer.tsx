@@ -89,8 +89,8 @@ export default function Footer() {
             <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               <Link href="#" className="footerLink">Syarat & Ketentuan</Link>
               <Link href="#" className="footerLink">Kebijakan Privasi</Link>
-              <Link href="#" className="footerLink">Pusat Bantuan</Link>
-              <Link href="#" className="footerLink">Hubungi Kami</Link>
+              <a href={`https://wa.me/${SUPPORT_WHATSAPP}`} target="_blank" rel="noopener noreferrer" className="footerLink">Pusat Bantuan</a>
+              <a href={`https://wa.me/${SUPPORT_WHATSAPP}`} target="_blank" rel="noopener noreferrer" className="footerLink">Hubungi Kami</a>
             </div>
           </div>
 

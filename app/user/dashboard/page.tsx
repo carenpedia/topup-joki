@@ -4,6 +4,33 @@ import { useMemo } from "react";
 
 export default function ResellerDashboard() {
   // TODO: Fetch dari order status SUCCESS asli sesuai role user
+  const [ledger, setLedger] = useState<LedgerEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Constants for map
+  const TYPE_MAP: Record<string, { label: string; color: string }> = {
+    ADJUST: { label: "Adjustment", color: "#60a5fa" },
+    DEPOSIT: { label: "Topup", color: "#10b981" },
+    PAYMENT: { label: "Order", color: "#ef4444" },
+    REFUND: { label: "Refund", color: "#f59e0b" },
+  };
+
+  const load = async () => {
+    try {
+      const res = await fetch("/api/user/ledger");
+      const j = await res.json();
+      if (res.ok) setLedger(j.ledger.slice(0, 5));
+    } catch (e: any) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
   const salesData = useMemo(() => {
     return {
       today: { count: 12, revenue: 350000, profit: 45000 },
@@ -15,9 +42,9 @@ export default function ResellerDashboard() {
   return (
     <div>
       <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Data Penjualan</h1>
+        <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Dashboard Akun</h1>
         <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14 }}>
-          Statistik performa penjualan akun <span style={{ color: "#f59e0b", fontWeight: 700 }}>VIP Reseller</span> Anda. Data di-reset otomatis sesuai periode.
+          Statistik performa penjualan dan manajemen saldo <span style={{ color: "#f59e0b", fontWeight: 700 }}>VIP Reseller</span> Anda.
         </p>
       </div>
 
@@ -48,14 +75,51 @@ export default function ResellerDashboard() {
         </div>
       </div>
 
-      <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 24, padding: 32, textAlign: "center" }}>
-          <div style={{ margin: "0 auto", width: 64, height: 64, borderRadius: "50%", background: "rgba(59,130,246,0.1)", display: "grid", placeItems: "center", color: "#60a5fa", marginBottom: 16 }}>
-             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 24, padding: 32 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+             <h3 style={{ fontSize: 20, fontWeight: 900 }}>Aktivitas Mutasi Terbaru</h3>
+             <Link href="/user/history" style={{ color: "#60a5fa", fontSize: 14, fontWeight: 700, textDecoration: "none" }}>Lihat Semua →</Link>
           </div>
-          <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>Fitur Riwayat Datang Sebentar Lagi</h3>
-          <p style={{ color: "rgba(255,255,255,0.5)", maxWidth: 400, margin: "0 auto", fontSize: 14 }}>Daftar log order pelanggan terakhir yang membeli dari tautan Reseller Anda akan muncul di sini pada udpate selajutnya.</p>
+
+          {loading ? (
+             <div style={{ padding: 20, textAlign: "center", opacity: 0.5 }}>Loading aktivitas...</div>
+          ) : ledger.length === 0 ? (
+             <div style={{ padding: 20, textAlign: "center", color: "rgba(255,255,255,0.3)" }}>Belum ada mutasi saldo.</div>
+          ) : (
+             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+               {ledger.map((entry) => {
+                 const config = TYPE_MAP[entry.type] || { label: entry.type, color: "#fff" };
+                 const isPositive = entry.amount > 0;
+                 return (
+                   <div key={entry.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 16, padding: "14px 18px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                         <div style={{ width: 36, height: 36, borderRadius: 10, background: isPositive ? "rgba(16,185,129,0.1)" : "rgba(255,255,255,0.04)", display: "grid", placeItems: "center", fontSize: 14 }}>
+                            {isPositive ? "📈" : "📉"}
+                         </div>
+                         <div>
+                            <div style={{ fontSize: 13, fontWeight: 800, color: config.color }}>{config.label}</div>
+                            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.47)", fontWeight: 700, marginTop: 2 }}>{new Date(entry.createdAt).toLocaleDateString("id-ID")}</div>
+                         </div>
+                      </div>
+                      <div style={{ fontSize: 15, fontWeight: 900, color: isPositive ? "#10b981" : "#fff"  }}>
+                        {isPositive ? "+" : ""}{entry.amount.toLocaleString("id-ID")}
+                      </div>
+                   </div>
+                 );
+               })}
+             </div>
+          )}
       </div>
 
     </div>
   );
 }
+
+type LedgerEntry = {
+  id: string;
+  type: string;
+  amount: number;
+  balanceAfter: number;
+  reason: string | null;
+  createdAt: string;
+};

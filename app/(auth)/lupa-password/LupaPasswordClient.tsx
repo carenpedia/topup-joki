@@ -1,26 +1,39 @@
-"use client";
-
 import { useState } from "react";
+import { SUPPORT_WHATSAPP } from "../../components/data";
 
 export default function LupaPasswordClient() {
   const [username, setUsername] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
-  const [msg, setMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [err, setErr] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setMsg(null);
+    setSuccess(false);
+    setErr("");
+    setLoading(true);
 
-    const res = await fetch("/api/auth/forgot-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, whatsapp }),
-    });
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, whatsapp }),
+      });
 
-    const j = await res.json().catch(() => ({}));
-    setMsg("Jika data cocok, link reset akan dikirim. (DEV: link muncul di bawah)");
-    if (j?.resetLink) setMsg((m) => `${m}\n\nDEV LINK: ${j.resetLink}`);
+      if (!res.ok) throw new Error("Gagal memproses permintaan.");
+      
+      setSuccess(true);
+    } catch (e: any) {
+      setErr(e.message);
+    } finally {
+      setLoading(false);
+    }
   }
+
+  const waLink = `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(
+    `Halo Admin CarenPedia, saya ingin meminta link reset password.\n\nUsername: ${username}\nNo. WA: ${whatsapp}\n\nMohon bantuannya, terima kasih!`
+  )}`;
 
   return (
     <div className="authContainer">
@@ -35,48 +48,79 @@ export default function LupaPasswordClient() {
           <div className="authSub">Masukkan data akun untuk mendapatkan link reset.</div>
         </div>
 
-        <form onSubmit={submit}>
-          <div className="authInputWrap">
-            <input 
-              className="input" 
-              placeholder="Username" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
-            />
-            <svg className="authInputIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </div>
+        {success ? (
+          <div style={{ textAlign: "center", padding: "10px 0" }}>
+            <div style={{ 
+              background: "rgba(16, 185, 129, 0.1)", border: "1px solid rgba(16, 185, 129, 0.2)", 
+              borderRadius: 16, padding: 20, marginBottom: 24, textAlign: "left"
+            }}>
+               <h4 style={{ color: "#10b981", margin: "0 0 8px 0", fontSize: 16, fontWeight: 800 }}>Permintaan Terkirim!</h4>
+               <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, lineHeight: 1.5, margin: 0 }}>
+                 Data Anda telah divalidasi oleh sistem. Untuk alasan keamanan, silakan klik tombol di bawah untuk **"Membuka Tiket Bantuan"** melalui WhatsApp Admin guna mendapatkan link reset password Anda.
+               </p>
+            </div>
+            
+            <a 
+              href={waLink} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="btn btnPrimary" 
+              style={{ width: "100%", padding: "16px", fontSize: "15px", textDecoration: "none", display: "inline-block" }}
+            >
+              Hubungi Admin (Buka Tiket)
+            </a>
 
-          <div className="authInputWrap">
-            <input 
-              className="input" 
-              placeholder="No. WhatsApp" 
-              value={whatsapp} 
-              onChange={(e) => setWhatsapp(e.target.value)} 
-            />
-            <svg className="authInputIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-            </svg>
+            <div style={{ marginTop: 20 }}>
+              <button 
+                onClick={() => setSuccess(false)}
+                style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: 700, cursor: "pointer", textDecoration: "underline" }}
+              >
+                Kembali ke form
+              </button>
+            </div>
           </div>
+        ) : (
+          <form onSubmit={submit}>
+            <div className="authInputWrap">
+              <input 
+                className="input" 
+                placeholder="Username" 
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)} 
+                required
+              />
+              <svg className="authInputIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
 
-          <button className="btn btnPrimary" type="submit" style={{ width: "100%", padding: "14px", fontSize: "15px", marginTop: "8px" }}>
-            Minta Link Reset
-          </button>
-        </form>
+            <div className="authInputWrap">
+              <input 
+                className="input" 
+                placeholder="No. WhatsApp" 
+                value={whatsapp} 
+                onChange={(e) => setWhatsapp(e.target.value)} 
+                required
+              />
+              <svg className="authInputIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+
+            {err && <div style={{ color: "#ef4444", fontSize: 13, marginBottom: 12, textAlign: "center" }}>{err}</div>}
+
+            <button className="btn btnPrimary" type="submit" disabled={loading} style={{ width: "100%", padding: "14px", fontSize: "15px", marginTop: "8px" }}>
+              {loading ? "Memproses..." : "Validasi Akun"}
+            </button>
+          </form>
+        )}
 
         <div className="authDivider">atau</div>
 
         <div className="authFooter">
           Ingat password Anda? <a href="/masuk" className="authLink">Masuk</a>
         </div>
-
-        {msg && (
-          <div style={{ marginTop: 24, padding: 16, background: "rgba(59, 130, 246, 0.1)", border: "1px solid rgba(59, 130, 246, 0.2)", borderRadius: 12 }}>
-            <pre style={{ whiteSpace: "pre-wrap", color: "#bfdbfe", fontSize: 13, margin: 0, fontFamily: "inherit" }}>{msg}</pre>
-          </div>
-        )}
       </div>
     </div>
   );
