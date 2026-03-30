@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { SUPPORT_WHATSAPP } from "../../components/data";
 

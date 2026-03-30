@@ -39,12 +39,8 @@ export async function POST(req: Request) {
   /**
    * PRODUKSI:
    * - kirim token ini via WA/email (OTP link)
-   * DEV:
-   * - kita balikin resetLink biar kamu tes cepat
    */
-  const resetLink = `/reset-password?token=${encodeURIComponent(token)}&uid=${encodeURIComponent(
-    user.id
-  )}`;
+  // const resetLink = `/reset-password?token=${encodeURIComponent(token)}&uid=${encodeURIComponent(user.id)}`;
 
-  return NextResponse.json({ ok: true, resetLink });
+  return NextResponse.json({ ok: true });
 }
