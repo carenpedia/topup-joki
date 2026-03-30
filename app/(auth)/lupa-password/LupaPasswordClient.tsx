@@ -39,7 +39,10 @@ export default function LupaPasswordClient() {
 
   return (
     <div className="authContainer">
-      <div className="authCard">
+      <div className="authCard" style={{ position: "relative" }}>
+        {/* Version Check Tag */}
+        <div style={{ position: "absolute", top: 12, right: 16, fontSize: 9, color: "rgba(255,255,255,0.15)", fontWeight: 900, pointerEvents: "none", letterSpacing: 0.5 }}>V2.0 SUPPORT ACTIVE</div>
+
         <div className="authHeader">
           <div className="authIconWrap" style={{ background: "linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.05))", borderColor: "rgba(245, 158, 11, 0.3)", color: "#f59e0b", boxShadow: "0 8px 24px rgba(245, 158, 11, 0.15)" }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
