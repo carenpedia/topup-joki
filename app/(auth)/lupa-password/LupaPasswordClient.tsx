@@ -9,6 +9,7 @@ export default function LupaPasswordClient() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [err, setErr] = useState("");
+  const [resetData, setResetData] = useState<{ token: string; userId: string } | null>(null);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -23,7 +24,15 @@ export default function LupaPasswordClient() {
         body: JSON.stringify({ username, whatsapp }),
       });
 
-      if (!res.ok) throw new Error("Gagal memproses permintaan.");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Gagal memproses permintaan.");
+      }
+      
+      const data = await res.json();
+      if (data.token && data.userId) {
+        setResetData({ token: data.token, userId: data.userId });
+      }
       
       setSuccess(true);
     } catch (e: any) {
@@ -33,8 +42,12 @@ export default function LupaPasswordClient() {
     }
   }
 
+  const resetUrl = resetData 
+    ? `${typeof window !== "undefined" ? window.location.origin : ""}/reset-password?token=${resetData.token}&uid=${resetData.userId}`
+    : "";
+
   const waLink = `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(
-    `Halo Admin CarenPedia, saya ingin meminta link reset password.\n\nUsername: ${username}\nNo. WA: ${whatsapp}\n\nMohon bantuannya, terima kasih!`
+    `Halo Admin CarenPedia, saya ingin meminta link reset password.\n\nUsername: ${username}\nNo. WA: ${whatsapp}\n\n${resetData ? `Link Reset: ${resetUrl}\n\n` : ""}Mohon bantuannya, terima kasih!`
   )}`;
 
   return (

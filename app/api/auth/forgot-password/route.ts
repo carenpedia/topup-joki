@@ -16,13 +16,22 @@ export async function POST(req: Request) {
   }
 
   const user = await prisma.user.findFirst({
-    where: { username: uName, whatsapp: wa },
+    where: { whatsapp: wa },
     select: { id: true, status: true },
   });
 
-  // tetap balikin ok true biar tidak bisa enumeration
-  if (!user || user.status !== "ACTIVE") {
-    return NextResponse.json({ ok: true });
+  if (!user) {
+    return NextResponse.json(
+      { error: "Nomor WhatsApp ini tidak terdaftar di sistem kami." },
+      { status: 404 }
+    );
+  }
+
+  if (user.status !== "ACTIVE") {
+    return NextResponse.json(
+      { error: "Akun Anda sedang dinonaktifkan. Silakan hubungi Admin." },
+      { status: 403 }
+    );
   }
 
   // buat token + simpan hash
@@ -42,5 +51,5 @@ export async function POST(req: Request) {
    */
   // const resetLink = `/reset-password?token=${encodeURIComponent(token)}&uid=${encodeURIComponent(user.id)}`;
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, userId: user.id, token: token });
 }
