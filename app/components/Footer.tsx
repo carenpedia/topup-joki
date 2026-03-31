@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { SUPPORT_WHATSAPP } from "./data";
 
 export default function Footer() {
   return (
