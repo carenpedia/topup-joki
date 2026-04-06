@@ -34,7 +34,12 @@ const LOGIN_VIA_OPTIONS = [
 ];
 
 function rupiah(n: number) {
-  return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(n);
+  return new Intl.NumberFormat("id-ID", { 
+    style: "currency", 
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(n);
 }
 
 function groupTitle(g: string) {
