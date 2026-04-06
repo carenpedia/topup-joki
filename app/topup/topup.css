@@ -344,14 +344,21 @@
 
 .topupScope .tpNomGrid {
   display: grid;
-  gap: 16px;
+  gap: 12px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .topupScope .tpNomGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
 }
 
 @media (min-width: 1024px) {
   .topupScope .tpNomGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columns like screenshot */
-    gap: 20px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
   }
 }
 
@@ -363,11 +370,10 @@
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
-  min-height: 125px;
-  padding-bottom: 40px;
-  background: #2d2f44; /* Exact solid-ish navy from image */
+  background: #2d2f44;
   transition: all 0.2s ease;
   cursor: pointer;
+  padding: 0;
 }
 
 .topupScope .tpNomCard:hover {
@@ -381,29 +387,36 @@
   box-shadow: 0 0 0 1.5px #3b82f6, 0 10px 40px rgba(59, 130, 246, 0.3);
 }
 
+/* Top section — product name */
 .topupScope .tpNomTop {
-  padding: 14px 14px 0;
+  padding: 12px 12px 6px;
 }
 
 .topupScope .tpNomName {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   color: #fff;
-  margin-bottom: 12px;
   display: block;
+  line-height: 1.3;
+  /* Clamp to 2 lines max */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
+/* Middle section — icon + price */
 .topupScope .tpNomMain {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 14px;
+  gap: 8px;
+  padding: 4px 12px 10px;
 }
 
 .topupScope .tpNomIcon {
-  flex: 0 0 32px;
-  width: 32px;
-  height: 32px;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -415,48 +428,47 @@
 }
 
 .topupScope .tpNomPriceNow {
-  font-size: 20px;
-  font-weight: 950;
-  color: #3b82f6; /* Blue as explicitly requested */
-  letter-spacing: -0.5px;
+  font-size: 15px;
+  font-weight: 900;
+  color: #3b82f6;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
 }
 
+/* Bottom strip — badge */
 .topupScope .tpNomBottom {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 40px;
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Align badge to right */
-  padding: 0 14px;
-  background: rgba(0, 0, 0, 0.35); /* Darker strip like image */
+  justify-content: flex-end;
+  padding: 0 10px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.30);
+  margin-top: auto;
 }
 
 .topupScope .tpInstanBadge {
-  background: #fff;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
   border-radius: 4px;
-  padding: 3px 6px;
+  padding: 2px 6px;
   display: flex;
   align-items: center;
-  gap: 5px;
-  transform: scale(0.9);
-  transform-origin: right;
+  gap: 3px;
 }
 
 .topupScope .tpInstanBadge svg {
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
   fill: #10b981;
 }
 
 .topupScope .tpInstanText {
-  font-size: 10px;
-  font-weight: 950;
-  color: #000;
+  font-size: 8px;
+  font-weight: 800;
+  color: #10b981;
   text-transform: uppercase;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.3px;
+  line-height: 1;
 }
 
 .topupScope .tpNomFlash {
@@ -624,19 +636,44 @@
 
   .topupScope .tpNomGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .topupScope .tpNomTop {
+    padding: 10px 10px 4px;
   }
 
   .topupScope .tpNomName {
-    font-size: 12.5px;
+    font-size: 11.5px;
   }
 
-  .topupScope .tpNomNow {
-    font-size: 14.5px;
+  .topupScope .tpNomMain {
+    padding: 2px 10px 8px;
+    gap: 6px;
   }
 
-  .topupScope .tpNomCard {
-    min-height: 100px;
+  .topupScope .tpNomIcon {
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .topupScope .tpNomPriceNow {
+    font-size: 13px;
+  }
+
+  .topupScope .tpNomBottom {
+    height: 24px;
+    padding: 0 8px;
+  }
+
+  .topupScope .tpInstanBadge svg {
+    width: 8px;
+    height: 8px;
+  }
+
+  .topupScope .tpInstanText {
+    font-size: 7px;
   }
 
   .topupScope .tpGameName {

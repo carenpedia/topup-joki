@@ -189,3 +189,28 @@ export async function checkStatus(refId: string): Promise<DigiflazzTopupResult> 
     price: data.price || 0,
   };
 }
+
+// ========================
+// VERIFY WEBHOOK
+// ========================
+
+/**
+ * Verifikasi signature webhook callback dari Digiflazz
+ * Signature = sha1=HMAC-SHA1(rawBody, DIGIFLAZZ_WEBHOOK_SECRET)
+ */
+export function verifyWebhook(receivedSignature: string, rawBody: string): boolean {
+  const secret = process.env.DIGIFLAZZ_WEBHOOK_SECRET;
+
+  if (!secret) {
+    console.warn("DIGIFLAZZ_WEBHOOK_SECRET tidak diset di .env!");
+    return false;
+  }
+
+  // Format signature dari digiflazz biasanya diawali dengan "sha1="
+  const expectedSignature = "sha1=" + crypto
+    .createHmac("sha1", secret)
+    .update(rawBody)
+    .digest("hex");
+
+  return receivedSignature === expectedSignature;
+}
