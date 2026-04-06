@@ -396,78 +396,10 @@ export default function JokiClient({
 
         <div className="spacer" />
 
-        {/* Step 2 — Pilih Paket */}
+        {/* Step 2 — Request Hero */}
         <div className="card">
           <div className="contact-header">
             <div className="contact-step">2</div>
-            <div className="contact-title-wrap">
-              <h4 className="contact-title">Pilih Paket Joki</h4>
-            </div>
-          </div>
-          <div className="contact-body">
-            {nominalLoading ? (
-              <div className="cardMuted">Memuat paket...</div>
-            ) : nominals.length === 0 ? (
-              <div className="cardMuted">Belum ada paket harga untuk game ini. Hubungi admin untuk info harga.</div>
-            ) : (
-              <div className="nominalGroups">
-                {grouped.map(([g, items]) => (
-                  <div key={g} className="nominalGroup">
-                    <div className="nominalGroupHeader">{groupTitle(g)}</div>
-                    <div className="tpNomGrid">
-                      {items.map((p) => {
-                        const active = selectedId === p.id;
-                        return (
-                          <button
-                            key={p.id}
-                            type="button"
-                            className={`tpNomCard ${active ? "isActive" : ""}`}
-                            onClick={() => setSelectedId(p.id)}
-                          >
-                            <div className="tpNomTop">
-                              <span className="tpNomName">{p.name}</span>
-                            </div>
-
-                            <div className="tpNomMain">
-                              <div className="tpNomIcon">
-                                {/* High Fidelity Diamond Icon */}
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M6 3h12l4 8-10 10L2 11l4-8z"></path>
-                                  <path d="M12 3v18"></path>
-                                  <path d="M2 11h20"></path>
-                                  <path d="M6 3L12 11L18 3"></path>
-                                </svg>
-                              </div>
-                              <span className="tpNomPriceNow">
-                                {rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}
-                              </span>
-                            </div>
-
-                            <div className="tpNomBottom">
-                              <div className="tpInstanBadge">
-                                <svg viewBox="0 0 24 24">
-                                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
-                                </svg>
-                                <span className="tpInstanText">Instan</span>
-                              </div>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="spacer" />
-
-        {/* Step 3 — Request Hero */}
-        <div className="card">
-          <div className="contact-header">
-            <div className="contact-step">3</div>
             <div className="contact-title-wrap">
               <h4 className="contact-title">Request Hero (Opsional)</h4>
             </div>
@@ -531,6 +463,74 @@ export default function JokiClient({
               rows={3}
               style={{ resize: "vertical" }}
             />
+          </div>
+        </div>
+
+        <div className="spacer" />
+
+        {/* Step 3 — Pilih Paket */}
+        <div className="card">
+          <div className="contact-header">
+            <div className="contact-step">3</div>
+            <div className="contact-title-wrap">
+              <h4 className="contact-title">Pilih Paket Joki</h4>
+            </div>
+          </div>
+          <div className="contact-body">
+            {nominalLoading ? (
+              <div className="cardMuted">Memuat paket...</div>
+            ) : nominals.length === 0 ? (
+              <div className="cardMuted">Belum ada paket harga untuk game ini. Hubungi admin untuk info harga.</div>
+            ) : (
+              <div className="nominalGroups">
+                {grouped.map(([g, items]) => (
+                  <div key={g} className="nominalGroup">
+                    <div className="nominalGroupHeader">{groupTitle(g)}</div>
+                    <div className="tpNomGrid">
+                      {items.map((p) => {
+                        const active = selectedId === p.id;
+                        return (
+                          <button
+                            key={p.id}
+                            type="button"
+                            className={`tpNomCard ${active ? "isActive" : ""}`}
+                            onClick={() => setSelectedId(p.id)}
+                          >
+                            <div className="tpNomTop">
+                              <span className="tpNomName">{p.name}</span>
+                            </div>
+
+                            <div className="tpNomMain">
+                              <div className="tpNomIcon">
+                                {/* High Fidelity Diamond Icon */}
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M6 3h12l4 8-10 10L2 11l4-8z"></path>
+                                  <path d="M12 3v18"></path>
+                                  <path d="M2 11h20"></path>
+                                  <path d="M6 3L12 11L18 3"></path>
+                                </svg>
+                              </div>
+                              <span className="tpNomPriceNow">
+                                {rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}
+                              </span>
+                            </div>
+
+                            <div className="tpNomBottom">
+                              <div className="tpInstanBadge">
+                                <svg viewBox="0 0 24 24">
+                                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                                </svg>
+                                <span className="tpInstanText">Instan</span>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
