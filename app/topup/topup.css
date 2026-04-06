@@ -311,8 +311,8 @@
   width: 100%;
   border-radius: 12px;
   padding: 14px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08); /* Sedikit lebih terang dari sebelumnya 0.03 */
   color: #fff;
   font-family: inherit;
   font-size: 14px;
