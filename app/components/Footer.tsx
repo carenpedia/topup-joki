@@ -88,8 +88,8 @@ export default function Footer() {
               Layanan Kami
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-              <Link href="#" className="footerLink">Syarat & Ketentuan</Link>
-              <Link href="#" className="footerLink">Kebijakan Privasi</Link>
+              <Link href="/syarat-ketentuan" className="footerLink">Syarat & Ketentuan</Link>
+              <Link href="/kebijakan-privasi" className="footerLink">Kebijakan Privasi</Link>
               <a href={`https://wa.me/${SUPPORT_WHATSAPP}`} target="_blank" rel="noopener noreferrer" className="footerLink">Pusat Bantuan</a>
               <a href={`https://wa.me/${SUPPORT_WHATSAPP}`} target="_blank" rel="noopener noreferrer" className="footerLink">Hubungi Kami</a>
             </div>
