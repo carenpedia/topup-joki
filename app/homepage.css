@@ -245,12 +245,14 @@
   border-radius: 10px;
   background: #2b2d33;
   color: #fff;
-  font-size: 13px; /* Slightly smaller as requested */
+  font-size: 13px;
   font-weight: 700;
+  font-family: inherit;
   white-space: nowrap;
   cursor: pointer;
   transition: all .2s ease;
   border: 1px solid transparent;
+  outline: none;
 }
 
 .homeTab:hover {

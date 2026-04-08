@@ -22,6 +22,9 @@ export async function GET(
         createdAt: true,
         updatedAt: true,
         _count: { select: { links: true } },
+        links: {
+          select: { gameId: true },
+        },
       },
     });
 
@@ -32,11 +35,27 @@ export async function GET(
       );
     }
 
+    // All active games for the toggle UI
+    const allGames = await prisma.game.findMany({
+      where: { isActive: true },
+      select: { id: true, key: true, name: true, logoUrl: true },
+      orderBy: { name: "asc" },
+    });
+
+    const linkedGameIds = row.links.map((l) => l.gameId);
+
     return NextResponse.json({
       row: {
-        ...row,
+        id: row.id,
+        name: row.name,
+        sortOrder: row.sortOrder,
+        isActive: row.isActive,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
         gameCount: row._count.links,
       },
+      allGames,
+      linkedGameIds,
     });
   } catch (e: any) {
     return NextResponse.json(

@@ -2,15 +2,28 @@ import { prisma } from "@/lib/prisma";
 import Navbar from "./components/Navbar";
 import PromoSlider from "./components/PromoSlider";
 import GameCard, { GameDisplay } from "./components/GameCard";
+import HomeCategoryTabs from "./components/HomeCategoryTabs";
 import Footer from "./components/Footer";
 import "./homepage.css";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home({ searchParams }: { searchParams: { q?: string } }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function Home({ searchParams }: { searchParams: any }) {
   const query = typeof searchParams?.q === "string" ? searchParams.q.toLowerCase() : "";
+  const activeCatId = typeof searchParams?.cat === "string" ? searchParams.cat : null;
 
-  // Ambil data game aktif dari database
+  // 1) Ambil semua kategori aktif (untuk tabs)
+  const categories = await prisma.category.findMany({
+    where: { isActive: true },
+    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  // 2) Ambil semua game aktif + relasi kategori
   const dbGames = await prisma.game.findMany({
     where: { isActive: true },
     select: {
@@ -18,27 +31,33 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
       name: true,
       logoUrl: true,
       hasJoki: true,
+      links: {
+        select: { categoryId: true },
+      },
     },
-    orderBy: { createdAt: "asc" }
+    orderBy: { createdAt: "asc" },
   });
 
-  // Konversi ke format yang dibutuhkan GameCard
-  const mappedGames: GameDisplay[] = dbGames.map(g => ({
+  // 3) Konversi ke format GameDisplay
+  const allGames: (GameDisplay & { categoryIds: string[] })[] = dbGames.map((g) => ({
     slug: g.key,
     name: g.name,
     tag: g.hasJoki ? "Populer" : undefined,
-    category: g.hasJoki ? "populer" : "lain",
+    category: "lain" as const,
     logoText: g.name.substring(0, 2).toUpperCase(),
     imageUrl: g.logoUrl ?? undefined,
+    categoryIds: g.links.map((l) => l.categoryId),
   }));
 
-  // Jika ada query dari navbar, filter datanya
-  const filtered = query
-    ? mappedGames.filter((g) => g.name.toLowerCase().includes(query))
-    : mappedGames;
+  // 4) Filter berdasarkan search query
+  const searched = query
+    ? allGames.filter((g) => g.name.toLowerCase().includes(query))
+    : allGames;
 
-  const populer = filtered.filter((g) => g.category === "populer");
-  const lain = filtered.filter((g) => g.category === "lain");
+  // 5) Filter berdasarkan kategori aktif (jika ada)
+  const filtered = activeCatId
+    ? searched.filter((g) => g.categoryIds.includes(activeCatId))
+    : searched;
 
   return (
     <main className="homePage">
@@ -74,49 +93,29 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
           </div>
         </div>
 
-        {/* Kategori: Populer */}
-        {populer.length > 0 && (
-          <div className="homeSection">
-            <div className="homeSectionHeader">
-              <div>
-                <div className="homeSectionTitle">🔥 POPULER SEKARANG!</div>
-                <div className="homeSectionSub">Berikut adalah beberapa produk yang paling populer saat ini.</div>
-              </div>
-            </div>
-            <div className="gameGridHorizontal">
-              {populer.map((g) => (
-                <GameCard key={g.slug} game={g} variant="horizontal" />
-              ))}
-            </div>
-          </div>
+        {/* Tabs Kategori Dinamis */}
+        {categories.length > 0 && (
+          <HomeCategoryTabs
+            categories={categories}
+            activeId={activeCatId}
+          />
         )}
 
-        {/* Tabs Kategori Custom */}
-        <div className="homeTabsStrip">
-          <div className="homeTab active">Top Up</div>
-          <div className="homeTab">Kebutuhan MLBB</div>
-          <div className="homeTab">Kebutuhan Roblox</div>
-          <div className="homeTab">JOIN RESELLER</div>
-          <div className="homeTab">Aplikasi Premium</div>
-          <div className="homeTab">Voucher</div>
-          <div className="homeTab">Hiburan</div>
-        </div>
-
-        {/* Kategori: Lain */}
-        {lain.length > 0 && (
+        {/* Game Grid */}
+        {filtered.length > 0 ? (
           <div className="homeSection" style={{ marginTop: 24 }}>
             <div className="gameGrid">
-              {lain.map((g) => (
+              {filtered.map((g) => (
                 <GameCard key={g.slug} game={g} />
               ))}
             </div>
           </div>
-        )}
-
-        {filtered.length === 0 && (
-          <div className="homeSection">
+        ) : (
+          <div className="homeSection" style={{ marginTop: 24 }}>
             <div style={{ textAlign: "center", padding: "40px", color: "rgba(255,255,255,0.5)" }}>
-              Game tidak ditemukan.
+              {activeCatId
+                ? "Belum ada game di kategori ini."
+                : "Game tidak ditemukan."}
             </div>
           </div>
         )}
