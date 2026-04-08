@@ -296,8 +296,8 @@
   /* Slightly lighter than page bg */
   border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 18px;
-  padding: 18px;
-  gap: 20px;
+  padding: 20px 14px;
+  gap: 16px;
   transition: all .25s ease;
 }
 
@@ -319,8 +319,8 @@
 
 .gchImageCol {
   position: relative;
-  flex: 0 0 120px;
-  height: 115px;
+  flex: 0 0 130px;
+  height: 130px;
   border-radius: 12px;
   overflow: hidden;
   background: #111;
@@ -333,7 +333,7 @@
     flex: 0 0 auto;
     width: 100%;
     height: auto;
-    aspect-ratio: 16 / 9; /* Wide aspect for mobile image as per screenshot */
+    aspect-ratio: 4 / 3; /* More vertical than 16/9 on mobile */
   }
 }
 
