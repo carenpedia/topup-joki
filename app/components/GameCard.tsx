@@ -1,5 +1,13 @@
 import Link from "next/link";
-import type { Game } from "./data";
+
+export type GameDisplay = {
+  slug: string;
+  name: string;
+  tag?: string;
+  category: "populer" | "lain";
+  logoText: string;
+  imageUrl?: string | null;
+};
 
 function getPublisher(slug: string) {
   if (slug === "mobile-legends") return "Moonton";
@@ -22,13 +30,13 @@ function getAbbr(slug: string) {
   return slug.substring(0, 4).toUpperCase();
 }
 
-export default function GameCard({ game, variant = "vertical" }: { game: Game; variant?: "vertical" | "horizontal" }) {
+export default function GameCard({ game, variant = "vertical" }: { game: GameDisplay; variant?: "vertical" | "horizontal" }) {
   if (variant === "horizontal") {
     return (
       <Link href={`/topup/${game.slug}`} className="gameCardHorizontal group">
         <div className="gchImageCol">
           {game.imageUrl ? (
-            <img src={game.imageUrl} alt={game.name} className="gchImage" />
+            <img src={game.imageUrl} alt={game.name} className="gchImage" referrerPolicy="no-referrer" />
           ) : (
             <div className="gchLogoWrap"><div className="gchLogo">{game.logoText}</div></div>
           )}
@@ -67,7 +75,7 @@ export default function GameCard({ game, variant = "vertical" }: { game: Game; v
         
         {/* Render Image or Logo Text */}
         {game.imageUrl ? (
-          <img src={game.imageUrl} alt={game.name} className="mgImage" />
+          <img src={game.imageUrl} alt={game.name} className="mgImage" referrerPolicy="no-referrer" />
         ) : (
           <div className="mgLogoWrap">
             <div className="mgLogo">{game.logoText}</div>

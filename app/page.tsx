@@ -1,21 +1,41 @@
-"use client";
-
-import { useMemo, useState } from "react";
+import { prisma } from "@/lib/prisma";
 import Navbar from "./components/Navbar";
 import PromoSlider from "./components/PromoSlider";
-import GameCard from "./components/GameCard";
+import GameCard, { GameDisplay } from "./components/GameCard";
 import Footer from "./components/Footer";
-import { games } from "./components/data";
 import "./homepage.css";
 
-export default function Home() {
-  const [q, setQ] = useState("");
+export const dynamic = "force-dynamic";
 
-  const filtered = useMemo(() => {
-    const s = q.trim().toLowerCase();
-    if (!s) return games;
-    return games.filter((g) => g.name.toLowerCase().includes(s));
-  }, [q]);
+export default async function Home({ searchParams }: { searchParams: { q?: string } }) {
+  const query = typeof searchParams?.q === "string" ? searchParams.q.toLowerCase() : "";
+
+  // Ambil data game aktif dari database
+  const dbGames = await prisma.game.findMany({
+    where: { isActive: true },
+    select: {
+      key: true,
+      name: true,
+      logoUrl: true,
+      hasJoki: true,
+    },
+    orderBy: { createdAt: "asc" }
+  });
+
+  // Konversi ke format yang dibutuhkan GameCard
+  const mappedGames: GameDisplay[] = dbGames.map(g => ({
+    slug: g.key,
+    name: g.name,
+    tag: g.hasJoki ? "Populer" : undefined,
+    category: g.hasJoki ? "populer" : "lain",
+    logoText: g.name.substring(0, 2).toUpperCase(),
+    imageUrl: g.logoUrl ?? undefined,
+  }));
+
+  // Jika ada query dari navbar, filter datanya
+  const filtered = query
+    ? mappedGames.filter((g) => g.name.toLowerCase().includes(query))
+    : mappedGames;
 
   const populer = filtered.filter((g) => g.category === "populer");
   const lain = filtered.filter((g) => g.category === "lain");
@@ -27,7 +47,6 @@ export default function Home() {
       <Navbar />
 
       <div className="shell">
-
         {/* Banner promo slider */}
         <PromoSlider />
 
@@ -90,6 +109,14 @@ export default function Home() {
               {lain.map((g) => (
                 <GameCard key={g.slug} game={g} />
               ))}
+            </div>
+          </div>
+        )}
+
+        {filtered.length === 0 && (
+          <div className="homeSection">
+            <div style={{ textAlign: "center", padding: "40px", color: "rgba(255,255,255,0.5)" }}>
+              Game tidak ditemukan.
             </div>
           </div>
         )}
