@@ -283,7 +283,7 @@
 
 @media (max-width: 760px) {
   .gameGridHorizontal {
-    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Changed to 2 columns for mobile */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
 }
@@ -296,16 +296,16 @@
   /* Slightly lighter than page bg */
   border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 18px;
-  padding: 14px;
-  gap: 16px;
+  padding: 18px;
+  gap: 20px;
   transition: all .25s ease;
 }
 
 @media (max-width: 760px) {
   .gameCardHorizontal {
     flex-direction: column; /* Stack vertically on mobile */
-    gap: 10px;
-    padding: 10px;
+    gap: 12px;
+    padding: 12px;
     border-radius: 16px;
   }
 }
@@ -319,8 +319,8 @@
 
 .gchImageCol {
   position: relative;
-  flex: 0 0 110px;
-  height: 110px;
+  flex: 0 0 120px;
+  height: 115px;
   border-radius: 12px;
   overflow: hidden;
   background: #111;
@@ -418,6 +418,12 @@
 }
 
 @media (max-width: 760px) {
+  .gchContentCol {
+    min-height: 80px; /* Ensure enough height on mobile */
+  }
+  .gchInfo {
+    margin-bottom: 8px; /* Extra space before button */
+  }
   .gchActionRow {
     flex-direction: column;
     align-items: stretch;
