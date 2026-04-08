@@ -17,10 +17,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
   const categories = await prisma.category.findMany({
     where: { isActive: true },
     orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-    select: {
-      id: true,
-      name: true,
-    },
+    select: { id: true, name: true },
   });
 
   // 2) Ambil semua game aktif + relasi kategori
@@ -31,9 +28,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
       name: true,
       logoUrl: true,
       hasJoki: true,
-      links: {
-        select: { categoryId: true },
-      },
+      links: { select: { categoryId: true } },
     },
     orderBy: { createdAt: "asc" },
   });
@@ -43,7 +38,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
     slug: g.key,
     name: g.name,
     tag: g.hasJoki ? "Populer" : undefined,
-    category: "lain" as const,
+    category: (g.hasJoki ? "populer" : "lain") as "populer" | "lain",
     logoText: g.name.substring(0, 2).toUpperCase(),
     imageUrl: g.logoUrl ?? undefined,
     categoryIds: g.links.map((l) => l.categoryId),
@@ -54,10 +49,15 @@ export default async function Home({ searchParams }: { searchParams: any }) {
     ? allGames.filter((g) => g.name.toLowerCase().includes(query))
     : allGames;
 
-  // 5) Filter berdasarkan kategori aktif (jika ada)
+  // 5) Filter berdasarkan kategori aktif tab (jika ada)
   const filtered = activeCatId
     ? searched.filter((g) => g.categoryIds.includes(activeCatId))
     : searched;
+
+  // 6) Split: populer (hasJoki) tampil di atas dengan layout horizontal, lain tampil grid di bawah
+  //    Hanya berlaku saat tidak ada filter kategori
+  const populer = !activeCatId ? filtered.filter((g) => g.category === "populer") : [];
+  const lain = !activeCatId ? filtered.filter((g) => g.category === "lain") : filtered;
 
   return (
     <main className="homePage">
@@ -71,7 +71,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
 
         <div className="spacerLg" />
 
-        {/* Games + Flash Sale */}
+        {/* Header Section */}
         <div className="homeSection">
           <div className="homeSectionHeader">
             <div>
@@ -93,6 +93,23 @@ export default async function Home({ searchParams }: { searchParams: any }) {
           </div>
         </div>
 
+        {/* POPULER SEKARANG – horizontal card layout (hanya tampil bila tidak ada filter kategori) */}
+        {populer.length > 0 && (
+          <div className="homeSection">
+            <div className="homeSectionHeader">
+              <div>
+                <div className="homeSectionTitle">🔥 POPULER SEKARANG!</div>
+                <div className="homeSectionSub">Berikut adalah beberapa produk yang paling populer saat ini.</div>
+              </div>
+            </div>
+            <div className="gameGridHorizontal">
+              {populer.map((g) => (
+                <GameCard key={g.slug} game={g} variant="horizontal" />
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Tabs Kategori Dinamis */}
         {categories.length > 0 && (
           <HomeCategoryTabs
@@ -101,23 +118,23 @@ export default async function Home({ searchParams }: { searchParams: any }) {
           />
         )}
 
-        {/* Game Grid */}
-        {filtered.length > 0 ? (
-          <div className="homeSection" style={{ marginTop: 24 }}>
+        {/* Game Grid – layout vertical card biasa */}
+        {lain.length > 0 ? (
+          <div className="homeSection" style={{ marginTop: categories.length > 0 ? 0 : 24 }}>
             <div className="gameGrid">
-              {filtered.map((g) => (
+              {lain.map((g) => (
                 <GameCard key={g.slug} game={g} />
               ))}
             </div>
           </div>
         ) : (
-          <div className="homeSection" style={{ marginTop: 24 }}>
-            <div style={{ textAlign: "center", padding: "40px", color: "rgba(255,255,255,0.5)" }}>
-              {activeCatId
-                ? "Belum ada game di kategori ini."
-                : "Game tidak ditemukan."}
+          filtered.length === 0 && (
+            <div className="homeSection" style={{ marginTop: 24 }}>
+              <div style={{ textAlign: "center", padding: "40px", color: "rgba(255,255,255,0.5)" }}>
+                {activeCatId ? "Belum ada game di kategori ini." : "Game tidak ditemukan."}
+              </div>
             </div>
-          </div>
+          )
         )}
       </div>
 
