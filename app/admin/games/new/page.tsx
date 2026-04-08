@@ -11,6 +11,8 @@ export default function AdminGameNewPage() {
   const [name, setName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [isActive, setIsActive] = useState(true);
+  const [hasJoki, setHasJoki] = useState(false);
+  const [isPopuler, setIsPopuler] = useState(false);
 
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -34,6 +36,8 @@ export default function AdminGameNewPage() {
           name: n,
           logoUrl: logoUrl.trim() ? logoUrl.trim() : null,
           isActive,
+          hasJoki,
+          isPopuler,
         }),
       });
 
@@ -120,6 +124,23 @@ export default function AdminGameNewPage() {
                 <option value="1">ACTIVE</option>
                 <option value="0">OFF</option>
               </select>
+            </div>
+
+            <div>
+              <label className="contact-label">Fitur Joki</label>
+              <select className="contact-input" value={hasJoki ? "1" : "0"} onChange={(e) => setHasJoki(e.target.value === "1")}>
+                <option value="0">❌ Tidak Support Joki</option>
+                <option value="1">✅ Support Joki</option>
+              </select>
+            </div>
+
+            <div style={{ gridColumn: "1 / -1" }}>
+              <label className="contact-label">Tampil di POPULER SEKARANG</label>
+              <select className="contact-input" value={isPopuler ? "1" : "0"} onChange={(e) => setIsPopuler(e.target.value === "1")}>
+                <option value="0">❌ Tidak tampil di Populer</option>
+                <option value="1">🔥 Tampilkan di bagian Populer Sekarang</option>
+              </select>
+              <p className="contact-hint" style={{ marginTop: 4 }}>Game akan muncul di bagian atas homepage dengan card horizontal besar</p>
             </div>
           </div>
 

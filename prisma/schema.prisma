@@ -32,20 +32,22 @@ model User {
 }
 
 model Game {
-  id        String         @id @default(cuid())
-  key       String         @unique
-  name      String
-  logoUrl   String?
-  isActive  Boolean        @default(true)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  hasJoki   Boolean        @default(false)
-  bannerUrl String?
-  links     GameCategory[]
-  orders    Order[]
-  products  Product[]
+  id         String         @id @default(cuid())
+  key        String         @unique
+  name       String
+  logoUrl    String?
+  isActive   Boolean        @default(true)
+  isPopuler  Boolean        @default(false)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  hasJoki    Boolean        @default(false)
+  bannerUrl  String?
+  links      GameCategory[]
+  orders     Order[]
+  products   Product[]
 
   @@index([isActive])
+  @@index([isPopuler])
 }
 
 model Category {

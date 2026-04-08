@@ -11,6 +11,7 @@ type Game = {
   logoUrl: string | null;
   isActive: boolean;
   hasJoki: boolean;
+  isPopuler: boolean;
 };
 
 export default function AdminGameEditPage() {
@@ -29,6 +30,7 @@ export default function AdminGameEditPage() {
   const [logoUrl, setLogoUrl] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [hasJoki, setHasJoki] = useState(false);
+  const [isPopuler, setIsPopuler] = useState(false);
 
   async function load() {
     setErr(null);
@@ -49,6 +51,7 @@ export default function AdminGameEditPage() {
     setLogoUrl(item.logoUrl ?? "");
     setIsActive(item.isActive);
     setHasJoki(item.hasJoki);
+    setIsPopuler(item.isPopuler);
 
     setLoading(false);
   }
@@ -75,6 +78,7 @@ export default function AdminGameEditPage() {
           logoUrl: logoUrl.trim() ? logoUrl.trim() : null,
           isActive,
           hasJoki,
+          isPopuler,
         }),
       });
 
@@ -183,6 +187,15 @@ export default function AdminGameEditPage() {
                     <option value="1">✅ Support Joki</option>
                   </select>
                   <p className="contact-hint" style={{ marginTop: 4 }}>Aktifkan agar game ini muncul di halaman /joki/[key]</p>
+                </div>
+
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label className="contact-label">Tampil di POPULER SEKARANG</label>
+                  <select className="contact-input" value={isPopuler ? "1" : "0"} onChange={(e) => setIsPopuler(e.target.value === "1")}>
+                    <option value="0">❌ Tidak tampil di Populer</option>
+                    <option value="1">🔥 Tampilkan di bagian Populer Sekarang</option>
+                  </select>
+                  <p className="contact-hint" style={{ marginTop: 4 }}>Game akan muncul di bagian atas homepage dengan card horizontal besar</p>
                 </div>
               </div>
 
