@@ -593,6 +593,12 @@
   overflow: hidden;
 }
 
+@media (max-width: 760px) {
+  .mgCover {
+    aspect-ratio: 1 / 1; /* Make logo taller (square) on mobile */
+  }
+}
+
 /* Hover glow inside cover */
 .mgGlow {
   position: absolute;
@@ -670,6 +676,16 @@
 .mgInfo {
   padding: 12px 10px;
   text-align: center;
+}
+
+@media (max-width: 760px) {
+  .mgInfo {
+    padding: 10px 6px 14px; /* Adjust padding to fill ~30% space */
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 .mgName {
