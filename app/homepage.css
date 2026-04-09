@@ -299,8 +299,8 @@
   /* Slightly lighter than page bg */
   border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 18px;
-  padding: 20px 14px;
-  gap: 16px;
+  padding: 8px 14px 8px 8px;
+  gap: 12px;
   transition: all .25s ease;
 }
 
@@ -308,8 +308,8 @@
   .gameCardHorizontal {
     flex-direction: column;
     /* Stack vertically on mobile */
-    gap: 12px;
-    padding: 12px;
+    gap: 10px;
+    padding: 8px;
     border-radius: 16px;
   }
 }
@@ -323,9 +323,8 @@
 
 .gchImageCol {
   position: relative;
-  flex: 0 0 160px;
-  /* Ditarik melebar sedikit */
-  height: 130px;
+  flex: 0 0 154px;
+  height: 154px;
   border-radius: 12px;
   overflow: hidden;
   background: #111;
@@ -397,6 +396,7 @@
 
 .gchContentCol {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
