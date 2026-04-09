@@ -583,7 +583,7 @@
 
 .mgCover {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
   background: linear-gradient(135deg, rgba(30, 40, 50, 0.8), rgba(15, 20, 25, 0.9));
   display: flex;
   align-items: center;
@@ -673,7 +673,8 @@
 
 @media (max-width: 760px) {
   .mgInfo {
-    padding: 10px 6px 14px; /* Adjust padding to fill ~30% space */
+    padding: 10px 6px 14px;
+    /* Adjust padding to fill ~30% space */
     min-height: 60px;
     display: flex;
     flex-direction: column;
