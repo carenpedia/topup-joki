@@ -61,8 +61,7 @@
 
 .homePage .homeSectionTitle {
   font-size: 17px;
-  text-transform: uppercase;
-  /* Match screenshot CAPITALS */
+  text-transform: uppercase; /* Match screenshot CAPITALS */
   font-weight: 900;
   color: rgba(255, 255, 255, .98);
   letter-spacing: .5px;
@@ -117,10 +116,8 @@
     radial-gradient(400px 200px at 80% 60%, rgba(96, 165, 250, .12), transparent 60%),
     linear-gradient(135deg, rgba(20, 20, 32, .95), rgba(14, 18, 28, .95));
   border: 1px solid rgba(255, 255, 255, .08);
-  padding: 50px 44px 40px;
-  /* Increased padding */
-  min-height: 280px;
-  /* Increased from 200px */
+  padding: 50px 44px 40px; /* Increased padding */
+  min-height: 280px; /* Increased from 200px */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -295,25 +292,21 @@
   position: relative;
   display: flex;
   text-decoration: none;
-  background: #2b2d33;
+  background: #23252a;
+  /* Slightly lighter than page bg */
   border: 1px solid rgba(255, 255, 255, .05);
-  border-radius: 16px;
-  padding: 0;
-  gap: 0;
-  height: 120px;
-  overflow: hidden;
+  border-radius: 18px;
+  padding: 20px 14px;
+  gap: 16px;
   transition: all .25s ease;
 }
 
 @media (max-width: 760px) {
   .gameCardHorizontal {
-    flex-direction: column;
-    /* Stack vertically on mobile */
-    gap: 0;
-    padding: 0;
+    flex-direction: column; /* Stack vertically on mobile */
+    gap: 12px;
+    padding: 12px;
     border-radius: 16px;
-    height: auto;
-    overflow: hidden;
   }
 }
 
@@ -326,11 +319,12 @@
 
 .gchImageCol {
   position: relative;
-  flex: 0 0 120px;
-  height: 100%;
+  flex: 0 0 130px;
+  height: 130px;
+  border-radius: 12px;
   overflow: hidden;
   background: #111;
-  border-right: 1.5px solid rgba(140, 185, 101, 0.3);
+  border: 1px solid transparent;
   transition: border-color .25s ease;
 }
 
@@ -339,9 +333,7 @@
     flex: 0 0 auto;
     width: 100%;
     height: auto;
-    aspect-ratio: 4 / 3;
-    /* More vertical than 16/9 on mobile */
-    border-radius: 0;
+    aspect-ratio: 4 / 3; /* More vertical than 16/9 on mobile */
   }
 }
 
@@ -399,11 +391,10 @@
 
 .gchContentCol {
   flex: 1;
-  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 16px;
+  padding: 4px 0;
 }
 
 .gchName {
@@ -412,9 +403,6 @@
   color: rgba(255, 255, 255, .96);
   margin-bottom: 4px;
   line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .gchPublisher {
@@ -431,25 +419,18 @@
 
 @media (max-width: 760px) {
   .gchContentCol {
-    min-height: 80px;
-    /* Ensure enough height on mobile */
-    padding: 12px;
+    min-height: 80px; /* Ensure enough height on mobile */
   }
-
   .gchInfo {
-    margin-bottom: 8px;
-    /* Extra space before button */
+    margin-bottom: 8px; /* Extra space before button */
   }
-
   .gchActionRow {
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
   }
-
   .gchAbbr {
-    display: none;
-    /* Hide abbr on mobile cards to keep it clean like screenshot */
+    display: none; /* Hide abbr on mobile cards to keep it clean like screenshot */
   }
 }
 
@@ -457,12 +438,13 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #8cb965;
-  color: #fff;
-  border: none;
-  padding: 6px 11px;
+  background: rgba(124, 166, 98, 0.15); /* Tint of green/blue mix depending on preference, sticking to requested blue but softer */
+  background: rgba(59, 130, 246, .12);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, .25);
+  padding: 6px 12px; /* Smaller as requested */
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 12px; /* Smaller as requested */
   font-weight: 800;
   letter-spacing: .4px;
   transition: all .2s ease;
@@ -471,11 +453,12 @@
 @media (max-width: 760px) {
   .gchTopupBtn {
     justify-content: center;
-    padding: 8px 10px;
-    background: #8cb965;
+    padding: 7px 10px; /* Smaller mobile button */
+    background: #7ca662; 
+    background: rgba(59, 130, 246, 0.25);
     color: #fff;
     border: none;
-    font-size: 12px;
+    font-size: 11.5px;
   }
 }
 
