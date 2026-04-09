@@ -299,8 +299,9 @@
   /* Slightly lighter than page bg */
   border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 18px;
-  padding: 20px 14px;
-  gap: 16px;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
   transition: all .25s ease;
 }
 
@@ -324,9 +325,7 @@
 
 .gchImageCol {
   position: relative;
-  flex: 0 0 130px;
-  height: 130px;
-  border-radius: 12px;
+  flex: 0 0 140px;
   overflow: hidden;
   background: #111;
   border: 1px solid transparent;
@@ -401,7 +400,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 4px 0;
+  padding: 20px 14px 20px 16px;
 }
 
 .gchName {
