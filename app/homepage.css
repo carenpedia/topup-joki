@@ -159,29 +159,33 @@
 
 .homePage .promoDots {
   position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 16px;
+  right: 20px;
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   z-index: 10;
+  background: rgba(0, 0, 0, .25);
+  backdrop-filter: blur(8px);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .1);
 }
 
 .homePage .promoDot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
   border: none;
   cursor: pointer;
   transition: all .2s ease;
-  background: rgba(255, 255, 255, .15);
+  background: rgba(255, 255, 255, .3);
 }
 
 .homePage .promoDot.active {
   background: rgba(59, 130, 246, .95);
-  box-shadow: 0 0 8px rgba(59, 130, 246, .5);
-  width: 20px;
+  box-shadow: 0 0 8px rgba(59, 130, 246, .4);
+  width: 14px;
 }
 
 /* Removed promoDesc as it is now 100% image */
