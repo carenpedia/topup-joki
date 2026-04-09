@@ -397,6 +397,7 @@
 
 .gchContentCol {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -409,6 +410,9 @@
   color: rgba(255, 255, 255, .96);
   margin-bottom: 4px;
   line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gchPublisher {
