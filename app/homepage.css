@@ -63,7 +63,7 @@
   font-size: 17px;
   text-transform: uppercase;
   /* Match screenshot CAPITALS */
-  font-weight: 900;
+  font-weight: 500;
   color: rgba(255, 255, 255, .98);
   letter-spacing: .5px;
 }

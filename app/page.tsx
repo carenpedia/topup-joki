@@ -81,7 +81,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
         <div className="homeSection">
           <div className="homeSectionHeader">
             <div>
-              <div className="homeSectionTitle">PASTI TER-MURAH</div>
+              <div className="homeSectionTitle">🔥 PASTI TER-MURAH</div>
               <div className="homeSectionSub">
                 Penawaran Ekslusif Terbatas!
               </div>
