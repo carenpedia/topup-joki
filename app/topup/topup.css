@@ -12,7 +12,7 @@
 .topupScope .topupPage {
   position: relative;
   min-height: 100vh;
-  padding: 0 0 140px;
+  padding: 0 0 220px;
   background: #1a1b1f;
   /* Consistent with homepage */
 }
@@ -530,109 +530,147 @@
   transform: translateY(1px);
 }
 
-/* ===== STICKY CHECKOUT (Premium Floating) ===== */
+/* ===== STICKY CHECKOUT (Mockup Model) ===== */
 
 .topupScope .stickyWrap {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 20px; /* Floating from bottom */
+  bottom: 0;
   z-index: 100;
-  padding: 0 16px;
+  padding: 12px 16px 20px;
   pointer-events: none;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(180deg, transparent 0%, rgba(11, 14, 20, 0.8) 100%);
 }
 
-.topupScope .stickyBar {
+.topupScope .stickyInfoBox {
   pointer-events: auto;
   width: 100%;
-  max-width: 600px; /* Thinner for less obstruction */
-  margin: 0 auto;
-  border-radius: 20px;
-  background: rgba(26, 27, 35, 0.85); /* Slightly more transparent */
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 600px;
+  background: rgba(26, 27, 35, 0.9);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+  min-height: 80px;
+  padding: 14px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 10px 14px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
-              inset 0 1px 1px rgba(255, 255, 255, 0.05);
-  animation: stickyBarSlideIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes stickyBarSlideIn {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+/* State: Empty (Dashed) */
+.topupScope .stickyInfoBox.isEmpty {
+  border: 1.5px dashed rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.02);
 }
 
-.topupScope .stickyLeft {
+.topupScope .stickyInfoBox.isEmpty .stickyInfoText {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* State: Filled */
+.topupScope .stickyInfoBox.isFilled {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: flex-start;
+  gap: 14px;
+}
+
+.topupScope .stickyInfoLogo {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.topupScope .stickyInfoContent {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  min-width: 0;
 }
 
-.topupScope .stickyStatus {
+.topupScope .stickyInfoGame {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
   font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.topupScope .stickyInfoProduct {
+  font-size: 15px;
+  font-weight: 950;
+  color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.topupScope .stickyTotalRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.topupScope .stickyInfoChevron {
+  color: rgba(255, 255, 255, 0.3);
+  margin-left: auto;
 }
 
-.topupScope .stickyLabel {
-  display: none; /* Minimalist: Remove "Total" label */
-}
-
-.topupScope .stickyTotal {
-  font-size: 18px;
-  font-weight: 950;
-  color: #fff;
-  letter-spacing: -0.5px;
+/* Action Bar (Button) */
+.topupScope .stickyBar {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 600px;
 }
 
 .topupScope .stickyBtn {
+  width: 100%;
   border: none;
-  border-radius: 14px;
-  padding: 12px 20px;
-  min-width: 140px;
-  font-weight: 900;
-  font-size: 13px;
+  border-radius: 16px;
+  padding: 14px 20px;
+  font-weight: 950;
+  font-size: 15px;
   color: #fff;
   font-family: inherit;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
   transition: all 0.2s ease;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-  white-space: nowrap;
 }
 
 .topupScope .stickyBtn:hover {
   filter: brightness(1.1);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.45);
+}
+
+.topupScope .stickyBtn:active {
+  transform: translateY(0);
+}
+
+.topupScope .stickyBtn svg {
+  width: 20px;
+  height: 20px;
+  opacity: 0.9;
 }
 
 .topupScope .stickyBtn:disabled {
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  background: #4b5563; /* Greyish muted for disabled */
+  color: rgba(255, 255, 255, 0.4);
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
+  filter: none;
 }
 
 /* ===== RESPONSIVE ===== */
