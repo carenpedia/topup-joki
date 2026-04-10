@@ -536,9 +536,9 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
-  z-index: 150;
-  padding: 0 16px 24px;
+  bottom: 0px;
+  z-index: 1000;
+  padding: 10px;
   pointer-events: none;
   display: flex;
   justify-content: center;
@@ -547,42 +547,42 @@
 .topupScope .stickyInner {
   pointer-events: auto;
   width: 100%;
-  max-width: 580px;
-  background: #111116; /* Dark background column like mockup */
-  border: 1px solid rgba(255, 255, 255, 0.08); /* Transparent dashed border? Screen looks solid grey */
-  border-radius: 20px;
-  padding: 10px;
+  max-width: 500px; /* More compact width */
+  background: #1a1b23; /* Deep dark slate */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Closer spacing like mockup */
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.02);
-  animation: stickyBarSlideIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  gap: 6px; /* Tight gap as requested */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  animation: stickyPopUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
 }
 
-@keyframes stickyBarSlideIn {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+@keyframes stickyPopUp {
+  from { transform: translateY(20px) scale(0.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 .topupScope .stickyInfoBox {
   width: 100%;
-  border-radius: 14px;
+  border-radius: 16px;
   min-height: 70px;
   padding: 12px 14px;
   display: flex;
   align-items: center;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 /* State: Empty (Dashed) */
 .topupScope .stickyInfoBox.isEmpty {
-  border: 1px dashed rgba(255, 255, 255, 0.12);
-  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   justify-content: center;
 }
 
 .topupScope .stickyInfoBox.isEmpty .stickyInfoText {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 13px;
   font-weight: 500;
   text-align: center;
@@ -590,8 +590,8 @@
 
 /* State: Filled */
 .topupScope .stickyInfoBox.isFilled {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   justify-content: flex-start;
   gap: 12px;
 }
@@ -634,18 +634,16 @@
   margin-left: auto;
 }
 
-/* Action Bar (Button) */
 .topupScope .stickyBar {
   pointer-events: auto;
   width: 100%;
-  max-width: 600px;
 }
 
 .topupScope .stickyBtn {
   width: 100%;
   border: none;
-  border-radius: 16px;
-  padding: 14px 20px;
+  border-radius: 14px;
+  padding: 12px 20px;
   font-weight: 950;
   font-size: 15px;
   color: #fff;
@@ -655,15 +653,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+  gap: 10px;
   transition: all 0.2s ease;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
 .topupScope .stickyBtn:hover {
   filter: brightness(1.1);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
 }
 
 .topupScope .stickyBtn:active {
@@ -768,14 +765,14 @@
   }
 
   .topupScope .stickyWrap {
-    bottom: 16px;
-    padding: 0 10px;
+    bottom: 8px;
+    padding: 0 8px;
   }
 
   .topupScope .stickyInner {
-    padding: 8px;
-    gap: 6px;
-    border-radius: 16px;
+    padding: 6px;
+    gap: 4px;
+    border-radius: 14px;
   }
 
   .topupScope .stickyInfoBox {
