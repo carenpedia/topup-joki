@@ -60,12 +60,16 @@ export async function POST(req: Request) {
       newStatus = "PROCESSING";
     }
 
+    const isNewSuccess = newStatus === "SUCCESS" && order.status !== "SUCCESS";
+
     // Update pesanan di database
     await prisma.order.update({
       where: { id: order.id },
       data: {
         status: newStatus,
-        providerRaw: data, // simpan payload terbaru yang biasanya berisi SN (Serial Number)
+        providerRaw: data,
+        costPrice: isNewSuccess ? Math.round(data.price || 0) : undefined,
+        profit: isNewSuccess ? Math.round(order.finalPayable - (data.price || 0)) : undefined,
       },
     });
 

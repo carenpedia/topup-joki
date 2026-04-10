@@ -91,6 +91,8 @@ export async function fulfillOrder(orderId: string): Promise<{ success: boolean;
         providerTrxId: result.ref_id || null,
         providerRaw: result as any,
         status: isSuccess ? "SUCCESS" : isPending ? "PROCESSING" : "FAILED",
+        costPrice: isSuccess ? Math.round(result.price || 0) : 0,
+        profit: isSuccess ? Math.round(order.finalPayable - (result.price || 0)) : 0,
       },
     });
 
