@@ -30,10 +30,24 @@ function getAbbr(slug: string) {
   return slug.substring(0, 4).toUpperCase();
 }
 
-export default function GameCard({ game, variant = "vertical" }: { game: GameDisplay; variant?: "vertical" | "horizontal" }) {
+export default function GameCard({ 
+  game, 
+  variant = "vertical", 
+  index = 0 
+}: { 
+  game: GameDisplay; 
+  variant?: "vertical" | "horizontal";
+  index?: number;
+}) {
+  const animationDelay = `${index * 0.04}s`;
+
   if (variant === "horizontal") {
     return (
-      <Link href={`/topup/${game.slug}`} className="gameCardHorizontal group">
+      <Link 
+        href={`/topup/${game.slug}`} 
+        className="gameCardHorizontal group animateCard"
+        style={{ animationDelay }}
+      >
         <div className="gchImageCol">
           {game.imageUrl ? (
             <img src={game.imageUrl} alt={game.name} className="gchImage" referrerPolicy="no-referrer" />
@@ -68,7 +82,11 @@ export default function GameCard({ game, variant = "vertical" }: { game: GameDis
   }
 
   return (
-    <Link href={`/topup/${game.slug}`} className="modernGameCard group">
+    <Link 
+      href={`/topup/${game.slug}`} 
+      className="modernGameCard group animateCard"
+      style={{ animationDelay }}
+    >
       <div className="mgCover">
         {/* Glow effect on hover inside cover */}
         <div className="mgGlow" aria-hidden="true" />

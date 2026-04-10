@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type CategoryTab = {
@@ -16,6 +17,7 @@ export default function HomeCategoryTabs({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = React.useTransition();
 
   function handleClick(catId: string | null) {
     const params = new URLSearchParams(searchParams.toString());
@@ -26,15 +28,17 @@ export default function HomeCategoryTabs({
       params.delete("cat");
     }
 
-    // Preserve search query if present
     const qs = params.toString();
-    router.push(qs ? `/?${qs}` : "/", { scroll: false });
+    startTransition(() => {
+      router.push(qs ? `/?${qs}` : "/", { scroll: false });
+    });
   }
 
   return (
-    <div className="homeTabsStrip">
+    <div className={`homeTabsStrip ${isPending ? "pending" : ""}`} style={{ opacity: isPending ? 0.7 : 1, transition: "opacity 0.2s" }}>
       <button
         type="button"
+        disabled={isPending}
         className={`homeTab ${activeId === null ? "active" : ""}`}
         onClick={() => handleClick(null)}
       >
@@ -44,6 +48,7 @@ export default function HomeCategoryTabs({
         <button
           key={cat.id}
           type="button"
+          disabled={isPending}
           className={`homeTab ${activeId === cat.id ? "active" : ""}`}
           onClick={() => handleClick(cat.id)}
         >

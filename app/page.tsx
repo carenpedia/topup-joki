@@ -109,8 +109,8 @@ export default async function Home({ searchParams }: { searchParams: any }) {
               </div>
             </div>
             <div className="gameGridHorizontal">
-              {populer.map((g) => (
-                <GameCard key={g.slug} game={g} variant="horizontal" />
+              {populer.map((g, idx) => (
+                <GameCard key={g.slug} game={g} variant="horizontal" index={idx} />
               ))}
             </div>
           </div>
@@ -128,8 +128,8 @@ export default async function Home({ searchParams }: { searchParams: any }) {
         {lain.length > 0 ? (
           <div className="homeSection" style={{ marginTop: categories.length > 0 ? 0 : 24 }}>
             <div className="gameGrid">
-              {lain.map((g) => (
-                <GameCard key={g.slug} game={g} />
+              {lain.map((g, idx) => (
+                <GameCard key={g.slug} game={g} index={idx} />
               ))}
             </div>
           </div>
