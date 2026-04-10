@@ -28,7 +28,7 @@ export default function HomeCategoryTabs({
 
     // Preserve search query if present
     const qs = params.toString();
-    router.push(qs ? `/?${qs}` : "/");
+    router.push(qs ? `/?${qs}` : "/", { scroll: false });
   }
 
   return (

@@ -61,10 +61,9 @@ export default async function Home({ searchParams }: { searchParams: any }) {
     ? searched.filter((g) => g.categoryIds.includes(activeCatId))
     : searched;
 
-  // 6) Split: populer (hasJoki) tampil di atas dengan layout horizontal, lain tampil grid di bawah
-  //    Hanya berlaku saat tidak ada filter kategori
-  const populer = !activeCatId ? filtered.filter((g) => g.category === "populer") : [];
-  const lain = !activeCatId ? filtered.filter((g) => g.category === "lain") : filtered;
+  // 6) Split: populer tampil di atas dengan layout horizontal, lain tampil grid di bawah
+  const populer = searched.filter((g) => g.category === "populer");
+  const lain = activeCatId ? filtered : filtered.filter((g) => g.category !== "populer");
 
   return (
     <main className="homePage">
