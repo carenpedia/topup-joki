@@ -21,11 +21,18 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
     // ambil product + harga sesuai audience + flash sale aktif (jika ada)
     const products = await prisma.product.findMany({
       where: { gameId: game.id, isActive: true },
-      orderBy: [{ group: "asc" }, { name: "asc" }],
+      orderBy: [
+        { productCategory: { order: "asc" } },
+        { group: "asc" },
+        { name: "asc" }
+      ],
       select: {
         id: true,
         name: true,
-        group: true, // <-- ini kunci Opsi A
+        group: true,
+        productCategory: {
+          select: { id: true, name: true, order: true }
+        },
         prices: {
           where: { audience },
           select: { price: true },
@@ -52,7 +59,8 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
       return {
         id: p.id,
         name: p.name,
-        group: p.group, // BEST_SELLER | HEMAT | SULTAN
+        group: p.group,
+        category: p.productCategory,
         basePrice,
         finalPrice,
         flash: flash

@@ -11,6 +11,8 @@ export default function AdminProductNewPage() {
 
   const [games, setGames] = useState<Game[]>([]);
   const [gameId, setGameId] = useState("");
+  const [productCategoryId, setProductCategoryId] = useState("");
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
 
   const [name, setName] = useState("");
   const [group, setGroup] = useState<"BEST_SELLER" | "HEMAT" | "SULTAN">("BEST_SELLER");
@@ -30,14 +32,27 @@ export default function AdminProductNewPage() {
   async function loadGames() {
     const res = await fetch("/api/admin/games?active=1");
     const j = await res.json().catch(() => ({}));
-    setGames(j.items ?? []);
-    if (!gameId && (j.items?.[0]?.id)) setGameId(j.items[0].id);
+    const items = j.items ?? [];
+    setGames(items);
+    if (!gameId && (items[0]?.id)) setGameId(items[0].id);
+  }
+
+  async function loadCategories() {
+    if (!gameId) return;
+    const res = await fetch(`/api/admin/product-categories?gameId=${gameId}`);
+    const j = await res.json().catch(() => ({}));
+    setCategories(j.items ?? []);
   }
 
   useEffect(() => {
     loadGames();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    loadCategories();
+    setProductCategoryId("");
+  }, [gameId]);
 
   async function onSubmit() {
     setErr(null);
@@ -64,6 +79,7 @@ export default function AdminProductNewPage() {
         body: JSON.stringify({
           gameId,
           name: name.trim(),
+          productCategoryId: productCategoryId || null,
           group,
           provider,
           providerSku: providerSku.trim(),
@@ -140,7 +156,17 @@ export default function AdminProductNewPage() {
             </div>
 
             <div>
-              <label className="contact-label">Group</label>
+              <label className="contact-label">Kategori (Opsional)</label>
+              <select className="contact-input" value={productCategoryId} onChange={(e) => setProductCategoryId(e.target.value)}>
+                <option value="">-- Tanpa Kategori --</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="contact-label">Group (Bawaan)</label>
               <select className="contact-input" value={group} onChange={(e) => setGroup(e.target.value as any)}>
                 <option value="BEST_SELLER">BEST_SELLER</option>
                 <option value="HEMAT">HEMAT</option>

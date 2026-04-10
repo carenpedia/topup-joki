@@ -33,6 +33,9 @@ export default function AdminProductEditPage() {
   const [p, setP] = useState<Product | null>(null);
 
   const [gameId, setGameId] = useState("");
+  const [productCategoryId, setProductCategoryId] = useState("");
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+
   const [name, setName] = useState("");
   const [group, setGroup] = useState<Product["group"]>("BEST_SELLER");
   const [provider, setProvider] = useState<Product["provider"]>("DIGIFLAZZ");
@@ -50,6 +53,13 @@ export default function AdminProductEditPage() {
     setGames(j.items ?? []);
   }
 
+  async function loadCategories(gId: string) {
+    if (!gId) return;
+    const res = await fetch(`/api/admin/product-categories?gameId=${gId}`);
+    const j = await res.json().catch(() => ({}));
+    setCategories(j.items ?? []);
+  }
+
   async function load() {
     setErr(null);
     setLoading(true);
@@ -62,10 +72,13 @@ export default function AdminProductEditPage() {
       return;
     }
 
-    const item: Product = j.item;
-    setP(item);
+    const item: Product & { productCategoryId?: string } = j.item;
+    setP(item as any);
 
     setGameId(item.gameId);
+    setProductCategoryId(item.productCategoryId || "");
+    loadCategories(item.gameId);
+
     setName(item.name);
     setGroup(item.group);
     setProvider(item.provider);
@@ -86,6 +99,13 @@ export default function AdminProductEditPage() {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  useEffect(() => {
+    if (gameId && p && gameId !== p.gameId) {
+      loadCategories(gameId);
+      setProductCategoryId("");
+    }
+  }, [gameId, p]);
 
   async function onSave() {
     setErr(null);
@@ -111,6 +131,7 @@ export default function AdminProductEditPage() {
         body: JSON.stringify({
           gameId,
           name: name.trim(),
+          productCategoryId: productCategoryId || null,
           group,
           provider,
           providerSku: providerSku.trim(),
@@ -208,7 +229,17 @@ export default function AdminProductEditPage() {
                 </div>
 
                 <div>
-                  <label className="contact-label">Group</label>
+                  <label className="contact-label">Kategori (Opsional)</label>
+                  <select className="contact-input" value={productCategoryId} onChange={(e) => setProductCategoryId(e.target.value)}>
+                    <option value="">-- Tanpa Kategori --</option>
+                    {categories.map((c) => (
+                      <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="contact-label">Group (Bawaan)</label>
                   <select className="contact-input" value={group} onChange={(e) => setGroup(e.target.value as any)}>
                     <option value="BEST_SELLER">BEST_SELLER</option>
                     <option value="HEMAT">HEMAT</option>

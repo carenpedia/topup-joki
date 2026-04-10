@@ -77,6 +77,7 @@ export async function POST(req: Request) {
         group,
         provider,
         providerSku,
+        productCategoryId: body.productCategoryId || null,
         isActive: Boolean(body.isActive ?? true),
         minPayable: body.minPayable == null || body.minPayable === "" ? null : Number(body.minPayable),
       },

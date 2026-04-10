@@ -26,6 +26,7 @@ type NominalRow = {
   id: string;
   name: string;
   group?: string | null;
+  category?: { id: string, name: string, order: number } | null;
   basePrice: number;
   finalPrice: number;
   flash: null | { id: string; flashPrice: number; endAt?: string };
@@ -41,6 +42,7 @@ type ApiRow = {
   id: string;
   name: string;
   group?: string | null;
+  category?: { id: string, name: string, order: number } | null;
   basePrice: number;
   finalPrice: number;
   flash?: ApiFlash | null;
@@ -73,11 +75,15 @@ function normalizePhone(input: string) {
 }
 
 function groupTitle(g: string) {
+  // Jika g diawali dengan ID: (internal marker), kita ambil sisanya sebagai nama kategori
+  if (g.startsWith("CAT:")) return g.replace("CAT:", "");
+
   const k = g.toUpperCase();
   if (k === "BEST_SELLER") return "Best Seller";
   if (k === "HEMAT") return "Hemat";
   if (k === "SULTAN") return "Sultan";
-  return "Lainnya";
+  if (k === "LAIN") return "Lainnya";
+  return g;
 }
 
 export default function TopupClient({
@@ -133,6 +139,7 @@ export default function TopupClient({
           id: String(p.id),
           name: String(p.name),
           group: p.group ?? null,
+          category: p.category ?? null,
           basePrice: Number(p.basePrice || 0),
           finalPrice: Number(p.finalPrice || 0),
           flash: p.flash
@@ -175,30 +182,48 @@ export default function TopupClient({
 
   const grouped = useMemo((): Array<[string, NominalRow[]]> => {
     const map = new Map<string, NominalRow[]>();
+    const orderMap = new Map<string, number>();
 
     for (const it of nominals) {
-      const g = (it.group || "LAIN").toUpperCase();
-      if (!map.has(g)) map.set(g, []);
-      map.get(g)!.push(it);
+      let key = "";
+      let sortVal = 999;
+
+      if (it.category) {
+        key = `CAT:${it.category.name}`;
+        sortVal = it.category.order;
+      } else {
+        key = (it.group || "LAIN").toUpperCase();
+        // Default order for enums
+        const defaults = ["BEST_SELLER", "HEMAT", "SULTAN", "LAIN"];
+        const idx = defaults.indexOf(key);
+        sortVal = 1000 + (idx === -1 ? 999 : idx);
+      }
+
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(it);
+      orderMap.set(key, sortVal);
     }
 
-    for (const [k, arr] of map.entries()) {
+    const result = Array.from(map.entries());
+    
+    // Sort items within each group
+    for (const [, arr] of result) {
       arr.sort((a, b) => {
         const af = a.flash ? 0 : 1;
         const bf = b.flash ? 0 : 1;
         if (af !== bf) return af - bf;
         return (a.finalPrice || 0) - (b.finalPrice || 0);
       });
-      map.set(k, arr);
     }
 
-    const order = ["BEST_SELLER", "HEMAT", "SULTAN", "LAIN"];
-
-    return Array.from(map.entries()).sort((a, b) => {
-      const ai = order.indexOf(a[0]);
-      const bi = order.indexOf(b[0]);
-      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+    // Sort groups themselves by the assigned order
+    result.sort((a, b) => {
+      const orderA = orderMap.get(a[0]) ?? 9999;
+      const orderB = orderMap.get(b[0]) ?? 9999;
+      return orderA - orderB;
     });
+
+    return result;
   }, [nominals]);
 
   const total = useMemo(() => {
