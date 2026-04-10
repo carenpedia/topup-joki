@@ -635,12 +635,11 @@
   width: 100%;
   border: none;
   border-radius: 12px;
-  padding: 14px 20px;
+  padding: 10px 20px; /* Slimmer padding */
   font-weight: 800;
-  font-size: 15px;
+  font-size: 14px; /* Reduced slightly for slimness */
   color: #fff;
   font-family: inherit;
-  background: #72a36a; /* Placeholder to match mockup's shade but will change to blue gradient */
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   cursor: pointer;
   display: flex;
@@ -651,8 +650,8 @@
 }
 
 .topupScope .stickyBtnIcon {
-  width: 32px;
-  height: 32px;
+  width: 28px; /* Slimmer icon container */
+  height: 28px;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 8px;
   display: flex;
@@ -805,8 +804,8 @@
   }
 
   .topupScope .stickyBtn {
-    padding: 12px 16px;
-    font-size: 14px;
-    border-radius: 14px;
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 12px;
   }
 }
