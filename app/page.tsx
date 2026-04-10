@@ -81,9 +81,9 @@ export default async function Home({ searchParams }: { searchParams: any }) {
         <div className="homeSection">
           <div className="homeSectionHeader">
             <div>
-              <div className="homeSectionTitle">Top Up Game</div>
+              <div className="homeSectionTitle">PASTI TER-MURAH</div>
               <div className="homeSectionSub">
-                Cari game, cek promo, lalu lanjut bayar dengan cepat.
+                Penawaran Ekslusif Terbatas!
               </div>
             </div>
           </div>
