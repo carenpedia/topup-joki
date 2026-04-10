@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import "../components/styles.css";
+import "./admin.css";
 import AdminSidebar from "../components/AdminSidebar";
 import AdminTopbar from "../components/AdminTopbar";
 
