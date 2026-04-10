@@ -165,14 +165,7 @@ export default function AdminProductNewPage() {
               </select>
             </div>
 
-            <div>
-              <label className="contact-label">Group (Bawaan)</label>
-              <select className="contact-input" value={group} onChange={(e) => setGroup(e.target.value as any)}>
-                <option value="BEST_SELLER">BEST_SELLER</option>
-                <option value="HEMAT">HEMAT</option>
-                <option value="SULTAN">SULTAN</option>
-              </select>
-            </div>
+            <div />
 
             <div>
               <label className="contact-label">Provider</label>

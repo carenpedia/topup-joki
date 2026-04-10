@@ -64,7 +64,7 @@ export default function AdminProductsList() {
           <div style={{ fontWeight: 950 }}>
             {p.name}
             <div style={{ fontSize: 12, color: "rgba(255,255,255,.55)", marginTop: 4 }}>
-              {p.game.name} • {p.group} • {p.provider} • sku: {p.providerSku}
+              {p.game.name} • {p.provider} • sku: {p.providerSku}
               {p.minPayable != null ? ` • minPayable: ${p.minPayable}` : ""}
             </div>
           </div>
@@ -139,13 +139,6 @@ export default function AdminProductsList() {
                   {g.name}
                 </option>
               ))}
-            </select>
-
-            <select className="contact-input" style={{ flex: 0.9 }} value={group} onChange={(e) => setGroup(e.target.value)}>
-              <option value="">Group: Semua</option>
-              <option value="BEST_SELLER">BEST_SELLER</option>
-              <option value="HEMAT">HEMAT</option>
-              <option value="SULTAN">SULTAN</option>
             </select>
 
             <select className="contact-input" style={{ flex: 0.8 }} value={active} onChange={(e) => setActive(e.target.value)}>
