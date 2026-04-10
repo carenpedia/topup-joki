@@ -60,7 +60,9 @@ export async function POST(req: Request) {
       newStatus = "PROCESSING";
     }
 
-    const isNewSuccess = newStatus === "SUCCESS" && order.status !== "SUCCESS";
+    // Karena kita sudah memfilter order.status === "SUCCESS" di baris 49,
+    // maka jika newStatus adalah "SUCCESS", ini pasti adalah status baru.
+    const isNewSuccess = newStatus === "SUCCESS";
 
     // Update pesanan di database
     await prisma.order.update({
