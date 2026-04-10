@@ -188,11 +188,10 @@ export default function TopupClient({
         key = `CAT:${it.category.name}`;
         sortVal = it.category.order;
       } else {
-        key = (it.group || "LAIN").toUpperCase();
-        // Default order for enums
-        const defaults = ["BEST_SELLER", "HEMAT", "SULTAN", "LAIN"];
-        const idx = defaults.indexOf(key);
-        sortVal = 1000 + (idx === -1 ? 999 : idx);
+        // Gabungkan semua yang tidak punya kategori ke satu grup tunggal "NONE"
+        // Ini memastikan mereka tidak terpisah-pisah dan bisa diurutkan harga dari terkecil ke terbesar secara global
+        key = "NONE";
+        sortVal = 9999; 
       }
 
       if (!map.has(key)) map.set(key, []);
