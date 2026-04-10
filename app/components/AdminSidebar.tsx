@@ -9,6 +9,7 @@ const nav = [
   { href: "/admin/games", label: "Games" },
   { href: "/admin/categories", label: "Categories" },
   { href: "/admin/products", label: "Products & Prices" },
+  { href: "/admin/products/categories", label: "Produk Kategori" },
   { href: "/admin/flash-sales", label: "Flash Sale" },
   { href: "/admin/vouchers", label: "Vouchers" },
   { href: "/admin/payment-method-fees", label: "Payment Fees" },

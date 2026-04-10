@@ -154,10 +154,13 @@ export default function AdminProductsList() {
               <option value="0">Off</option>
             </select>
 
-            <div className="auto-width" style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+            <div className="auto-width" style={{ display: "flex", gap: 10, justifyContent: "flex-end", flexWrap: "wrap" }}>
               <button className="voucherBtn" type="button" onClick={load}>
                 Filter
               </button>
+              <Link className="voucherBtn" href="/admin/products/categories" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", background: "rgba(16,185,129,.15)", borderColor: "rgba(16,185,129,.3)" }}>
+                📁 Kategori
+              </Link>
               <Link className="voucherBtn" href="/admin/products/new" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center" }}>
                 + New
               </Link>
