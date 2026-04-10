@@ -536,39 +536,32 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0px;
+  bottom: 0;
   z-index: 1000;
-  padding: 10px;
+  padding: 0;
   pointer-events: none;
   display: flex;
   justify-content: center;
 }
 
-.topupScope .stickyInner {
+.topupScope .stickyCard {
   pointer-events: auto;
   width: 100%;
-  max-width: 500px; /* More compact width */
-  background: #1a1b23; /* Deep dark slate */
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  padding: 8px;
+  max-width: 1200px;
+  background: #1a1a1a; /* Very dark grey background container */
+  padding: 16px 20px 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px; /* Tight gap as requested */
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-  animation: stickyPopUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
-}
-
-@keyframes stickyPopUp {
-  from { transform: translateY(20px) scale(0.98); opacity: 0; }
-  to { transform: translateY(0) scale(1); opacity: 1; }
+  gap: 12px;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .topupScope .stickyInfoBox {
   width: 100%;
-  border-radius: 16px;
-  min-height: 70px;
-  padding: 12px 14px;
+  border-radius: 12px;
+  min-height: 64px;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
   transition: all 0.2s ease;
@@ -576,24 +569,24 @@
 
 /* State: Empty (Dashed) */
 .topupScope .stickyInfoBox.isEmpty {
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.1);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.02);
   justify-content: center;
 }
 
 .topupScope .stickyInfoBox.isEmpty .stickyInfoText {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 13px;
-  font-weight: 500;
-  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 /* State: Filled */
 .topupScope .stickyInfoBox.isFilled {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.05);
   justify-content: flex-start;
-  gap: 12px;
+  gap: 14px;
 }
 
 .topupScope .stickyInfoLogo {
@@ -634,33 +627,51 @@
   margin-left: auto;
 }
 
-.topupScope .stickyBar {
-  pointer-events: auto;
+.topupScope .stickyAction {
   width: 100%;
 }
 
 .topupScope .stickyBtn {
   width: 100%;
   border: none;
-  border-radius: 14px;
-  padding: 12px 20px;
-  font-weight: 950;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-weight: 800;
   font-size: 15px;
   color: #fff;
   font-family: inherit;
+  background: #72a36a; /* Placeholder to match mockup's shade but will change to blue gradient */
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   transition: all 0.2s ease;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.topupScope .stickyBtnIcon {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topupScope .stickyBtnIcon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .topupScope .stickyBtn:hover {
   filter: brightness(1.1);
-  transform: translateY(-1px);
+}
+
+.topupScope .stickyBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .topupScope .stickyBtn:active {
@@ -765,15 +776,25 @@
   }
 
   .topupScope .stickyWrap {
-    bottom: 8px;
-    padding: 0 8px;
+    bottom: 0;
+    padding: 0;
   }
 
-  .topupScope .stickyInner {
-    padding: 6px;
-    gap: 4px;
-    border-radius: 14px;
+  .topupScope .stickyCard {
+    padding: 12px 14px 16px;
+    gap: 10px;
+    border-radius: 0; /* Full width bottom bar on mobile for 'sama persis' look */
   }
+
+  .topupScope .stickyInfoText {
+    font-size: 12.5px;
+  }
+
+  .topupScope .stickyBtn {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
 
   .topupScope .stickyInfoBox {
     min-height: 60px;

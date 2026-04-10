@@ -662,44 +662,48 @@ export default function TopupClient({
       <Footer />
 
       <div className="stickyWrap">
-        <div className={`stickyInfoBox ${selectedItem ? 'isFilled' : 'isEmpty'}`}>
-          {!selectedItem ? (
-            <div className="stickyInfoText">
-              Belum ada item produk yang dipilih.
-            </div>
-          ) : (
-            <>
-              {logoUrl ? (
-                <img src={logoUrl} alt={game.name} className="stickyInfoLogo" />
-              ) : (
-                <div className="stickyInfoLogo" style={{ background: 'rgba(255,255,255,0.1)', display: 'grid', placeItems: 'center', fontSize: 20 }}>
-                  {game.name[0]}
+        <div className="stickyCard">
+          <div className={`stickyInfoBox ${selectedItem ? 'isFilled' : 'isEmpty'}`}>
+            {!selectedItem ? (
+              <div className="stickyInfoText">
+                Belum ada item produk yang dipilih.
+              </div>
+            ) : (
+              <>
+                {logoUrl ? (
+                  <img src={logoUrl} alt={game.name} className="stickyInfoLogo" />
+                ) : (
+                  <div className="stickyInfoLogo" style={{ background: 'rgba(255,255,255,0.1)', display: 'grid', placeItems: 'center', fontSize: 20 }}>
+                    {game.name[0]}
+                  </div>
+                )}
+                <div className="stickyInfoContent">
+                  <div className="stickyInfoGame">{game.name}</div>
+                  <div className="stickyInfoProduct">{selectedItem.name}</div>
                 </div>
-              )}
-              <div className="stickyInfoContent">
-                <div className="stickyInfoGame">{game.name}</div>
-                <div className="stickyInfoProduct">{selectedItem.name}</div>
-              </div>
-              <div className="stickyInfoChevron">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
-              </div>
-            </>
-          )}
-        </div>
+                <div className="stickyInfoChevron">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                </div>
+              </>
+            )}
+          </div>
 
-        <div className="stickyBar">
-          <button
-            className="stickyBtn"
-            disabled={!canCheckout}
-            onClick={onCheckout}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <path d="M16 10a4 4 0 01-8 0"></path>
-            </svg>
-            Pesan Sekarang!
-          </button>
+          <div className="stickyAction">
+            <button
+              className="stickyBtn"
+              disabled={!canCheckout}
+              onClick={onCheckout}
+            >
+              <div className="stickyBtnIcon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 01-8 0"></path>
+                </svg>
+              </div>
+              Pesan Sekarang!
+            </button>
+          </div>
         </div>
       </div>
     </main>
