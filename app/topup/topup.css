@@ -635,9 +635,9 @@
   width: 100%;
   border: none;
   border-radius: 12px;
-  padding: 10px 20px; /* Slimmer padding */
+  padding: 8px 20px; /* Even slimmer padding */
   font-weight: 800;
-  font-size: 14px; /* Reduced slightly for slimness */
+  font-size: 13.5px;
   color: #fff;
   font-family: inherit;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
@@ -650,10 +650,10 @@
 }
 
 .topupScope .stickyBtnIcon {
-  width: 28px; /* Slimmer icon container */
-  height: 28px;
+  width: 24px; /* Even slimmer icon container */
+  height: 24px;
   border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 8px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -804,8 +804,8 @@
   }
 
   .topupScope .stickyBtn {
-    padding: 8px 12px;
-    font-size: 13px;
-    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 12.5px;
+    border-radius: 10px;
   }
 }
