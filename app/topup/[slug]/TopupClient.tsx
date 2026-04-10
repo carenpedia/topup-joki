@@ -75,15 +75,11 @@ function normalizePhone(input: string) {
 }
 
 function groupTitle(g: string) {
-  // Jika g diawali dengan ID: (internal marker), kita ambil sisanya sebagai nama kategori
+  // Hanya tampilkan header jika itu kategori dinamis dari database
   if (g.startsWith("CAT:")) return g.replace("CAT:", "");
 
-  const k = g.toUpperCase();
-  if (k === "BEST_SELLER") return "Best Seller";
-  if (k === "HEMAT") return "Hemat";
-  if (k === "SULTAN") return "Sultan";
-  if (k === "LAIN") return "Lainnya";
-  return g;
+  // Header untuk grup bawaan (Hemat, Best Seller, dll) dihilangkan agar tidak terlihat dummy
+  return null;
 }
 
 export default function TopupClient({
@@ -466,9 +462,11 @@ export default function TopupClient({
 
                   {grouped.map(([g, items]) => (
                     <div key={g} className="nominalGroup">
-                      <div className="nominalGroupHeader">
-                        {groupTitle(g)}
-                      </div>
+                      {groupTitle(g) && (
+                        <div className="nominalGroupHeader">
+                          {groupTitle(g)}
+                        </div>
+                      )}
 
                       <div className="tpNomGrid">
                         {items.map((p) => {
