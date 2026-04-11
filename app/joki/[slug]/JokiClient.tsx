@@ -21,6 +21,7 @@ type NominalRow = {
   id: string;
   name: string;
   group?: string | null;
+  category?: { id: string, name: string, order: number } | null;
   basePrice: number;
   finalPrice: number;
 };
@@ -44,11 +45,11 @@ function rupiah(n: number) {
 }
 
 function groupTitle(g: string) {
-  const k = g.toUpperCase();
-  if (k === "BEST_SELLER") return "Best Seller";
-  if (k === "HEMAT") return "Hemat";
-  if (k === "SULTAN") return "Sultan";
-  return "Lainnya";
+  // Hanya tampilkan header jika itu kategori dinamis dari database
+  if (g.startsWith("CAT:")) return g.replace("CAT:", "");
+
+  // Header untuk grup bawaan (Hemat, Best Seller, dll) dihilangkan agar tidak terlihat dummy
+  return null;
 }
 
 export default function JokiClient({
@@ -131,6 +132,7 @@ export default function JokiClient({
               id: String(p.id),
               name: String(p.name),
               group: p.group ?? null,
+              category: p.category ?? null,
               basePrice: Number(p.basePrice || 0),
               finalPrice: Number(p.finalPrice || 0),
             }))
@@ -150,17 +152,40 @@ export default function JokiClient({
 
   const grouped = useMemo((): Array<[string, NominalRow[]]> => {
     const map = new Map<string, NominalRow[]>();
+    const orderMap = new Map<string, number>();
+
     for (const it of nominals) {
-      const g = (it.group || "LAIN").toUpperCase();
-      if (!map.has(g)) map.set(g, []);
-      map.get(g)!.push(it);
+      let key = "";
+      let sortVal = 999;
+
+      if (it.category) {
+        key = `CAT:${it.category.name}`;
+        sortVal = it.category.order;
+      } else {
+        key = "NONE";
+        sortVal = 9999;
+      }
+
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(it);
+      orderMap.set(key, sortVal);
     }
-    const order = ["BEST_SELLER", "HEMAT", "SULTAN", "LAIN"];
-    return Array.from(map.entries()).sort((a, b) => {
-      const ai = order.indexOf(a[0]);
-      const bi = order.indexOf(b[0]);
-      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+
+    const result = Array.from(map.entries());
+
+    // Sort items within each group
+    for (const [, arr] of result) {
+      arr.sort((a, b) => (a.finalPrice || 0) - (b.finalPrice || 0));
+    }
+
+    // Sort groups themselves by the assigned order
+    result.sort((a, b) => {
+      const orderA = orderMap.get(a[0]) ?? 9999;
+      const orderB = orderMap.get(b[0]) ?? 9999;
+      return orderA - orderB;
     });
+
+    return result;
   }, [nominals]);
 
   function addHero() {
@@ -513,10 +538,12 @@ export default function JokiClient({
               <div className="cardMuted">Belum ada paket harga untuk game ini. Hubungi admin untuk info harga.</div>
             ) : (
               <div className="nominalGroups">
-                {grouped.map(([g, items]) => (
-                  <div key={g} className="nominalGroup">
-                    <div className="nominalGroupHeader">{groupTitle(g)}</div>
-                    <div className="tpNomGrid">
+                {grouped.map(([g, items]) => {
+                  const title = groupTitle(g);
+                  return (
+                    <div key={g} className="nominalGroup">
+                      {title && <div className="nominalGroupHeader">{title}</div>}
+                      <div className="tpNomGrid">
                       {items.map((p) => {
                         const active = selectedId === p.id;
                         return (
