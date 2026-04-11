@@ -7,6 +7,7 @@ import "./globals.css";
 import { ToastProvider } from "./components/ToastProvider";
 import { UiProgressProvider } from "@/app/components/UiProgress";
 import { ConfigProvider } from "./components/ConfigProvider";
+import Gascript from "./components/Gascript";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 
 const inter = Inter({
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="id" className={`${inter.variable} ${plusJakarta.variable}`}>
       <body className={inter.className}>
         <ConfigProvider>
+          <Gascript />
           <ToastProvider>
             <UiProgressProvider>{children}</UiProgressProvider>
           </ToastProvider>
