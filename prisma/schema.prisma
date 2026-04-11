@@ -126,9 +126,10 @@ model PromoBanner {
 }
 
 model ProductCategory {
-  id        String    @id @default(cuid())
+  id        String      @id @default(cuid())
   name      String
-  order     Int       @default(0)
+  type      ProductType @default(TOPUP)
+  order     Int         @default(0)
   gameId    String
   game      Game      @relation(fields: [gameId], references: [id])
   products  Product[]

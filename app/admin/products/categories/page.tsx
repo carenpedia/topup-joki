@@ -4,7 +4,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type Game = { id: string; name: string };
-type Category = { id: string; name: string; order: number; _count: { products: number } };
+type Category = {
+  id: string;
+  name: string;
+  type: "TOPUP" | "JOKI";
+  order: number;
+  _count: { products: number };
+};
 
 export default function AdminProductCategoriesPage() {
   const [games, setGames] = useState<Game[]>([]);
@@ -14,6 +20,7 @@ export default function AdminProductCategoriesPage() {
   
   // Form state
   const [newName, setNewName] = useState("");
+  const [newType, setNewType] = useState<Category["type"]>("TOPUP");
   const [newOrder, setNewOrder] = useState("0");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -54,13 +61,19 @@ export default function AdminProductCategoriesPage() {
       const res = await fetch("/api/admin/product-categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newName, gameId, order: Number(newOrder) })
+        body: JSON.stringify({
+          name: newName,
+          gameId,
+          type: newType,
+          order: Number(newOrder),
+        }),
       });
       if (!res.ok) {
         const j = await res.json();
         throw new Error(j.error || "Gagal menambah kategori");
       }
       setNewName("");
+      setNewType("TOPUP");
       setNewOrder("0");
       loadCategories();
     } catch (e: any) {
@@ -132,6 +145,17 @@ export default function AdminProductCategoriesPage() {
                       onChange={(e) => setNewName(e.target.value)}
                     />
                   </div>
+                  <div style={{ flex: 1 }}>
+                    <label className="contact-label">Tipe</label>
+                    <select
+                      className="contact-input"
+                      value={newType}
+                      onChange={(e) => setNewType(e.target.value as any)}
+                    >
+                      <option value="TOPUP">TOPUP</option>
+                      <option value="JOKI">JOKI</option>
+                    </select>
+                  </div>
                   <div style={{ flex: 0.5 }}>
                     <label className="contact-label">Urutan</label>
                     <input
@@ -165,7 +189,22 @@ export default function AdminProductCategoriesPage() {
                   {categories.map((c) => (
                     <div key={c.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", background: "rgba(255,255,255,.04)", borderRadius: 12, border: "1px solid rgba(255,255,255,.06)" }}>
                       <div>
-                        <div style={{ fontWeight: 800 }}>{c.name}</div>
+                        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                          <div style={{ fontWeight: 800 }}>{c.name}</div>
+                          <span
+                            style={{
+                              fontSize: 9,
+                              fontWeight: 900,
+                              padding: "2px 6px",
+                              borderRadius: 6,
+                              background: c.type === "JOKI" ? "rgba(139,92,246,.2)" : "rgba(16,185,129,.2)",
+                              color: c.type === "JOKI" ? "#a78bfa" : "#34d399",
+                              border: `1px solid ${c.type === "JOKI" ? "rgba(139,92,246,.3)" : "rgba(16,185,129,.3)"}`,
+                            }}
+                          >
+                            {c.type}
+                          </span>
+                        </div>
                         <div style={{ fontSize: 11, color: "rgba(255,255,255,.4)" }}>{c._count.products} Produk</div>
                       </div>
                       <div style={{ display: "flex", gap: 10, alignItems: "center" }}>

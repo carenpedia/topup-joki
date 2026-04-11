@@ -583,9 +583,10 @@ export default function JokiClient({
                           </button>
                         );
                       })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

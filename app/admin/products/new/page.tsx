@@ -38,9 +38,11 @@ export default function AdminProductNewPage() {
     if (!gameId && (items[0]?.id)) setGameId(items[0].id);
   }
 
-  async function loadCategories() {
-    if (!gameId) return;
-    const res = await fetch(`/api/admin/product-categories?gameId=${gameId}`);
+  async function loadCategories(gId?: string, tProp?: string) {
+    const targetGameId = gId || gameId;
+    const targetType = tProp || type;
+    if (!targetGameId) return;
+    const res = await fetch(`/api/admin/product-categories?gameId=${targetGameId}&type=${targetType}`);
     const j = await res.json().catch(() => ({}));
     setCategories(j.items ?? []);
   }
@@ -53,7 +55,7 @@ export default function AdminProductNewPage() {
   useEffect(() => {
     loadCategories();
     setProductCategoryId("");
-  }, [gameId]);
+  }, [gameId, type]);
 
   async function onSubmit() {
     setErr(null);

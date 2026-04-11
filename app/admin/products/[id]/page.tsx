@@ -55,9 +55,10 @@ export default function AdminProductEditPage() {
     setGames(j.items ?? []);
   }
 
-  async function loadCategories(gId: string) {
+  async function loadCategories(gId: string, tProp?: string) {
     if (!gId) return;
-    const res = await fetch(`/api/admin/product-categories?gameId=${gId}`);
+    const targetType = tProp || type;
+    const res = await fetch(`/api/admin/product-categories?gameId=${gId}&type=${targetType}`);
     const j = await res.json().catch(() => ({}));
     setCategories(j.items ?? []);
   }
@@ -79,7 +80,7 @@ export default function AdminProductEditPage() {
 
     setGameId(item.gameId);
     setProductCategoryId(item.productCategoryId || "");
-    loadCategories(item.gameId);
+    loadCategories(item.gameId, item.type);
 
     setName(item.name);
     setGroup(item.group);
@@ -105,10 +106,16 @@ export default function AdminProductEditPage() {
 
   useEffect(() => {
     if (gameId && p && gameId !== p.gameId) {
-      loadCategories(gameId);
+      loadCategories(gameId, type);
       setProductCategoryId("");
     }
   }, [gameId, p]);
+
+  useEffect(() => {
+    if (!loading && gameId) {
+      loadCategories(gameId, type);
+    }
+  }, [type]);
 
   async function onSave() {
     setErr(null);
