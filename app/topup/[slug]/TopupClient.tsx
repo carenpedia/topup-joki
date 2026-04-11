@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import { useToast } from "@/app/components/ToastProvider";
+import { useAsyncAction } from "@/app/components/useAsyncAction";
 
 export type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
 type PaymentMethod = "CarenCoin" | "Payment Gateway";
@@ -276,18 +278,52 @@ export default function TopupClient({
     return normalizePhone(v);
   }, [contact]);
 
-  function onCheckout() {
-    alert(
-      [
-        `GAME: ${game.name}`,
-        `USER ID: ${userId}${isML ? ` (${server})` : ""}`,
-        `NOMINAL: ${selectedItem?.name ?? "-"}`,
-        `PAY: ${paymentMethod}`,
-        `VOUCHER: ${voucherApplied ? voucher.trim().toUpperCase() : "-"}`,
-        `KONTAK: ${contactDisplay || "-"}`,
-        `TOTAL: ${total > 0 ? rupiah(total) : "-"}`,
-      ].join("\n")
-    );
+  const toast = useToast();
+  const { loading: checkoutLoading, run: runCheckout } = useAsyncAction();
+
+  async function onCheckout() {
+    if (!canCheckout) return;
+
+    await runCheckout(async () => {
+      try {
+        const body = {
+          gameKey: game.key,
+          productId: selectedItem?.id,
+          inputUserId: userId,
+          inputServer: isML ? server : undefined,
+          contactWhatsapp: contactDisplay,
+          paymentMethod: paymentMethod === "CarenCoin" ? "CARENCOIN" : "GATEWAY",
+          paymentGateway: paymentMethod === "Payment Gateway" ? "TRIPAY" : undefined,
+          gatewayMethodKey: paymentMethod === "Payment Gateway" ? "QRIS" : undefined,
+          voucherCode: voucherApplied ? voucher.trim().toUpperCase() : undefined,
+        };
+
+        const res = await fetch("/api/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Gagal melakukan checkout");
+        }
+
+        toast.success("Pesanan berhasil dibuat!");
+        
+        // Redirect ke invoice atau URL pembayaran
+        if (data.paymentUrl) {
+          window.location.href = data.paymentUrl;
+        } else if (data.redirectUrl) {
+          router.push(data.redirectUrl);
+        } else if (data.orderNo) {
+          router.push(`/invoice/${data.orderNo}`);
+        }
+      } catch (err: any) {
+        toast.error(err.message || "Gagal membuat pesanan");
+      }
+    });
   }
 
   return (
@@ -691,16 +727,20 @@ export default function TopupClient({
           <div className="stickyAction">
             <button
               className="stickyBtn"
-              disabled={!canCheckout}
+              disabled={!canCheckout || checkoutLoading}
               onClick={onCheckout}
             >
               <div className="stickyBtnIcon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" />
-                  <path d="M16 10V6a4 4 0 0 0-8 0v4" />
-                </svg>
+                {checkoutLoading ? (
+                  <div className="spinner-border spinner-border-sm" role="status" style={{ width: 16, height: 16, border: '2px solid' }}></div>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" />
+                    <path d="M16 10V6a4 4 0 0 0-8 0v4" />
+                  </svg>
+                )}
               </div>
-              Pesan Sekarang!
+              {checkoutLoading ? "Memproses..." : "Pesan Sekarang!"}
             </button>
           </div>
         </div>

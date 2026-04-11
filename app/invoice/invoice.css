@@ -1,0 +1,300 @@
+.invoicePage {
+  min-height: 100vh;
+  padding-bottom: 120px;
+  position: relative;
+  overflow-x: hidden;
+  background: #020617;
+}
+
+.invoiceWrap {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 5;
+}
+
+.invoiceHero {
+  padding: 60px 0 40px;
+  text-align: center;
+}
+
+.invoiceStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 99px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.status-PENDING {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-PAID, .status-SUCCESS {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-EXPIRED, .status-FAILED, .status-CANCELLED {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-PROCESSING {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.invoiceTitle {
+  font-size: 32px;
+  font-weight: 950;
+  color: #fff;
+  margin-bottom: 8px;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.invoiceSub {
+  color: rgba(255,255,255,0.5);
+  font-size: 15px;
+}
+
+.invoiceCard {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  padding: 32px;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.invoiceCard:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.invoiceSectionTitle {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.invoiceSectionTitle::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+.invoiceGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.invoiceItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.invoiceLabel {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.invoiceValue {
+  font-size: 15px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.invoiceValue.primary {
+  color: #60a5fa;
+  font-weight: 800;
+}
+
+.invoiceDivider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 24px 0;
+}
+
+.invoiceTotalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.invoiceTotalLabel {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.invoiceTotalPrice {
+  font-size: 24px;
+  font-weight: 950;
+  color: #fff;
+}
+
+.qrContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.qrBox {
+  background: #fff;
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.2);
+}
+
+.qrImg {
+  width: 220px;
+  height: 220px;
+  display: block;
+}
+
+.invoiceTimer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 12px 20px;
+  border-radius: 16px;
+  color: #ef4444;
+  font-weight: 800;
+  font-size: 14px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  margin-top: 10px;
+}
+
+.invoiceActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.invoiceBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 18px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.invoiceBtnPrimary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+}
+
+.invoiceBtnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px -5px rgba(37, 99, 235, 0.5);
+}
+
+.invoiceBtnGhost {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.invoiceBtnGhost:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.gameInfoBox {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.gameLogo {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.gameText {
+  display: flex;
+  flex-direction: column;
+}
+
+.gameName {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.productName {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+}
+
+.copyBtn {
+  background: none;
+  border: none;
+  color: #60a5fa;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.copyBtn:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .invoiceGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .invoiceActions {
+    grid-template-columns: 1fr;
+  }
+}
