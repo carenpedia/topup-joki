@@ -13,6 +13,7 @@
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.5px;
+  font-family: var(--font-display);
 }
 
 .dashboard-subtitle {
@@ -69,10 +70,12 @@
 
 .stat-main-value {
   font-size: 28px;
-  font-weight: 900;
+  font-weight: 950;
   color: #10b981; /* Emerald for Profit */
   margin-bottom: 20px;
   line-height: 1;
+  font-family: var(--font-display);
+  letter-spacing: -1px;
 }
 
 .stat-bottom-row {

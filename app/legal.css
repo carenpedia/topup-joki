@@ -8,7 +8,7 @@
 .legalPage {
   position: relative;
   min-height: 100vh;
-  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
   background: #1a1b1f;
   color: rgba(255, 255, 255, 0.92);
   overflow-x: hidden;

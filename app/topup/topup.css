@@ -2,9 +2,12 @@
    TOPUP PAGE CSS – CarenPedia (Premium Redesign)
    ========================================================= */
 
-.topupScope {
-  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
-  color: rgba(255, 255, 255, .92);
+.topupPage {
+  min-height: 100vh;
+  background: var(--bg0);
+  font-family: var(--font-sans);
+  color: var(--text);
+  padding-bottom: 80px;
 }
 
 /* ===== PAGE LAYOUT ===== */
