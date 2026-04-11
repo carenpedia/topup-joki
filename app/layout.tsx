@@ -6,6 +6,7 @@ export const fetchCache = 'force-no-store';
 import "./globals.css";
 import { ToastProvider } from "./components/ToastProvider";
 import { UiProgressProvider } from "@/app/components/UiProgress";
+import { ConfigProvider } from "./components/ConfigProvider";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 
 const inter = Inter({
@@ -24,10 +25,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" className={`${inter.variable} ${plusJakarta.variable}`}>
       <body className={inter.className}>
-        <ToastProvider>
-  <UiProgressProvider>{children}</UiProgressProvider>
-</ToastProvider>
-        </body>
+        <ConfigProvider>
+          <ToastProvider>
+            <UiProgressProvider>{children}</UiProgressProvider>
+          </ToastProvider>
+        </ConfigProvider>
+      </body>
     </html>
   );
 }

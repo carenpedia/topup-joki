@@ -515,3 +515,11 @@ enum JokiStatus {
   COMPLETED
   CANCELLED
 }
+
+model GlobalSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  group     String   @default("GENERAL") // e.g. "GENERAL", "CONTACT", "SEO"
+  updatedAt DateTime @updatedAt
+}

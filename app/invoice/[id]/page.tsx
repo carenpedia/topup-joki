@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import { useConfig } from "@/app/components/ConfigProvider";
 import "../invoice.css";
 
 type OrderData = {

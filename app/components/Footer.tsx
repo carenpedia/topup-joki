@@ -1,8 +1,9 @@
-"use client";
 import Link from "next/link";
-import { SUPPORT_WHATSAPP } from "./data";
+import { useConfig } from "./ConfigProvider";
 
 export default function Footer() {
+  const config = useConfig();
+  const SUPPORT_WHATSAPP = config.SUPPORT_WHATSAPP;
   return (
     <footer style={{
       marginTop: "80px",
@@ -44,12 +45,11 @@ export default function Footer() {
                 boxShadow: "0 4px 16px rgba(59,130,246,0.4)"
               }}>C</div>
               <span style={{ fontSize: 24, fontWeight: 900, color: "#fff", letterSpacing: -0.5 }}>
-                CarenPedia
+                {config.SITE_NAME}
               </span>
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 1.7, marginBottom: 24 }}>
-              Platform top up game termurah, tercepat, dan terpercaya di Indonesia. 
-              Proses instan 24 jam non-stop dengan dukungan Customer Service profesional siap membantu Anda.
+              {config.SITE_SLOGAN}
             </p>
             
             {/* Social Media Icons */}
@@ -139,7 +139,7 @@ export default function Footer() {
           gap: "20px"
         }}>
           <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: 500 }}>
-            © {new Date().getFullYear()} CarenPedia. All rights reserved.
+            © {new Date().getFullYear()} {config.SITE_NAME}. All rights reserved.
           </p>
           
           {/* Trust Badges */}

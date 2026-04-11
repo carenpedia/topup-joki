@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const nav = [
   { href: "/admin", label: "Dashboard" },
-  { href: "/admin/banners", label: "Banner Slider" },
+  { href: "/admin/banners", label: "Banner" },
   { href: "/admin/games", label: "Games" },
   { href: "/admin/categories", label: "Categories" },
   { href: "/admin/products", label: "Products & Prices" },
@@ -17,6 +17,7 @@ const nav = [
   { href: "/admin/joki-orders", label: "Joki Orders" },
   { href: "/admin/users", label: "Users" },
   { href: "/admin/deposits", label: "Deposits" },
+  { href: "/admin/settings", label: "⚙️ Konfigurasi Web" },
   { href: "/admin/audit-logs", label: "Audit Logs" },
   { href: "/user/profile", label: "👤 Profil Saya" },
 ];
@@ -27,10 +28,10 @@ export default function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; on
   return (
     <aside className={`adminSidebar ${isOpen ? "isOpen" : ""}`}>
       <div className="contact-card" style={{ padding: 12, height: "100%", overflowY: "auto" }}>
-        
+
         {/* NEW: Back to Site Button */}
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           style={{
             display: "flex",
             alignItems: "center",

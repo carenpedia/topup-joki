@@ -3,8 +3,12 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../legal.css";
+import { useConfig } from "../components/ConfigProvider";
 
 export default function KebijakanPrivasiPage() {
+  const config = useConfig();
+  const SUPPORT_WHATSAPP = config.SUPPORT_WHATSAPP;
+
   return (
     <main className="legalPage">
       <div className="legalBgGlow" aria-hidden="true" />
@@ -150,7 +154,7 @@ export default function KebijakanPrivasiPage() {
               Jika Anda memiliki pertanyaan, keluhan, atau permintaan terkait Kebijakan Privasi ini, silakan hubungi kami melalui:
             </p>
             <div className="legalContactBox">
-              <a href="https://wa.me/6285737059959" target="_blank" rel="noopener noreferrer" className="legalContactItem">
+              <a href={`https://wa.me/${SUPPORT_WHATSAPP}`} target="_blank" rel="noopener noreferrer" className="legalContactItem">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21.16 19.38L21.8 22l-2.62-.64A10 10 0 1 1 21.16 14.6l-1 2.5a3 3 0 0 0 .97 2.27z" />
                 </svg>
