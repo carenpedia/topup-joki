@@ -103,7 +103,7 @@ export default function TopupClient({
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const [paymentMethod, setPaymentMethod] =
-    useState<PaymentMethod>("Payment Gateway");
+    useState<PaymentMethod | "Simulasi">("Payment Gateway");
 
   const [voucher, setVoucher] = useState("");
   const [voucherApplied, setVoucherApplied] = useState(false);
@@ -293,8 +293,8 @@ export default function TopupClient({
           inputServer: isML ? server : undefined,
           contactWhatsapp: contactDisplay,
           paymentMethod: paymentMethod === "CarenCoin" ? "CARENCOIN" : "GATEWAY",
-          paymentGateway: paymentMethod === "Payment Gateway" ? "TRIPAY" : undefined,
-          gatewayMethodKey: paymentMethod === "Payment Gateway" ? "QRIS" : undefined,
+          paymentGateway: paymentMethod === "Simulasi" ? "TRIPAY" : (paymentMethod === "Payment Gateway" ? "TRIPAY" : undefined),
+          gatewayMethodKey: paymentMethod === "Simulasi" ? "SIMULASI" : (paymentMethod === "Payment Gateway" ? "QRIS" : undefined),
           voucherCode: voucherApplied ? voucher.trim().toUpperCase() : undefined,
         };
 
@@ -605,6 +605,24 @@ export default function TopupClient({
                 }}
               >
                 Payment Gateway
+              </button>
+
+              <button
+                className="authBtn authBtnGhost"
+                type="button"
+                onClick={() => setPaymentMethod("Simulasi")}
+                style={{
+                  borderColor:
+                    paymentMethod === "Simulasi"
+                      ? "rgba(16,185,129,.65)"
+                      : "rgba(255,255,255,.10)",
+                  background:
+                    paymentMethod === "Simulasi"
+                      ? "rgba(16,185,129,.15)"
+                      : "rgba(255,255,255,.06)",
+                }}
+              >
+                Simulasi (Test)
               </button>
             </div>
 

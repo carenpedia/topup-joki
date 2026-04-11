@@ -220,6 +220,37 @@ export async function POST(req: Request) {
       });
     }
 
+    // Jalur S: Simulasi (Test)
+    if (gatewayMethodKey === "SIMULASI") {
+      const dummyRef = `SIM-${Date.now()}`;
+      
+      // Simpan Payment record dummy
+      await prisma.payment.create({
+        data: {
+          orderId: order.id,
+          gateway: "TRIPAY",
+          gatewayRef: dummyRef,
+          status: "PENDING",
+          rawPayload: {
+            simulation: true,
+            pay_code: "DUMMY-PAY-123",
+            payment_url: `/invoice/${orderNo}`,
+            instructions: "Ini adalah simulasi bayar. Silakan klik tombol 'Bayar Simulasi' di halaman invoice."
+          } as any,
+        },
+      });
+
+      return NextResponse.json({
+        ok: true,
+        orderNo,
+        orderId: order.id,
+        paymentMethod: "GATEWAY",
+        gateway: "TRIPAY",
+        paymentUrl: `/invoice/${orderNo}`,
+        payCode: "DUMMY-PAY-123",
+      });
+    }
+
     // Jalur B: Payment Gateway (Tripay / Xendit)
     if (paymentGateway === "TRIPAY") {
       const tripayTx = await tripayCreate({
