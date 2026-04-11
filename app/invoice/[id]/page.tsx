@@ -96,22 +96,6 @@ export default function Invoice({ params }: { params: { id: string } }) {
     alert("Berhasil disalin!");
   };
 
-  const [paying, setPaying] = useState(false);
-  async function handleSimulasiPay() {
-    if (paying) return;
-    setPaying(true);
-    try {
-      const res = await fetch(`/api/orders/${params.id}`, { method: "PATCH" });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Gagal memproses simulasi bayar");
-      await fetchOrder();
-    } catch (err: any) {
-      alert(err.message);
-    } finally {
-      setPaying(false);
-    }
-  }
-
   if (loading) {
     return (
       <main className="invoicePage">
@@ -237,24 +221,10 @@ export default function Invoice({ params }: { params: { id: string } }) {
                 </a>
               </div>
             )}
-
-            {data.gatewayMethodKey === "SIMULASI" && (
-              <div style={{ marginTop: 24, padding: "16px", background: "rgba(16, 185, 129, 0.1)", borderRadius: "16px", border: "1px dashed rgba(16, 185, 129, 0.4)" }}>
-                <p className="invoiceLabel" style={{ color: "#10b981", textAlign: "center", marginBottom: 12 }}>Mode Simulasi</p>
-                <button 
-                  onClick={handleSimulasiPay} 
-                  disabled={paying}
-                  className="invoiceBtn invoiceBtnPrimary" 
-                  style={{ width: "100%", background: "#10b981" }}
-                >
-                  {paying ? "Memproses..." : "Klik untuk Simulasi Bayar Lunas"}
-                </button>
-              </div>
-            )}
           </div>
         )}
 
-        {data.status === "PAID" || data.status === "SUCCESS" && (
+        {(data.status === "PAID" || data.status === "SUCCESS") && (
           <div className="invoiceCard" style={{ borderColor: "rgba(16, 185, 129, 0.3)", background: "rgba(16, 185, 129, 0.05)" }}>
              <p style={{ textAlign: "center", color: "#10b981", fontWeight: 800 }}>
                ✅ Pembayaran Berhasil! Pesanan Anda sedang diproses dan akan segera masuk.
