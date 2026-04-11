@@ -18,6 +18,7 @@ export default function AdminProductNewPage() {
   const [group, setGroup] = useState<"BEST_SELLER" | "HEMAT" | "SULTAN">("BEST_SELLER");
   const [provider, setProvider] = useState<"DIGIFLAZZ" | "APIGAMES">("DIGIFLAZZ");
   const [providerSku, setProviderSku] = useState("");
+  const [type, setType] = useState<"TOPUP" | "JOKI">("TOPUP");
   const [minPayable, setMinPayable] = useState<string>("");
   const [isActive, setIsActive] = useState(true);
 
@@ -83,6 +84,7 @@ export default function AdminProductNewPage() {
           group,
           provider,
           providerSku: providerSku.trim(),
+          type,
           minPayable: minPayable.trim() ? Number(minPayable) : null,
           isActive,
           prices,
@@ -165,7 +167,13 @@ export default function AdminProductNewPage() {
               </select>
             </div>
 
-            <div />
+            <div>
+              <label className="contact-label">Tipe Product</label>
+              <select className="contact-input" value={type} onChange={(e) => setType(e.target.value as any)}>
+                <option value="TOPUP">TOPUP (Diamond/Item)</option>
+                <option value="JOKI">JOKI (Layanan Joki)</option>
+              </select>
+            </div>
 
             <div>
               <label className="contact-label">Provider</label>

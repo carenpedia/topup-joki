@@ -33,6 +33,7 @@ export async function PATCH(req: Request, ctx: { params: { id: string } }) {
         group: body.group ?? undefined,
         provider: body.provider ?? undefined,
         providerSku: body.providerSku != null ? String(body.providerSku).trim() : undefined,
+        type: body.type ?? undefined,
         productCategoryId:
           body.productCategoryId === null
             ? null

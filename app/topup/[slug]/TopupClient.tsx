@@ -121,7 +121,7 @@ export default function TopupClient({
       setNominalErr("");
 
       try {
-        const res = await fetch(`/api/topup/${game.key}/products`, {
+        const res = await fetch(`/api/topup/${game.key}/products?type=TOPUP`, {
           cache: "no-store",
         });
         const j = (await res.json().catch(() => ({}))) as ApiResponse;
@@ -326,6 +326,35 @@ export default function TopupClient({
     });
   }
 
+  // Smooth scroll helper
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const offset = 100; // avoid fixed header if any
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = el.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  const handleProductSelect = (id: string) => {
+    if (!userId.trim()) {
+      toast.error("⚠️ Silakan masukkan User ID Anda terlebih dahulu!");
+      scrollTo("section-id");
+      return;
+    }
+    
+    setSelectedItemId(id);
+    // Give state a moment to update/react before scrolling? Usually immediate is fine
+    setTimeout(() => scrollTo("section-payment"), 100);
+  };
+
   return (
     <main className="topupPage">
       <Navbar />
@@ -429,7 +458,7 @@ export default function TopupClient({
       <div style={{ height: 32 }} />
 
       <div className="topupWrap">
-        <div className="card">
+        <div className="card" id="section-id">
           <div className="contact-header">
             <div className="contact-step">1</div>
             <div className="contact-title-wrap">
@@ -465,7 +494,7 @@ export default function TopupClient({
 
         <div className="spacer" />
 
-        <div className="card">
+        <div className="card" id="section-nominal">
           <div className="contact-header">
             <div className="contact-step">2</div>
             <div className="contact-title-wrap">
@@ -514,7 +543,7 @@ export default function TopupClient({
                               type="button"
                               className={`tpNomCard ${active ? "isActive" : ""
                                 }`}
-                              onClick={() => setSelectedItemId(p.id)}
+                              onClick={() => handleProductSelect(p.id)}
                             >
                               {isFlash ? (
                                 <span className="tpNomFlash">FLASH SALE</span>
@@ -561,9 +590,8 @@ export default function TopupClient({
 
         <div className="spacer" />
 
-        <div className="card">
+        <div className="card" id="section-payment">
           <div className="contact-header">
-            <div className="contact-step">3</div>
             <div className="contact-title-wrap">
               <h4 className="contact-title">Metode Pembayaran</h4>
             </div>

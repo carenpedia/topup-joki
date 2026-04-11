@@ -88,6 +88,7 @@ model Product {
   productCategory   ProductCategory?  @relation(fields: [productCategoryId], references: [id])
   
   createdAt         DateTime          @default(now())
+  type        ProductType    @default(TOPUP)
   updatedAt   DateTime       @updatedAt
   flashSales  FlashSale[]
   orders      Order[]
@@ -422,6 +423,11 @@ enum ProductGroup {
 enum Provider {
   DIGIFLAZZ
   APIGAMES
+}
+
+enum ProductType {
+  TOPUP
+  JOKI
 }
 
 enum OrderServiceType {

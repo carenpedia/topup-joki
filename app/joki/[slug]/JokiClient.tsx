@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import { useToast } from "@/app/components/ToastProvider";
 
 export type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
 
@@ -84,6 +85,35 @@ export default function JokiClient({
   // Submit state
   const [submitting, setSubmitting] = useState(false);
   const [submitErr, setSubmitErr] = useState("");
+  const toast = useToast();
+
+  // Smooth scroll helper
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const offset = 100;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = el.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  const handlePackageSelect = (id: string) => {
+    if (!userIdNickname.trim() || !loginId.trim() || !password.trim()) {
+      toast.error("⚠️ Silakan lengkapi data akun Anda terlebih dahulu!");
+      scrollTo("section-account");
+      return;
+    }
+    
+    setSelectedId(id);
+    setTimeout(() => scrollTo("section-payment"), 100);
+  };
 
   // Load nominals
   useEffect(() => {
@@ -91,7 +121,7 @@ export default function JokiClient({
     async function load() {
       setNominalLoading(true);
       try {
-        const res = await fetch(`/api/topup/${game.key}/products`, { cache: "no-store" });
+        const res = await fetch(`/api/topup/${game.key}/products?type=JOKI`, { cache: "no-store" });
         const j = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(j?.error || "Gagal load paket");
         const rows = Array.isArray(j?.rows) ? j.rows : [];
@@ -319,7 +349,7 @@ export default function JokiClient({
       <div style={{ height: 32 }} />      <div className="topupWrap">
 
         {/* Step 1 — Data Akun */}
-        <div className="card">
+        <div className="card" id="section-account">
           <div className="contact-header">
             <div className="contact-step">1</div>
             <div className="contact-title-wrap">
@@ -469,7 +499,7 @@ export default function JokiClient({
         <div className="spacer" />
 
         {/* Step 3 — Pilih Paket */}
-        <div className="card">
+        <div className="card" id="section-package">
           <div className="contact-header">
             <div className="contact-step">3</div>
             <div className="contact-title-wrap">
@@ -494,7 +524,7 @@ export default function JokiClient({
                             key={p.id}
                             type="button"
                             className={`tpNomCard ${active ? "isActive" : ""}`}
-                            onClick={() => setSelectedId(p.id)}
+                            onClick={() => handlePackageSelect(p.id)}
                           >
                             <div className="tpNomTop">
                               <span className="tpNomName">{p.name}</span>
@@ -537,7 +567,7 @@ export default function JokiClient({
         <div className="spacer" />
 
         {/* Step 4 — Metode Pembayaran */}
-        <div className="card">
+        <div className="card" id="section-payment">
           <div className="contact-header">
             <div className="contact-step">4</div>
             <div className="contact-title-wrap">

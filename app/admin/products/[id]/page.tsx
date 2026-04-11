@@ -12,6 +12,7 @@ type Product = {
   provider: "DIGIFLAZZ" | "APIGAMES";
   providerSku: string;
   isActive: boolean;
+  type: "TOPUP" | "JOKI";
   minPayable: number | null;
   prices: { audience: "PUBLIC" | "MEMBER" | "RESELLER"; price: number }[];
   game: { id: string; name: string };
@@ -40,6 +41,7 @@ export default function AdminProductEditPage() {
   const [group, setGroup] = useState<Product["group"]>("BEST_SELLER");
   const [provider, setProvider] = useState<Product["provider"]>("DIGIFLAZZ");
   const [providerSku, setProviderSku] = useState("");
+  const [type, setType] = useState<Product["type"]>("TOPUP");
   const [minPayable, setMinPayable] = useState<string>("");
   const [isActive, setIsActive] = useState(true);
 
@@ -83,6 +85,7 @@ export default function AdminProductEditPage() {
     setGroup(item.group);
     setProvider(item.provider);
     setProviderSku(item.providerSku);
+    setType(item.type);
     setMinPayable(item.minPayable == null ? "" : String(item.minPayable));
     setIsActive(item.isActive);
 
@@ -135,6 +138,7 @@ export default function AdminProductEditPage() {
           group,
           provider,
           providerSku: providerSku.trim(),
+          type,
           minPayable: minPayable.trim() ? Number(minPayable) : null,
           isActive,
           prices,
@@ -238,7 +242,13 @@ export default function AdminProductEditPage() {
                   </select>
                 </div>
 
-                <div />
+                <div>
+                  <label className="contact-label">Tipe Product</label>
+                  <select className="contact-input" value={type} onChange={(e) => setType(e.target.value as any)}>
+                    <option value="TOPUP">TOPUP (Diamond/Item)</option>
+                    <option value="JOKI">JOKI (Layanan Joki)</option>
+                  </select>
+                </div>
 
                 <div>
                   <label className="contact-label">Provider</label>

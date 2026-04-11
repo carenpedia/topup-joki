@@ -8,6 +8,7 @@ type Game = { id: string; key: string; name: string };
 type Product = {
   id: string;
   name: string;
+  type: "TOPUP" | "JOKI";
   group: "BEST_SELLER" | "HEMAT" | "SULTAN";
   provider: "DIGIFLAZZ" | "APIGAMES";
   providerSku: string;
@@ -23,6 +24,7 @@ export default function AdminProductsList() {
 
   const [q, setQ] = useState("");
   const [gameId, setGameId] = useState("");
+  const [type, setType] = useState("");
   const [group, setGroup] = useState("");
   const [active, setActive] = useState("");
 
@@ -36,6 +38,7 @@ export default function AdminProductsList() {
     const sp = new URLSearchParams();
     if (q.trim()) sp.set("q", q.trim());
     if (gameId) sp.set("gameId", gameId);
+    if (type) sp.set("type", type);
     if (group) sp.set("group", group);
     if (active) sp.set("active", active);
 
@@ -70,6 +73,11 @@ export default function AdminProductsList() {
           </div>
         ),
         public: fmt(pp),
+        type: (
+          <span style={{ fontWeight: 800, fontSize: 11, color: p.type === "JOKI" ? "#8b5cf6" : "#3b82f6" }}>
+            {p.type}
+          </span>
+        ),
         member: fmt(mm),
         reseller: fmt(rr),
         status: (
@@ -110,6 +118,7 @@ export default function AdminProductsList() {
 
   const columns = [
     { key: "product", title: "Product" },
+    { key: "type", title: "Tipe", width: 90 },
     { key: "public", title: "PUBLIC", width: 140 },
     { key: "member", title: "MEMBER", width: 140 },
     { key: "reseller", title: "RESELLER", width: 150 },
@@ -139,6 +148,12 @@ export default function AdminProductsList() {
                   {g.name}
                 </option>
               ))}
+            </select>
+
+            <select className="contact-input" style={{ flex: 1 }} value={type} onChange={(e) => setType(e.target.value)}>
+              <option value="">Tipe: Semua</option>
+              <option value="TOPUP">TOPUP</option>
+              <option value="JOKI">JOKI</option>
             </select>
 
             <select className="contact-input" style={{ flex: 0.8 }} value={active} onChange={(e) => setActive(e.target.value)}>

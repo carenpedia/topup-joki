@@ -12,6 +12,7 @@ export async function GET(req: Request) {
   const gameId = searchParams.get("gameId") ?? "";
   const group = searchParams.get("group") ?? ""; // BEST_SELLER | HEMAT | SULTAN
   const active = searchParams.get("active"); // "1" | "0" | ""
+  const type = searchParams.get("type") ?? ""; // TOPUP | JOKI
 
   const items = await prisma.product.findMany({
     where: {
@@ -27,6 +28,7 @@ export async function GET(req: Request) {
       ...(group ? { group: group as any } : {}),
       ...(active === "1" ? { isActive: true } : {}),
       ...(active === "0" ? { isActive: false } : {}),
+      ...(type ? { type: type as any } : {}),
     },
     include: {
       game: true,
@@ -50,6 +52,7 @@ export async function POST(req: Request) {
   const group = body.group; // enum
   const provider = body.provider; // enum
   const providerSku = String(body.providerSku ?? "").trim();
+  const type = body.type || "TOPUP"; // TOPUP | JOKI
 
   if (!gameId) return NextResponse.json({ error: "gameId wajib" }, { status: 400 });
   if (!name) return NextResponse.json({ error: "name wajib" }, { status: 400 });
@@ -77,6 +80,7 @@ export async function POST(req: Request) {
         group,
         provider,
         providerSku,
+        type,
         productCategoryId: body.productCategoryId || null,
         isActive: Boolean(body.isActive ?? true),
         minPayable: body.minPayable == null || body.minPayable === "" ? null : Number(body.minPayable),

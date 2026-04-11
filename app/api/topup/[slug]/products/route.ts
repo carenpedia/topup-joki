@@ -15,12 +15,13 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
       return NextResponse.json({ error: "Game tidak ditemukan" }, { status: 404 });
     }
 
-    // audience: PUBLIC / MEMBER / RESELLER
-    const audience = "PUBLIC" as const
+    const { searchParams } = new URL(_req.url);
+    const type = searchParams.get("type") || "TOPUP";
+    const audience = "PUBLIC" as const;
 
     // ambil product + harga sesuai audience + flash sale aktif (jika ada)
     const products = await prisma.product.findMany({
-      where: { gameId: game.id, isActive: true },
+      where: { gameId: game.id, isActive: true, type: type as any },
       orderBy: [
         { productCategory: { order: "asc" } },
         { group: "asc" },
