@@ -14,32 +14,33 @@ export default async function Home({ searchParams }: { searchParams: any }) {
     const query = typeof searchParams?.q === "string" ? searchParams.q.toLowerCase() : "";
     const activeCatId = typeof searchParams?.cat === "string" ? searchParams.cat : null;
 
-    // 1) Ambil semua banner promo aktif
-    const banners = await prisma.promoBanner.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: "asc" },
-    });
-
-    // 1.5) Ambil semua kategori aktif (untuk tabs)
-    const categories = await prisma.category.findMany({
-      where: { isActive: true },
-      orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-      select: { id: true, name: true },
-    });
-
-    // 2) Ambil semua game aktif + relasi kategori
-    const dbGames = await prisma.game.findMany({
-      where: { isActive: true },
-      select: {
-        key: true,
-        name: true,
-        logoUrl: true,
-        hasJoki: true,
-        isPopuler: true,
-        links: { select: { categoryId: true } },
-      },
-      orderBy: { createdAt: "asc" },
-    });
+    // 1, 1.5, 2) Ambil data secara paralel untuk mempercepat loading
+    const [banners, categories, dbGames] = await Promise.all([
+      // 1) Banners
+      prisma.promoBanner.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+      }),
+      // 1.5) Categories
+      prisma.category.findMany({
+        where: { isActive: true },
+        orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+        select: { id: true, name: true },
+      }),
+      // 2) Games
+      prisma.game.findMany({
+        where: { isActive: true },
+        select: {
+          key: true,
+          name: true,
+          logoUrl: true,
+          hasJoki: true,
+          isPopuler: true,
+          links: { select: { categoryId: true } },
+        },
+        orderBy: { createdAt: "asc" },
+      }),
+    ]);
 
     // 3) Konversi ke format GameDisplay
     const allGames: (GameDisplay & { categoryIds: string[] })[] = dbGames.map((g) => ({
