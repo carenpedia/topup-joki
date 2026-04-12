@@ -662,29 +662,51 @@ export default function JokiClient({
 
       {/* Sticky Bar */}
       <div className="stickyWrap">
-        <div className="stickyBar">
-          <div className="stickyLeft">
-            <div className="stickyStatus">{checkoutStatus}</div>
-            <div className="stickyTotalRow">
-              <div className="stickyLabel">Total</div>
-              <div className="stickyTotal">
-                {selectedItem ? rupiah(selectedItem.finalPrice) : "—"}
+        <div className="stickyCard">
+          <div className={`stickyInfoBox ${selectedItem ? 'isFilled' : 'isEmpty'}`}>
+            {!selectedItem ? (
+              <div className="stickyInfoText">
+                Belum ada paket joki yang dipilih.
               </div>
-            </div>
-            <div className="stickyStatus" style={{ opacity: 0.85 }}>
-              {selectedItem
-                ? `${game.name} • ${selectedItem.name} • ${paymentMethod}`
-                : `${game.name} • Joki`}
-            </div>
+            ) : (
+              <>
+                {logoUrl ? (
+                  <img src={logoUrl} alt={game.name} className="stickyInfoLogo" />
+                ) : (
+                  <div className="stickyInfoLogo" style={{ background: 'rgba(255,255,255,0.1)', display: 'grid', placeItems: 'center', fontSize: 20 }}>
+                    {game.name[0]}
+                  </div>
+                )}
+                <div className="stickyInfoContent">
+                  <div className="stickyInfoGame">{game.name}</div>
+                  <div className="stickyInfoProduct">{selectedItem.name}</div>
+                </div>
+                <div className="stickyInfoChevron">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                </div>
+              </>
+            )}
           </div>
 
-          <button
-            className="stickyBtn"
-            disabled={!canCheckout || submitting}
-            onClick={onCheckout}
-          >
-            {submitting ? "Memproses..." : "Pesan Sekarang"}
-          </button>
+          <div className="stickyAction">
+            <button
+              className="stickyBtn"
+              disabled={!canCheckout || submitting}
+              onClick={onCheckout}
+            >
+              <div className="stickyBtnIcon">
+                {submitting ? (
+                  <div className="spinner-border spinner-border-sm" role="status" style={{ width: 16, height: 16, border: '2px solid' }}></div>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" />
+                    <path d="M16 10V6a4 4 0 0 0-8 0v4" />
+                  </svg>
+                )}
+              </div>
+              {submitting ? "Memproses..." : "Pesan Sekarang!"}
+            </button>
+          </div>
         </div>
       </div>
     </main>
