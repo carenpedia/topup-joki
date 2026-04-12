@@ -24,6 +24,7 @@ type NominalRow = {
   category?: { id: string, name: string, order: number } | null;
   basePrice: number;
   finalPrice: number;
+  imageUrl?: string | null;
 };
 
 const LOGIN_VIA_OPTIONS = [
@@ -559,13 +560,16 @@ export default function JokiClient({
 
                             <div className="tpNomMain">
                               <div className="tpNomIcon">
-                                {/* High Fidelity Diamond Icon */}
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M6 3h12l4 8-10 10L2 11l4-8z"></path>
-                                  <path d="M12 3v18"></path>
-                                  <path d="M2 11h20"></path>
-                                  <path d="M6 3L12 11L18 3"></path>
-                                </svg>
+                                {p.imageUrl ? (
+                                  <img src={p.imageUrl} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                                ) : (
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M6 3h12l4 8-10 10L2 11l4-8z"></path>
+                                    <path d="M12 3v18"></path>
+                                    <path d="M2 11h20"></path>
+                                    <path d="M6 3L12 11L18 3"></path>
+                                  </svg>
+                                )}
                               </div>
                               <span className="tpNomPriceNow">
                                 {rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}

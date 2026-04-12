@@ -13,6 +13,7 @@ type Product = {
   providerSku: string;
   isActive: boolean;
   type: "TOPUP" | "JOKI";
+  imageUrl: string | null;
   minPayable: number | null;
   prices: { audience: "PUBLIC" | "MEMBER" | "RESELLER"; price: number }[];
   game: { id: string; name: string };
@@ -42,6 +43,7 @@ export default function AdminProductEditPage() {
   const [provider, setProvider] = useState<Product["provider"]>("DIGIFLAZZ");
   const [providerSku, setProviderSku] = useState("");
   const [type, setType] = useState<Product["type"]>("TOPUP");
+  const [imageUrl, setImageUrl] = useState("");
   const [minPayable, setMinPayable] = useState<string>("");
   const [isActive, setIsActive] = useState(true);
 
@@ -87,6 +89,7 @@ export default function AdminProductEditPage() {
     setProvider(item.provider);
     setProviderSku(item.providerSku);
     setType(item.type);
+    setImageUrl(item.imageUrl || "");
     setMinPayable(item.minPayable == null ? "" : String(item.minPayable));
     setIsActive(item.isActive);
 
@@ -146,6 +149,7 @@ export default function AdminProductEditPage() {
           provider,
           providerSku: providerSku.trim(),
           type,
+          imageUrl: imageUrl.trim() || null,
           minPayable: minPayable.trim() ? Number(minPayable) : null,
           isActive,
           prices,
@@ -268,6 +272,17 @@ export default function AdminProductEditPage() {
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label className="contact-label">Provider SKU</label>
                   <input className="contact-input" value={providerSku} onChange={(e) => setProviderSku(e.target.value)} />
+                </div>
+
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label className="contact-label">Product Image URL (opsional)</label>
+                  <input
+                    className="contact-input"
+                    placeholder="https://... (Ganti ikon diamond)"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                  />
+                  <div className="contact-hint">Jika dikosongkan, akan otomatis menggunakan ikon Diamond biru.</div>
                 </div>
 
                 <div>

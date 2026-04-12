@@ -89,6 +89,7 @@ model Product {
   
   createdAt         DateTime          @default(now())
   type        ProductType    @default(TOPUP)
+  imageUrl    String?
   updatedAt   DateTime       @updatedAt
   flashSales  FlashSale[]
   orders      Order[]

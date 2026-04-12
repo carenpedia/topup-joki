@@ -19,6 +19,7 @@ export default function AdminProductNewPage() {
   const [provider, setProvider] = useState<"DIGIFLAZZ" | "APIGAMES">("DIGIFLAZZ");
   const [providerSku, setProviderSku] = useState("");
   const [type, setType] = useState<"TOPUP" | "JOKI">("TOPUP");
+  const [imageUrl, setImageUrl] = useState("");
   const [minPayable, setMinPayable] = useState<string>("");
   const [isActive, setIsActive] = useState(true);
 
@@ -87,6 +88,7 @@ export default function AdminProductNewPage() {
           provider,
           providerSku: providerSku.trim(),
           type,
+          imageUrl: imageUrl.trim() || null,
           minPayable: minPayable.trim() ? Number(minPayable) : null,
           isActive,
           prices,
@@ -187,7 +189,23 @@ export default function AdminProductNewPage() {
 
             <div style={{ gridColumn: "1 / -1" }}>
               <label className="contact-label">Provider SKU</label>
-              <input className="contact-input" placeholder="SKU dari provider (unik)" value={providerSku} onChange={(e) => setProviderSku(e.target.value)} />
+              <input
+                className="contact-input"
+                placeholder="Contoh: ml100"
+                value={providerSku}
+                onChange={(e) => setProviderSku(e.target.value)}
+              />
+            </div>
+
+            <div style={{ gridColumn: "1 / -1" }}>
+              <label className="contact-label">Product Image URL (opsional)</label>
+              <input
+                className="contact-input"
+                placeholder="https://... (Ganti ikon diamond)"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+              />
+              <div className="contact-hint">Jika dikosongkan, akan otomatis menggunakan ikon Diamond biru.</div>
             </div>
 
             <div>

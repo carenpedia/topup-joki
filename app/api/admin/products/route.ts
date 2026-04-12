@@ -81,6 +81,12 @@ export async function POST(req: Request) {
         provider,
         providerSku,
         type,
+        imageUrl:
+          body.imageUrl === null
+            ? null
+            : body.imageUrl !== undefined
+            ? String(body.imageUrl).trim() || null
+            : undefined,
         productCategoryId: body.productCategoryId || null,
         isActive: Boolean(body.isActive ?? true),
         minPayable: body.minPayable == null || body.minPayable === "" ? null : Number(body.minPayable),
