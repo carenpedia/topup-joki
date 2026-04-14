@@ -108,206 +108,141 @@ export default function AdminProductNewPage() {
   }
 
   return (
-    <div className="contact-section">
-      <div className="contact-card">
-        <div className="contact-header">
-          <div className="contact-step">+</div>
-          <div className="contact-title-wrap">
-            <h4 className="contact-title">Buat Product</h4>
-          </div>
+    <div className="admin-dashboard-wrapper">
+      <header className="admin-page-header">
+        <div className="admin-page-title-wrap">
+          <h1 className="admin-page-title">Create Product</h1>
+          <p className="admin-page-subtitle">Add a new diamond or joki service item to the catalog.</p>
         </div>
+        <Link href="/admin/products" className="admin-btn admin-btn-ghost">
+          ← Back to Catalog
+        </Link>
+      </header>
 
-        <div className="contact-body">
-          <div className="row" style={{ justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
-            <div className="cardMuted">Buat nominal/topup item untuk game.</div>
-            <Link href="/admin/products" className="voucherBtn" style={{ textDecoration: "none" }}>
-              ← Kembali
-            </Link>
-          </div>
-
-          <div className="spacer" />
-
-          {err ? (
-            <div style={{ padding: 12, borderRadius: 12, border: "1px solid rgba(239,68,68,.25)", background: "rgba(239,68,68,.08)", color: "rgba(255,255,255,.92)", fontSize: 13, fontWeight: 700 }}>
+      <div className="admin-card">
+        <div className="admin-card-header">
+          <h4 className="admin-card-title">Product Information</h4>
+        </div>
+        <div className="admin-card-body">
+          {err && (
+            <div className="admin-badge admin-badge-error" style={{ width: "100%", padding: "12px", borderRadius: "10px", marginBottom: "20px", justifyContent: "flex-start", textTransform: "none" }}>
               {err}
             </div>
-          ) : null}
+          )}
 
-          <div className="spacer" />
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-            <div>
-              <label className="contact-label">Game</label>
-              <select className="contact-input" value={gameId} onChange={(e) => setGameId(e.target.value)}>
-                <option value="">-- pilih --</option>
+          <div className="admin-form-grid">
+            <div className="admin-form-group">
+              <label className="admin-label">Target Game</label>
+              <select className="admin-select" value={gameId} onChange={(e) => setGameId(e.target.value)}>
+                <option value="">-- Select Game --</option>
                 {games.map((g) => (
-                  <option key={g.id} value={g.id}>
-                    {g.name}
-                  </option>
+                  <option key={g.id} value={g.id}>{g.name}</option>
                 ))}
               </select>
             </div>
 
-            <div>
-              <label className="contact-label">Status</label>
-              <select className="contact-input" value={isActive ? "1" : "0"} onChange={(e) => setIsActive(e.target.value === "1")}>
+            <div className="admin-form-group">
+              <label className="admin-label">Availability Status</label>
+              <select className="admin-select" value={isActive ? "1" : "0"} onChange={(e) => setIsActive(e.target.value === "1")}>
                 <option value="1">ACTIVE</option>
-                <option value="0">OFF</option>
+                <option value="0">OFF / MAINTENANCE</option>
               </select>
             </div>
 
-            <div style={{ gridColumn: "1 / -1" }}>
-              <label className="contact-label">Nama Product</label>
-              <input className="contact-input" placeholder="Contoh: 257 Diamonds" value={name} onChange={(e) => setName(e.target.value)} />
+            <div className="admin-form-group" style={{ gridColumn: "1 / -1" }}>
+              <label className="admin-label">Product Display Name</label>
+              <input className="admin-input" placeholder="e.g. 257 Diamonds" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
 
-            <div>
-              <label className="contact-label">Kategori (Opsional)</label>
-              <select className="contact-input" value={productCategoryId} onChange={(e) => setProductCategoryId(e.target.value)}>
-                <option value="">-- Tanpa Kategori --</option>
+            <div className="admin-form-group">
+              <label className="admin-label">Category (Optional)</label>
+              <select className="admin-select" value={productCategoryId} onChange={(e) => setProductCategoryId(e.target.value)}>
+                <option value="">-- No Category --</option>
                 {categories.map((c) => (
                   <option key={c.id} value={c.id}>{c.name}</option>
                 ))}
               </select>
             </div>
 
-            <div>
-              <label className="contact-label">Tipe Product</label>
-              <select className="contact-input" value={type} onChange={(e) => setType(e.target.value as any)}>
-                <option value="TOPUP">TOPUP (Diamond/Item)</option>
-                <option value="JOKI">JOKI (Layanan Joki)</option>
+            <div className="admin-form-group">
+              <label className="admin-label">Product Type</label>
+              <select className="admin-select" value={type} onChange={(e) => setType(e.target.value as any)}>
+                <option value="TOPUP">TOPUP (Instant Item)</option>
+                <option value="JOKI">JOKI (Manual Service)</option>
               </select>
             </div>
 
-            <div>
-              <label className="contact-label">Provider</label>
-              <select className="contact-input" value={provider} onChange={(e) => setProvider(e.target.value as any)}>
+            <div className="admin-form-group">
+              <label className="admin-label">Provider Connection</label>
+              <select className="admin-select" value={provider} onChange={(e) => setProvider(e.target.value as any)}>
                 <option value="DIGIFLAZZ">DIGIFLAZZ</option>
                 <option value="APIGAMES">APIGAMES</option>
               </select>
             </div>
 
-            <div style={{ gridColumn: "1 / -1" }}>
-              <label className="contact-label">Provider SKU</label>
+            <div className="admin-form-group">
+              <label className="admin-label">Provider SKU</label>
               <input
-                className="contact-input"
-                placeholder="Contoh: ml100"
+                className="admin-input"
+                placeholder="e.g. ml500"
                 value={providerSku}
                 onChange={(e) => setProviderSku(e.target.value)}
               />
             </div>
 
-            <div style={{ gridColumn: "1 / -1" }}>
-              <label className="contact-label">Product Image URL (opsional)</label>
+            <div className="admin-form-group" style={{ gridColumn: "1 / -1" }}>
+              <label className="admin-label">Custom Image URL (Optional)</label>
               <input
-                className="contact-input"
-                placeholder="https://... (Ganti ikon diamond)"
+                className="admin-input"
+                placeholder="https://..."
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
               />
-              <div className="contact-hint">Jika dikosongkan, akan otomatis menggunakan ikon Diamond biru.</div>
+              <p className="admin-page-subtitle" style={{ marginTop: 4 }}>Leave empty to use the default diamond icon.</p>
             </div>
 
-            <div>
-              <label className="contact-label">Min Payable (opsional)</label>
-              <input className="contact-input" type="number" value={minPayable} onChange={(e) => setMinPayable(e.target.value)} placeholder="Kosongkan jika tidak ada" />
-            </div>
-
-            <div />
-
-            {/* Prices */}
-            <div style={{ gridColumn: "1 / -1", marginTop: 6, fontWeight: 950 }}>Harga per Audience</div>
-
-            <div>
-              <label className="contact-label">PUBLIC</label>
-              <input className="contact-input" type="number" value={pricePublic} onChange={(e) => setPricePublic(e.target.value)} placeholder="ex: 15000" />
-            </div>
-
-            <div>
-              <label className="contact-label">MEMBER</label>
-              <input className="contact-input" type="number" value={priceMember} onChange={(e) => setPriceMember(e.target.value)} placeholder="ex: 14500" />
-            </div>
-
-            <div>
-              <label className="contact-label">RESELLER</label>
-              <input className="contact-input" type="number" value={priceReseller} onChange={(e) => setPriceReseller(e.target.value)} placeholder="ex: 14000" />
+            <div className="admin-form-group">
+              <label className="admin-label">Min Payable Amount (Optional)</label>
+              <input className="admin-input" type="number" value={minPayable} onChange={(e) => setMinPayable(e.target.value)} placeholder="Default: 0" />
             </div>
           </div>
+        </div>
+      </div>
 
-          <div className="spacer" />
+      <div className="admin-card">
+        <div className="admin-card-header">
+          <h4 className="admin-card-title">Pricing Configuration</h4>
+        </div>
+        <div className="admin-card-body">
+          <div className="admin-form-grid">
+            <div className="admin-form-group">
+              <label className="admin-label">Public Price (IDR)</label>
+              <input className="admin-input" type="number" value={pricePublic} onChange={(e) => setPricePublic(e.target.value)} placeholder="15000" />
+            </div>
 
-          <div style={{
-  display: "flex",
-  justifyContent: "flex-end",
-  gap: 12,
-  marginTop: 10
-}}>
-  <Link
-  href="/admin/products"
-  style={{
-    padding: "9px 18px",
-    borderRadius: 999,
-    border: "1px solid rgba(255,255,255,.15)",
-    background: "transparent",
-    color: "rgba(255,255,255,.75)",
-    fontWeight: 700,
-    fontSize: 13,
-    textDecoration: "none",
-    backdropFilter: "blur(6px)",
-    transition: "all 160ms ease",
-  }}
-  onMouseEnter={(e) => {
-    const el = e.currentTarget;
-    el.style.borderColor = "rgba(59,130,246,.55)";
-    el.style.background = "rgba(59,130,246,.08)";
-    el.style.color = "#fff";
-    el.style.boxShadow =
-      "0 0 0 1px rgba(59,130,246,.35), 0 8px 22px rgba(59,130,246,.25)";
-    el.style.transform = "translateY(-1px)";
-  }}
-  onMouseLeave={(e) => {
-    const el = e.currentTarget;
-    el.style.borderColor = "rgba(255,255,255,.15)";
-    el.style.background = "transparent";
-    el.style.color = "rgba(255,255,255,.75)";
-    el.style.boxShadow = "none";
-    el.style.transform = "translateY(0)";
-  }}
-  onMouseDown={(e) => {
-    const el = e.currentTarget;
-    el.style.transform = "translateY(0.5px) scale(0.98)";
-    el.style.boxShadow =
-      "0 0 0 1px rgba(59,130,246,.45), 0 6px 16px rgba(59,130,246,.35)";
-  }}
-  onMouseUp={(e) => {
-    const el = e.currentTarget;
-    el.style.transform = "translateY(-1px)";
-    el.style.boxShadow =
-      "0 0 0 1px rgba(59,130,246,.35), 0 8px 22px rgba(59,130,246,.25)";
-  }}
->
-  Batal
-</Link>
+            <div className="admin-form-group">
+              <label className="admin-label">Member Price (IDR)</label>
+              <input className="admin-input" type="number" value={priceMember} onChange={(e) => setPriceMember(e.target.value)} placeholder="14500" />
+            </div>
 
-
-  <button
-    onClick={onSubmit} disabled={saving}
-    style={{
-      padding: "9px 20px",
-      borderRadius: 999,
-      border: "none",
-      fontSize: 13,
-      fontWeight: 800,
-      color: "#fff",
-      cursor: "pointer",
-      background: "linear-gradient(135deg, #3b82f6, #22d3ee)",
-      boxShadow: "0 6px 16px rgba(59,130,246,.35)"
-    }}
-  >
-    {saving ? "Menyimpan..." : "Simpan Product"}
-  </button>
-</div>
-
+            <div className="admin-form-group">
+              <label className="admin-label">Reseller Price (IDR)</label>
+              <input className="admin-input" type="number" value={priceReseller} onChange={(e) => setPriceReseller(e.target.value)} placeholder="14000" />
+            </div>
+          </div>
+        </div>
+        <div className="admin-card-header" style={{ borderTop: "1px solid var(--admin-border)", borderBottom: "none", justifyContent: "flex-end", gap: 12 }}>
+          <Link href="/admin/products" className="admin-btn admin-btn-ghost">
+            Cancel
+          </Link>
+          <button
+            onClick={onSubmit}
+            disabled={saving}
+            className="admin-btn admin-btn-primary"
+            style={{ minWidth: 160 }}
+          >
+            {saving ? "Saving..." : "Create Product"}
+          </button>
         </div>
       </div>
     </div>
