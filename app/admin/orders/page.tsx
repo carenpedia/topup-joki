@@ -30,17 +30,17 @@ function StatusBadge({ value }: { value?: string | null }) {
 
   const cls =
     v === "PAID"
-      ? "admin-badge admin-badge-success"
+      ? "pill pill--active"
       : v === "FAILED"
-        ? "admin-badge admin-badge-error"
-        : "admin-badge admin-badge-warning";
+        ? "pill pill--danger"
+        : "pill pill--muted";
 
   return <span className={cls}>{label}</span>;
 }
 
 function TypeBadge({ value }: { value?: string | null }) {
   const v = (value || "TOPUP").toUpperCase();
-  const cls = v === "JOKI" ? "admin-badge admin-badge-error" : "admin-badge admin-badge-info";
+  const cls = v === "JOKI" ? "pill pill--danger" : "pill pill--muted";
   return <span className={cls}>{v}</span>;
 }
 
@@ -84,27 +84,30 @@ export default function AdminOrdersPage() {
   const filtered = useMemo(() => rows, [rows]);
 
   const columns = [
-    { key: "orderNo", title: "Order No", render: (r: OrderRow) => r.orderNo || r.id },
-    { key: "type", title: "Tipe", render: (r: OrderRow) => <TypeBadge value={r.serviceType} /> },
-    { key: "user", title: "User" },
-    { key: "game", title: "Game" },
-    { key: "item", title: "Item" },
+    { key: "orderNo", title: "Order No", width: 170, render: (r: OrderRow) => r.orderNo || r.id },
+    { key: "type", title: "Tipe", width: 120, render: (r: OrderRow) => <TypeBadge value={r.serviceType} /> },
+    { key: "user", title: "User", width: 200 },
+    { key: "game", title: "Game", width: 160 },
+    { key: "item", title: "Item", width: 240 },
     {
       key: "total",
       title: "Total",
+      width: 140,
       render: (r: OrderRow) => `Rp ${rupiah(Number(r.total || 0))}`,
     },
     {
       key: "status",
       title: "Status",
+      width: 140,
       render: (r: OrderRow) => <StatusBadge value={r.status} />,
     },
-    { key: "createdAt", title: "Created" },
+    { key: "createdAt", title: "Created", width: 170 },
     {
       key: "action",
       title: "Aksi",
+      width: 110,
       render: (r: OrderRow) => (
-        <Link href={`/admin/orders/${r.id}`} className="admin-btn admin-btn-ghost admin-btn-sm">
+        <Link href={`/admin/orders/${r.id}`} className="btn-ghost btn-xs">
           Detail
         </Link>
       ),
@@ -112,61 +115,56 @@ export default function AdminOrdersPage() {
   ];
 
   return (
-    <div className="admin-dashboard-wrapper">
-      <header className="admin-page-header">
-        <div className="admin-page-title-wrap">
-          <h1 className="admin-page-title">Orders Management</h1>
-          <p className="admin-page-subtitle">Track and manage all customer transaction orders.</p>
-        </div>
-      </header>
-
-      <div className="admin-card">
-        <div className="admin-card-header">
-          <h4 className="admin-card-title">Order List</h4>
-          <button onClick={load} className="admin-btn admin-btn-ghost admin-btn-sm" disabled={loading}>
-            {loading ? "Loading..." : "Refresh"}
-          </button>
-        </div>
-
-        <div className="admin-card-body">
-          <div className="admin-form-grid" style={{ marginBottom: 20 }}>
-            <div className="admin-form-group">
-              <label className="admin-label">Search</label>
-              <input
-                className="admin-input"
-                placeholder="Order ID / User / Game..."
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-              />
-            </div>
-
-            <div className="admin-form-group">
-              <label className="admin-label">Type</label>
-              <select
-                className="admin-select"
-                value={type}
-                onChange={(e) => setType(e.target.value as any)}
-              >
-                <option value="ALL">All Types</option>
-                <option value="TOPUP">TOPUP</option>
-                <option value="JOKI">JOKI</option>
-              </select>
-            </div>
-
-            <div className="admin-form-group">
-              <label className="admin-label">Status</label>
-              <select
-                className="admin-select"
-                value={status}
-                onChange={(e) => setStatus(e.target.value as any)}
-              >
-                <option value="ALL">All Status</option>
-                <option value="PENDING_PAYMENT">PENDING</option>
-                <option value="PAID">PAID</option>
-                <option value="FAILED">FAILED</option>
-              </select>
-            </div>
+    <div className="contact-section">
+      <div className="contact-card">
+        <div className="contact-header">
+          <div className="contact-step">O</div>
+          <div className="contact-title-wrap">
+            <h4 className="contact-title">Orders</h4>
           </div>
+        </div>
+
+        <div className="contact-body">
+          <div className="contact-row" style={{ gap: 10 }}>
+            <input
+              className="contact-input"
+              placeholder="Cari order no / user / game / item"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              style={{ flex: 1, minWidth: 220 }}
+            />
+
+            {/* FILTER TIPE: Semua / Topup / Joki */}
+            <select
+              className="contact-input"
+              value={type}
+              onChange={(e) => setType(e.target.value as any)}
+              style={{ width: 160 }}
+            >
+              <option value="ALL">Tipe: Semua</option>
+              <option value="TOPUP">TOPUP</option>
+              <option value="JOKI">JOKI</option>
+            </select>
+
+            {/* FILTER STATUS */}
+            <select
+              className="contact-input"
+              value={status}
+              onChange={(e) => setStatus(e.target.value as any)}
+              style={{ width: 180 }}
+            >
+              <option value="ALL">Status: Semua</option>
+              <option value="PENDING_PAYMENT">PENDING</option>
+              <option value="PAID">PAID</option>
+              <option value="FAILED">FAILED</option>
+            </select>
+
+            <button onClick={load} className="btn-ghost btn-xs" disabled={loading}>
+              {loading ? "Loading..." : "Refresh"}
+            </button>
+          </div>
+
+          <div style={{ height: 12 }} />
 
           <AdminTable columns={columns as any} rows={filtered as any} rowKey={(r: OrderRow) => r.id} />
         </div>

@@ -20,12 +20,29 @@ export default function AdminTable<T>({
   rowKey,
 }: Props<T>) {
   return (
-    <div className="admin-table-container">
-      <table className="admin-table">
+    <div style={{ overflowX: "auto", borderRadius: 14 }}>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          background: "#1f1f2b",
+          color: "#fff",
+        }}
+      >
         <thead>
           <tr>
             {columns.map((col) => (
-              <th key={col.key}>
+              <th
+                key={col.key}
+                style={{
+                  textAlign: "left",
+                  padding: "12px 14px",
+                  borderBottom: "1px solid rgba(255,255,255,.08)",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,.7)",
+                }}
+              >
                 {col.title}
               </th>
             ))}
@@ -36,7 +53,14 @@ export default function AdminTable<T>({
           {rows.map((row) => (
             <tr key={rowKey(row)}>
               {columns.map((col) => (
-                <td key={col.key}>
+                <td
+                  key={col.key}
+                  style={{
+                    padding: "12px 14px",
+                    borderBottom: "1px solid rgba(255,255,255,.05)",
+                    fontSize: 14,
+                  }}
+                >
                   {col.render ? col.render(row) : (row as any)[col.key]}
                 </td>
               ))}
