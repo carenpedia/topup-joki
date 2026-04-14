@@ -22,63 +22,94 @@ const nav = [
   { href: "/user/profile", label: "👤 Profil Saya" },
 ];
 
-
 export default function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
   return (
     <aside className={`adminSidebar ${isOpen ? "isOpen" : ""}`}>
-      <div className="contact-card" style={{ padding: 12, height: "100%", overflowY: "auto" }}>
+      <div 
+        className="contact-card" 
+        style={{ 
+          padding: "20px 16px", 
+          height: "100%", 
+          overflowY: "auto",
+          background: "linear-gradient(180deg, rgba(30, 32, 38, 0.4), rgba(20, 22, 28, 0.8))",
+          backdropFilter: "blur(20px)",
+          border: "1px solid rgba(255,255,255,0.03)",
+          borderRadius: "24px"
+        }}
+      >
 
-        {/* NEW: Back to Site Button */}
+        {/* Header / Brand */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, padding: "0 4px" }}>
+          <div style={{ 
+            fontWeight: 900, 
+            fontSize: 20, 
+            background: "linear-gradient(135deg, #fff, #9ca3af)", 
+            WebkitBackgroundClip: "text", 
+            WebkitTextFillColor: "transparent",
+            letterSpacing: "-0.5px"
+          }}>
+            Carenpedia Workspace
+          </div>
+          <button
+            className="adminHamburger"
+            onClick={onClose}
+            style={{ border: "none", background: "rgba(255,255,255,0.05)", borderRadius: "8px", cursor: "pointer", display: "flex", padding: 6 }}
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        {/* Back to Site Button */}
         <Link
           href="/"
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 10,
-            padding: "12px 14px",
-            borderRadius: 14,
-            background: "linear-gradient(135deg, #3b82f6, #2563eb)",
-            color: "#fff",
+            gap: 12,
+            padding: "14px 16px",
+            borderRadius: "16px",
+            background: "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(37,99,235,0.05))",
+            border: "1px solid rgba(59,130,246,0.3)",
+            color: "#60a5fa",
             fontSize: 14,
-            fontWeight: 900,
+            fontWeight: 800,
             textDecoration: "none",
-            marginBottom: 20,
-            boxShadow: "0 8px 20px rgba(37,99,235,0.25)"
+            marginBottom: 24,
+            transition: "all 0.2s"
           }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #3b82f6, #2563eb)"; e.currentTarget.style.color = "#fff"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(37,99,235,0.05))"; e.currentTarget.style.color = "#60a5fa"; }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-          Lihat Situs
+          Kembali ke Situs
         </Link>
-
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-          <div style={{ fontWeight: 950 }}>Admin Panel</div>
-          <button
-            className="adminHamburger"
-            onClick={onClose}
-            style={{ border: "none", background: "transparent", cursor: "pointer", display: "flex", width: 32, height: 32 }}
-          >
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          </button>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12, marginLeft: 8 }}>Menu Navigasi</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {nav.map((it) => {
             const active = pathname === it.href;
             return (
-              <Link
+               <Link
                 key={it.href}
                 href={it.href}
                 onClick={onClose}
                 style={{
-                  padding: "10px 12px",
-                  borderRadius: 12,
-                  border: `1px solid ${active ? "rgba(59,130,246,.35)" : "rgba(255,255,255,.08)"}`,
-                  background: active ? "rgba(59,130,246,.12)" : "rgba(255,255,255,.04)",
-                  color: "rgba(255,255,255,.9)",
-                  fontSize: 13,
-                  fontWeight: 800,
+                  padding: "12px 16px",
+                  borderRadius: "14px",
+                  border: `1px solid ${active ? "rgba(59,130,246,.4)" : "transparent"}`,
+                  background: active ? "linear-gradient(90deg, rgba(59,130,246,.15), rgba(59,130,246,.05))" : "transparent",
+                  color: active ? "#fff" : "rgba(255,255,255,.6)",
+                  fontSize: 14,
+                  fontWeight: active ? 800 : 700,
+                  transition: "all 0.2s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10
                 }}
+                onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.color = "#fff"; }}
+                onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,.6)"; } }}
               >
+                {active && <div style={{ width: 4, height: 14, borderRadius: 4, background: "#3b82f6" }} />}
                 {it.label}
               </Link>
             );
