@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import { useToast } from "@/app/components/ToastProvider";
 import { useAsyncAction } from "@/app/components/useAsyncAction";
 
