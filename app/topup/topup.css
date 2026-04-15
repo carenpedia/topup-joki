@@ -158,8 +158,15 @@
 .topupScope .tpNewHeroInfo {
   flex: 1;
   padding-bottom: 8px;
-  /* Menggunakan transform agar tidak mendorong logo ikut turun */
+  /* Desktop: Turun 50px */
   transform: translateY(50px);
+}
+
+@media (max-width: 760px) {
+  .topupScope .tpNewHeroInfo {
+    /* Mobile: Naikkan kembali agar tidak terlalu jauh dari logo */
+    transform: translateY(0);
+  }
 }
 
 .topupScope .tpNewHeroTitle {
