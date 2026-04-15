@@ -426,8 +426,6 @@ export default function TopupClient({
       </div>
 
       <div className="topupWrap">
-        <div className="spacer" />
-
         {/* Tab Switcher: Top Up / Joki */}
         {hasJoki && (
           <div style={{
@@ -436,7 +434,7 @@ export default function TopupClient({
             border: "1px solid rgba(255,255,255,.10)",
             borderRadius: 16,
             padding: 4,
-            marginTop: 24,
+            marginTop: 8,
           }}>
             <div style={{
               flex: 1,

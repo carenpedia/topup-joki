@@ -57,7 +57,7 @@
 .topupScope .tpNewHero {
   position: relative;
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 8px; /* Kurangi jarak agar lebih rapat */
 }
 
 .topupScope .tpNewHeroBanner {
