@@ -6,12 +6,21 @@
 
 /* ===== PAGE LAYOUT ===== */
 
+.homePageContainer {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  color: #fff;
+}
+
 .homePage {
   position: relative;
   min-height: 100vh;
   padding-bottom: 60px;
   font-family: var(--font-sans);
-  background: #1a1b1f;
+  background: #0b0c10;
 }
 
 /* Ambient glow (Dimatikan sesuai request solid background) */

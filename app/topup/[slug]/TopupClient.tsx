@@ -616,6 +616,7 @@ export default function TopupClient({
 
         <div className="card" id="section-payment">
           <div className="contact-header">
+            <div className="contact-step">3</div>
             <div className="contact-title-wrap">
               <h4 className="contact-title">Metode Pembayaran</h4>
             </div>

@@ -33,7 +33,7 @@ body{
   margin:0;
   font-family: var(--font-sans);
   color: var(--text);
-  background: var(--bg1);
+  background: #1a1b1f;
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

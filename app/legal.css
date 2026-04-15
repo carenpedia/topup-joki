@@ -9,7 +9,7 @@
   position: relative;
   min-height: 100vh;
   font-family: var(--font-sans);
-  background: #1a1b1f;
+  background: #0b0c10;
   color: rgba(255, 255, 255, 0.92);
   overflow-x: hidden;
 }
