@@ -55,6 +55,7 @@ export async function POST(req: Request) {
       key,
       name,
       logoUrl: body.logoUrl ? String(body.logoUrl).trim() : null,
+      bannerUrl: body.bannerUrl ? String(body.bannerUrl).trim() : null,
       isActive: Boolean(body.isActive ?? true),
       hasJoki: Boolean(body.hasJoki ?? false),
       isPopuler: Boolean(body.isPopuler ?? false),

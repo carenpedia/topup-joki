@@ -10,6 +10,7 @@ type Game = {
   key: string;
   name: string;
   logoUrl: string | null;
+  bannerUrl: string | null;
   isActive: boolean;
   hasJoki: boolean;
   isPopuler: boolean;
@@ -30,6 +31,7 @@ export default function AdminGameEditPage() {
 
   const [name, setName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
+  const [bannerUrl, setBannerUrl] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [hasJoki, setHasJoki] = useState(false);
   const [isPopuler, setIsPopuler] = useState(false);
@@ -52,6 +54,7 @@ export default function AdminGameEditPage() {
 
     setName(item.name);
     setLogoUrl(item.logoUrl ?? "");
+    setBannerUrl(item.bannerUrl ?? "");
     setIsActive(item.isActive);
     setHasJoki(item.hasJoki);
     setIsPopuler(item.isPopuler);
@@ -80,6 +83,7 @@ export default function AdminGameEditPage() {
         body: JSON.stringify({
           name: n,
           logoUrl: logoUrl.trim() ? logoUrl.trim() : null,
+          bannerUrl: bannerUrl.trim() ? bannerUrl.trim() : null,
           isActive,
           hasJoki,
           isPopuler,
@@ -175,6 +179,12 @@ export default function AdminGameEditPage() {
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label className="contact-label">Logo URL (opsional)</label>
                   <input className="contact-input" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://..." />
+                </div>
+
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label className="contact-label">Banner URL (Hero Section - opsional)</label>
+                  <input className="contact-input" value={bannerUrl} onChange={(e) => setBannerUrl(e.target.value)} placeholder="https://..." />
+                  <p className="contact-hint" style={{ marginTop: 4 }}>Muncul di bagian atas halaman topup sebagai background hero</p>
                 </div>
 
                 <div>

@@ -22,12 +22,15 @@ export async function PATCH(req: Request, ctx: { params: { id: string } }) {
   const name = body.name != null ? String(body.name).trim() : undefined;
   const logoUrl =
     body.logoUrl === null ? null : body.logoUrl != null ? String(body.logoUrl).trim() : undefined;
+  const bannerUrl =
+    body.bannerUrl === null ? null : body.bannerUrl != null ? String(body.bannerUrl).trim() : undefined;
 
   const updated = await prisma.game.update({
     where: { id: ctx.params.id },
     data: {
       name,
       logoUrl,
+      bannerUrl,
       isActive: body.isActive ?? undefined,
       hasJoki: body.hasJoki ?? undefined,
       isPopuler: body.isPopuler ?? undefined,

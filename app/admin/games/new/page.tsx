@@ -11,6 +11,7 @@ export default function AdminGameNewPage() {
   const [key, setKey] = useState("");
   const [name, setName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
+  const [bannerUrl, setBannerUrl] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [hasJoki, setHasJoki] = useState(false);
   const [isPopuler, setIsPopuler] = useState(false);
@@ -37,6 +38,7 @@ export default function AdminGameNewPage() {
           key: k,
           name: n,
           logoUrl: logoUrl.trim() ? logoUrl.trim() : null,
+          bannerUrl: bannerUrl.trim() ? bannerUrl.trim() : null,
           isActive,
           hasJoki,
           isPopuler,
@@ -118,6 +120,16 @@ export default function AdminGameNewPage() {
                 placeholder="https://..."
                 value={logoUrl}
                 onChange={(e) => setLogoUrl(e.target.value)}
+              />
+            </div>
+
+            <div style={{ gridColumn: "1 / -1" }}>
+              <label className="contact-label">Banner URL (Hero Topup - opsional)</label>
+              <input
+                className="contact-input"
+                placeholder="https://..."
+                value={bannerUrl}
+                onChange={(e) => setBannerUrl(e.target.value)}
               />
             </div>
 
