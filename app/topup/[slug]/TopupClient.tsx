@@ -486,32 +486,36 @@ export default function TopupClient({
           </div>
 
           <div className="contact-body">
-            {targetConfig.fields.map((field, idx) => (
-              <div key={field.key}>
-                {idx > 0 && <div className="spacer" />}
-                <label className="contact-label">{field.label}</label>
-                {field.type === "select" && field.options ? (
-                  <select
-                    className="contact-input"
-                    value={targetInputs[field.key] || ""}
-                    onChange={(e) => setTargetField(field.key, e.target.value)}
-                  >
-                    <option value="">-- Pilih {field.label} --</option>
-                    {field.options.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    className="contact-input"
-                    value={targetInputs[field.key] || ""}
-                    onChange={(e) => setTargetField(field.key, e.target.value)}
-                    placeholder={field.placeholder}
-                    inputMode={field.inputMode || "text"}
-                  />
-                )}
-              </div>
-            ))}
+            <div style={{ 
+              display: "grid", 
+              gridTemplateColumns: targetConfig.fields.length > 1 ? "repeat(auto-fit, minmax(200px, 1fr))" : "1fr", 
+              gap: "16px" 
+            }}>
+              {targetConfig.fields.map((field) => (
+                <div key={field.key}>
+                  <label className="contact-label">{field.label}</label>
+                  {field.type === "select" && field.options ? (
+                    <select
+                      className="contact-input"
+                      value={targetInputs[field.key] || ""}
+                      onChange={(e) => setTargetField(field.key, e.target.value)}
+                    >
+                      <option value="">-- Pilih {field.label} --</option>
+                      {field.options.map((opt) => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      className="contact-input"
+                      placeholder={`Masukkan ${field.label}`}
+                      value={targetInputs[field.key] || ""}
+                      onChange={(e) => setTargetField(field.key, e.target.value)}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
