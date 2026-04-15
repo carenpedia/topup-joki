@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { TARGET_TYPE_OPTIONS } from "@/lib/targetConfig";
 
 export default function AdminGameNewPage() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function AdminGameNewPage() {
   const [isActive, setIsActive] = useState(true);
   const [hasJoki, setHasJoki] = useState(false);
   const [isPopuler, setIsPopuler] = useState(false);
+  const [targetType, setTargetType] = useState("DEFAULT");
 
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -38,6 +40,7 @@ export default function AdminGameNewPage() {
           isActive,
           hasJoki,
           isPopuler,
+          targetType,
         }),
       });
 
@@ -141,6 +144,16 @@ export default function AdminGameNewPage() {
                 <option value="1">🔥 Tampilkan di bagian Populer Sekarang</option>
               </select>
               <p className="contact-hint" style={{ marginTop: 4 }}>Game akan muncul di bagian atas homepage dengan card horizontal besar</p>
+            </div>
+
+            <div style={{ gridColumn: "1 / -1" }}>
+              <label className="contact-label">Tipe Input Target ID</label>
+              <select className="contact-input" value={targetType} onChange={(e) => setTargetType(e.target.value)}>
+                {TARGET_TYPE_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+              <p className="contact-hint" style={{ marginTop: 4 }}>Menentukan form input yang tampil di halaman topup (User ID, Server, UID, dll)</p>
             </div>
           </div>
 

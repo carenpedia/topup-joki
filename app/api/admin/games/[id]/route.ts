@@ -31,6 +31,7 @@ export async function PATCH(req: Request, ctx: { params: { id: string } }) {
       isActive: body.isActive ?? undefined,
       hasJoki: body.hasJoki ?? undefined,
       isPopuler: body.isPopuler ?? undefined,
+      targetType: body.targetType != null ? String(body.targetType) : undefined,
     },
   });
 

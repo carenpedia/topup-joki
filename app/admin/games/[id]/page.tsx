@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { TARGET_TYPE_OPTIONS } from "@/lib/targetConfig";
 
 type Game = {
   id: string;
@@ -12,6 +13,7 @@ type Game = {
   isActive: boolean;
   hasJoki: boolean;
   isPopuler: boolean;
+  targetType: string;
 };
 
 export default function AdminGameEditPage() {
@@ -31,6 +33,7 @@ export default function AdminGameEditPage() {
   const [isActive, setIsActive] = useState(true);
   const [hasJoki, setHasJoki] = useState(false);
   const [isPopuler, setIsPopuler] = useState(false);
+  const [targetType, setTargetType] = useState("DEFAULT");
 
   async function load() {
     setErr(null);
@@ -52,6 +55,7 @@ export default function AdminGameEditPage() {
     setIsActive(item.isActive);
     setHasJoki(item.hasJoki);
     setIsPopuler(item.isPopuler);
+    setTargetType(item.targetType || "DEFAULT");
 
     setLoading(false);
   }
@@ -79,6 +83,7 @@ export default function AdminGameEditPage() {
           isActive,
           hasJoki,
           isPopuler,
+          targetType,
         }),
       });
 
@@ -196,6 +201,16 @@ export default function AdminGameEditPage() {
                     <option value="1">🔥 Tampilkan di bagian Populer Sekarang</option>
                   </select>
                   <p className="contact-hint" style={{ marginTop: 4 }}>Game akan muncul di bagian atas homepage dengan card horizontal besar</p>
+                </div>
+
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label className="contact-label">Tipe Input Target ID</label>
+                  <select className="contact-input" value={targetType} onChange={(e) => setTargetType(e.target.value)}>
+                    {TARGET_TYPE_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                  <p className="contact-hint" style={{ marginTop: 4 }}>Menentukan form input yang tampil di halaman topup (User ID, Server, UID, dll)</p>
                 </div>
               </div>
 

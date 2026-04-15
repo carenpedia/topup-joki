@@ -106,6 +106,7 @@ export default async function TopupGamePage({ params }: { params: any }) {
       bannerUrl={game.bannerUrl ?? null}
       publisher={publisherFromSlug(game.key)}
       hasJoki={game.hasJoki}
+      targetType={game.targetType ?? "DEFAULT"}
     />
   );
 }

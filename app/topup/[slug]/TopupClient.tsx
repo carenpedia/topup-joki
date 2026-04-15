@@ -7,6 +7,7 @@ import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import { useToast } from "@/app/components/ToastProvider";
 import { useAsyncAction } from "@/app/components/useAsyncAction";
+import { getTargetConfig } from "@/lib/targetConfig";
 
 export type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
 type PaymentMethod = "CarenCoin" | "Payment Gateway";
@@ -22,6 +23,7 @@ type Props = {
   bannerUrl?: string | null;
   publisher?: string;
   hasJoki?: boolean;
+  targetType?: string;
 };
 
 type NominalRow = {
@@ -93,10 +95,20 @@ export default function TopupClient({
   bannerUrl,
   publisher = "Official Publisher",
   hasJoki = false,
+  targetType = "DEFAULT",
 }: Props) {
   const router = useRouter();
-  const [userId, setUserId] = useState("");
-  const [server, setServer] = useState("");
+  const targetConfig = getTargetConfig(targetType);
+  const [targetInputs, setTargetInputs] = useState<Record<string, string>>({});
+
+  // Helper: update satu field di targetInputs
+  function setTargetField(key: string, value: string) {
+    setTargetInputs((prev) => ({ ...prev, [key]: value }));
+  }
+
+  // Backward compat shortcuts
+  const userId = targetInputs["userId"] || "";
+  const server = targetInputs["server"] || "";
 
   const [audience, setAudience] = useState<Audience>(audienceProp || "PUBLIC");
   const [nominals, setNominals] = useState<NominalRow[]>([]);
@@ -113,7 +125,7 @@ export default function TopupClient({
 
   const [contact, setContact] = useState("");
 
-  const isML = game.key === "mobile-legends";
+  const hasServer = targetConfig.fields.some((f) => f.key === "server");
 
   useEffect(() => {
     let alive = true;
@@ -231,22 +243,24 @@ export default function TopupClient({
   }, [selectedItem]);
 
   const checkoutStatus = useMemo(() => {
-    if (!userId.trim()) return "Isi User ID dulu";
-    if (isML && !server.trim()) return "Isi Server (khusus ML) dulu";
+    for (const f of targetConfig.fields) {
+      if (f.required && !(targetInputs[f.key] || "").trim()) return `Isi ${f.label} dulu`;
+    }
     if (!selectedItem) return "Pilih nominal dulu";
     if (!paymentMethod) return "Pilih metode bayar dulu";
     if (!contact.trim()) return "Isi kontak dulu";
     return "Siap checkout";
-  }, [userId, server, isML, selectedItem, paymentMethod, contact]);
+  }, [targetInputs, targetConfig, selectedItem, paymentMethod, contact]);
 
   const canCheckout = useMemo(() => {
-    if (!userId.trim()) return false;
-    if (isML && !server.trim()) return false;
+    for (const f of targetConfig.fields) {
+      if (f.required && !(targetInputs[f.key] || "").trim()) return false;
+    }
     if (!selectedItem) return false;
     if (!paymentMethod) return false;
     if (!contact.trim()) return false;
     return true;
-  }, [userId, server, isML, selectedItem, paymentMethod, contact]);
+  }, [targetInputs, targetConfig, selectedItem, paymentMethod, contact]);
 
   function applyVoucher() {
     const code = voucher.trim().toUpperCase();
@@ -292,7 +306,7 @@ export default function TopupClient({
           gameKey: game.key,
           productId: selectedItem?.id,
           inputUserId: userId,
-          inputServer: isML ? server : undefined,
+          inputServer: hasServer ? server : undefined,
           contactWhatsapp: contactDisplay,
           paymentMethod: paymentMethod === "CarenCoin" ? "CARENCOIN" : "GATEWAY",
           paymentGateway: paymentMethod === "Payment Gateway" ? "TRIPAY" : undefined,
@@ -346,8 +360,9 @@ export default function TopupClient({
   };
 
   const handleProductSelect = (id: string) => {
-    if (!userId.trim()) {
-      toast.error("⚠️ Silakan masukkan User ID Anda terlebih dahulu!");
+    const firstField = targetConfig.fields[0];
+    if (firstField && !(targetInputs[firstField.key] || "").trim()) {
+      toast.error(`⚠️ Silakan masukkan ${firstField.label} Anda terlebih dahulu!`);
       scrollTo("section-id");
       return;
     }
@@ -464,33 +479,37 @@ export default function TopupClient({
           <div className="contact-header">
             <div className="contact-step">1</div>
             <div className="contact-title-wrap">
-              <h4 className="contact-title">Masukkan User ID</h4>
+              <h4 className="contact-title">Masukkan Data Akun</h4>
             </div>
           </div>
 
           <div className="contact-body">
-            <label className="contact-label">User ID</label>
-            <input
-              className="contact-input"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              placeholder="Contoh: 12345678"
-              inputMode="numeric"
-            />
-
-            {isML ? (
-              <>
-                <div className="spacer" />
-                <label className="contact-label">Server (khusus ML)</label>
-                <input
-                  className="contact-input"
-                  value={server}
-                  onChange={(e) => setServer(e.target.value)}
-                  placeholder="Contoh: 1234"
-                  inputMode="numeric"
-                />
-              </>
-            ) : null}
+            {targetConfig.fields.map((field, idx) => (
+              <div key={field.key}>
+                {idx > 0 && <div className="spacer" />}
+                <label className="contact-label">{field.label}</label>
+                {field.type === "select" && field.options ? (
+                  <select
+                    className="contact-input"
+                    value={targetInputs[field.key] || ""}
+                    onChange={(e) => setTargetField(field.key, e.target.value)}
+                  >
+                    <option value="">-- Pilih {field.label} --</option>
+                    {field.options.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    className="contact-input"
+                    value={targetInputs[field.key] || ""}
+                    onChange={(e) => setTargetField(field.key, e.target.value)}
+                    placeholder={field.placeholder}
+                    inputMode={field.inputMode || "text"}
+                  />
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
