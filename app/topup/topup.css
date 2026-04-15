@@ -158,7 +158,8 @@
 .topupScope .tpNewHeroInfo {
   flex: 1;
   padding-bottom: 8px;
-  margin-top: 50px; /* Diturunkan lebih jauh lagi sesuai request */
+  /* Menggunakan transform agar tidak mendorong logo ikut turun */
+  transform: translateY(50px);
 }
 
 .topupScope .tpNewHeroTitle {
