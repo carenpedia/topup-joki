@@ -487,20 +487,25 @@ export default function TopupClient({
 
           <div className="contact-body">
             <div style={{ 
-              display: "grid", 
-              gridTemplateColumns: targetConfig.fields.length > 1 ? "repeat(auto-fit, minmax(200px, 1fr))" : "1fr", 
-              gap: "16px" 
+              display: "flex", 
+              flexDirection: "row", 
+              gap: "12px", 
+              flexWrap: "nowrap",
+              alignItems: "flex-start"
             }}>
               {targetConfig.fields.map((field) => (
-                <div key={field.key}>
-                  <label className="contact-label">{field.label}</label>
+                <div key={field.key} style={{ flex: "1", maxWidth: "250px", minWidth: "120px" }}>
+                  <label className="contact-label" style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {field.label}
+                  </label>
                   {field.type === "select" && field.options ? (
                     <select
                       className="contact-input"
                       value={targetInputs[field.key] || ""}
                       onChange={(e) => setTargetField(field.key, e.target.value)}
+                      style={{ padding: "12px 10px" }}
                     >
-                      <option value="">-- Pilih {field.label} --</option>
+                      <option value="">-- {field.label} --</option>
                       {field.options.map((opt) => (
                         <option key={opt} value={opt}>{opt}</option>
                       ))}
@@ -508,9 +513,10 @@ export default function TopupClient({
                   ) : (
                     <input
                       className="contact-input"
-                      placeholder={`Masukkan ${field.label}`}
+                      placeholder={field.label}
                       value={targetInputs[field.key] || ""}
                       onChange={(e) => setTargetField(field.key, e.target.value)}
+                      style={{ padding: "12px 10px" }}
                     />
                   )}
                 </div>
