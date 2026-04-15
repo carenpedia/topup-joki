@@ -1,8 +1,8 @@
 :root{
-  --bg-main: #1a1b1f; /* Consistent with homepage */
-  --bg-card: #23252a; /* Slightly lighter card bg */
-  --bg-card-soft: #1c1e22;
-  --border-soft: rgba(255,255,255,.06);
+  --bg-main: #0b0c10;
+  --bg-card: #12141a;
+  --bg-card-soft: #0e1014;
+  --border-soft: rgba(255,255,255,.05);
 }
 
 
@@ -53,17 +53,17 @@ body {
   padding: 12px 20px;
   font-family: var(--font-sans);
 
-  background: #1c1d21;
-  border-bottom: 1px solid transparent;
+  background: #0b0c10;
+  border-bottom: 1px solid rgba(255,255,255,.05);
   transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .siteTopbar.isScrolled {
-  background: rgba(28, 29, 33, 0.70);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border-bottom: 1px solid rgba(255,255,255,.05);
-  box-shadow: 0 10px 40px rgba(0,0,0,.4);
+  background: rgba(11, 12, 16, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(59,130,246,.25);
+  box-shadow: 0 10px 40px rgba(0,0,0,.5);
 }
 
 .siteTopbarRow {
@@ -451,8 +451,8 @@ body {
   right: 0;
   bottom: 0;
   width: 280px;
-  background: #1c1d21;
-  border-left: 1px solid rgba(255,255,255,.05);
+  background: #0b0c10;
+  border-left: 1px solid rgba(59,130,246,.2);
   box-shadow: -10px 0 40px rgba(0,0,0,.5);
   z-index: 100;
   padding: 24px 20px;
@@ -643,17 +643,19 @@ body {
 @media (max-width: 920px){ .cards{grid-template-columns: repeat(2, minmax(0,1fr));} }
 @media (max-width: 520px){ .cards{grid-template-columns: 1fr;} }
 
-/* CARD BASE – lebih terang dari background */
+/* CARD BASE – Premium Obsidian */
 .card {
-  background: #3f4244; /* LEBIH TERANG */
-  border: 1px solid rgba(255,255,255,.08);
+  background: #12141a;
+  border: 1px solid rgba(255,255,255,.05);
   border-radius: 20px;
-  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
   transition: all 160ms ease;
+  overflow: hidden;
 }
 
 .card:hover {
-  background: #162244;
+  background: #151822;
+  border-color: rgba(59,130,246,.3);
   transform: translateY(-2px);
 }
 
@@ -747,9 +749,9 @@ body {
   gap: 12px;
   padding: 14px 16px;
   border-radius: 18px;
-  background: #d5d8db; /* lebih terang dari bg */
-  border: 1px solid rgba(255,255,255,.10);
-  box-shadow: 0 10px 26px rgba(0,0,0,.35);
+  background: #12141a;
+  border: 1px solid rgba(255,255,255,.05);
+  box-shadow: 0 12px 30px rgba(0,0,0,.45);
 }
 
 .sectionStep {
@@ -816,8 +818,8 @@ body {
 .contact-card {
   overflow: hidden;
   border-radius: 14px;
-  background: #2f2b38;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #12141a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Header */
@@ -843,7 +845,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0 16px;
-  background: #5f5968;
+  background: rgba(59,130,246,0.05);
 }
 
 .contact-title {
@@ -867,8 +869,8 @@ body {
 .contact-input {
   width: 100%;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #2b2834;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #08090d;
   padding: 10px 12px;
   font-size: 14px;
   color: white;
@@ -888,8 +890,8 @@ body {
 .section-merged {
   overflow: hidden;
   border-radius: 14px;
-  background: #2f2b38;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #12141a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   margin-bottom: 24px;
 }
 
@@ -1010,12 +1012,12 @@ body {
   margin-top: 18px;
 
   border-radius: 18px;
-  background: rgba(22, 22, 28, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(10px);
+  background: rgba(11, 12, 16, 0.95);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  backdrop-filter: blur(14px);
 
   padding: 12px;
-  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.62);
+  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.65);
 }
 
 .stickyCheckoutInner {
@@ -1147,8 +1149,8 @@ body {
   display: block !important;
 
   border-radius: 14px !important;
-  border: 1px solid rgba(255, 255, 255, 0.10) !important;
-  background: #2b2834 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: #16181d !important;
 
   padding: 14px !important;
   min-height: 92px;
@@ -1424,9 +1426,9 @@ body {
   text-align:left;
   border-radius:14px;
   padding:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.05);
+  background: #16181d;
+  color: rgba(255,255,255,0.95);
   cursor:pointer;
   transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
 }

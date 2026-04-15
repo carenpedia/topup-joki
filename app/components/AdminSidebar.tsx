@@ -32,9 +32,9 @@ export default function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; on
           padding: "20px 16px", 
           height: "100%", 
           overflowY: "auto",
-          background: "linear-gradient(180deg, rgba(30, 32, 38, 0.4), rgba(20, 22, 28, 0.8))",
+          background: "#12141a",
           backdropFilter: "blur(20px)",
-          border: "1px solid rgba(255,255,255,0.03)",
+          border: "1px solid rgba(255,255,255,0.05)",
           borderRadius: "24px"
         }}
       >

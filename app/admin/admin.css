@@ -244,10 +244,11 @@
 
 /* Admin Form & Settings Styles */
 .admin-card {
-  background: #1c1e22;
+  background: #12141a;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   padding: 24px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
 }
 
 .settings-grid {

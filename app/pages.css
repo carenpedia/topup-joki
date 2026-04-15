@@ -12,8 +12,8 @@
   flex-direction: column;
   padding-bottom: 0;
   font-family: var(--font-sans);
-  background: #1a1b1f;
-  color: rgba(255,255,255,.92);
+  background: var(--bg1);
+  color: rgba(255,255,255,.94);
 }
 
 .page .bgGlow, .page .gridFx {
