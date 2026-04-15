@@ -57,7 +57,23 @@
 .topupScope .tpNewHero {
   position: relative;
   width: 100%;
-  margin-bottom: 8px; /* Kurangi jarak agar lebih rapat */
+  margin-bottom: 40px; /* Kembali ke jarak asli Desktop */
+}
+
+.topupScope .tpTabSwitcher {
+  margin-top: 24px; /* Desktop: Jarak asli */
+}
+
+@media (max-width: 760px) {
+  .topupScope .tpNewHero {
+    margin-bottom: 8px; /* Lebih rapat khusus Mobile */
+  }
+  .topupScope .desktop-only {
+    display: none; /* Hilangkan spacer di mobile */
+  }
+  .topupScope .tpTabSwitcher {
+    margin-top: 4px; /* Lebih rapat di mobile */
+  }
 }
 
 .topupScope .tpNewHeroBanner {

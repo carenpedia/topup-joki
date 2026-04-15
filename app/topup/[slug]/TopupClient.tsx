@@ -426,16 +426,20 @@ export default function TopupClient({
       </div>
 
       <div className="topupWrap">
+        <div className="spacer desktop-only" />
+
         {/* Tab Switcher: Top Up / Joki */}
         {hasJoki && (
-          <div style={{
-            display: "flex",
-            background: "rgba(255,255,255,.06)",
-            border: "1px solid rgba(255,255,255,.10)",
-            borderRadius: 16,
-            padding: 4,
-            marginTop: 8,
-          }}>
+          <div 
+            className="tpTabSwitcher"
+            style={{
+              display: "flex",
+              background: "rgba(255,255,255,.06)",
+              border: "1px solid rgba(255,255,255,.10)",
+              borderRadius: 16,
+              padding: 4,
+            }}
+          >
             <div style={{
               flex: 1,
               textAlign: "center",
