@@ -494,7 +494,7 @@ export default function TopupClient({
               alignItems: "flex-start"
             }}>
               {targetConfig.fields.map((field) => (
-                <div key={field.key} style={{ flex: "1", maxWidth: "250px", minWidth: "120px" }}>
+                <div key={field.key} style={{ flex: "0 0 calc(50% - 6px)" }}>
                   <label className="contact-label" style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     {field.label}
                   </label>
