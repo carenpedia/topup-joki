@@ -42,7 +42,7 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     description: "User ID + Zone ID / Server",
     fields: [
       { key: "userId", label: "User ID", placeholder: "Contoh: 12345678", inputMode: "numeric", required: true, hint: "Klik avatar profil → lihat angka di bawah nama" },
-      { key: "server", label: "Zone ID", placeholder: "Contoh: 1234", inputMode: "numeric", required: true, hint: "Angka dalam kurung di samping User ID" },
+      { key: "server", label: "Server", placeholder: "Contoh: 1234", inputMode: "numeric", required: true, hint: "Angka dalam kurung di samping User ID" },
     ],
   },
 
