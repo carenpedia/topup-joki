@@ -402,6 +402,22 @@ export default function JokiClient({
               onChange={(e) => setUserIdNickname(e.target.value)}
               placeholder="Contoh: 12345678 (NamaAkun)"
             />
+            <p style={{
+              margin: "6px 0 0",
+              fontSize: 11,
+              lineHeight: 1.4,
+              color: "rgba(255,255,255,.45)",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 5,
+            }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}>
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 16v-4" />
+                <path d="M12 8h.01" />
+              </svg>
+              <span>Klik avatar profil → lihat ID dan Nickname di bawah nama</span>
+            </p>
 
             <div className="spacer" />
             <label className="contact-label">
@@ -413,6 +429,22 @@ export default function JokiClient({
               onChange={(e) => setLoginId(e.target.value)}
               placeholder="Email / No. HP / ID akun"
             />
+            <p style={{
+              margin: "6px 0 0",
+              fontSize: 11,
+              lineHeight: 1.4,
+              color: "rgba(255,255,255,.45)",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 5,
+            }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}>
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 16v-4" />
+                <path d="M12 8h.01" />
+              </svg>
+              <span>Masukkan email/ID yang dipakai untuk login ke game</span>
+            </p>
 
             <div className="spacer" />
             <label className="contact-label">Password</label>

@@ -13,6 +13,7 @@ export type TargetFieldConfig = {
   required: boolean;
   type?: "text" | "select";
   options?: string[];  // untuk type="select", list pilihan
+  hint?: string;       // teks bantuan kecil di bawah input
 };
 
 export type TargetTypeConfig = {
@@ -32,7 +33,7 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     label: "Default (User ID saja)",
     description: "Hanya 1 input: User ID",
     fields: [
-      { key: "userId", label: "User ID", placeholder: "Masukkan User ID", inputMode: "numeric", required: true },
+      { key: "userId", label: "User ID", placeholder: "Masukkan User ID", inputMode: "numeric", required: true, hint: "Buka profil di game → ID ada di bawah username" },
     ],
   },
 
@@ -40,8 +41,8 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     label: "Mobile Legends (User ID + Server)",
     description: "User ID + Zone ID / Server",
     fields: [
-      { key: "userId", label: "User ID", placeholder: "Contoh: 12345678", inputMode: "numeric", required: true },
-      { key: "server", label: "Zone ID", placeholder: "Contoh: 1234", inputMode: "numeric", required: true },
+      { key: "userId", label: "User ID", placeholder: "Contoh: 12345678", inputMode: "numeric", required: true, hint: "Klik avatar profil → lihat angka di bawah nama" },
+      { key: "server", label: "Zone ID", placeholder: "Contoh: 1234", inputMode: "numeric", required: true, hint: "Angka dalam kurung di samping User ID" },
     ],
   },
 
@@ -49,7 +50,7 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     label: "Free Fire (Player ID)",
     description: "Hanya Player ID",
     fields: [
-      { key: "userId", label: "Player ID", placeholder: "Masukkan Player ID", inputMode: "numeric", required: true },
+      { key: "userId", label: "Player ID", placeholder: "Masukkan Player ID", inputMode: "numeric", required: true, hint: "Buka profil → ID ada di bagian atas profil" },
     ],
   },
 
@@ -57,8 +58,8 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     label: "Genshin Impact (UID + Server)",
     description: "UID + pilihan Server region",
     fields: [
-      { key: "userId", label: "UID", placeholder: "Contoh: 812345678", inputMode: "numeric", required: true },
-      { key: "server", label: "Server", placeholder: "Pilih Server", required: true, type: "select", options: ["Asia", "America", "Europe", "TW/HK/MO"] },
+      { key: "userId", label: "UID", placeholder: "Contoh: 812345678", inputMode: "numeric", required: true, hint: "Buka Paimon Menu → lihat UID di pojok kanan bawah" },
+      { key: "server", label: "Server", placeholder: "Pilih Server", required: true, type: "select", options: ["Asia", "America", "Europe", "TW/HK/MO"], hint: "Pilih sesuai region server akun kamu" },
     ],
   },
 
@@ -66,8 +67,8 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     label: "Ragnarok (User ID + Server)",
     description: "User ID + pilihan Server",
     fields: [
-      { key: "userId", label: "User ID", placeholder: "Masukkan User ID", inputMode: "text", required: true },
-      { key: "server", label: "Server", placeholder: "Pilih Server", required: true, type: "select", options: ["Eternal Love", "Midnight Party", "Memory of Faith"] },
+      { key: "userId", label: "User ID", placeholder: "Masukkan User ID", inputMode: "text", required: true, hint: "Buka Settings → lihat User ID di info akun" },
+      { key: "server", label: "Server", placeholder: "Pilih Server", required: true, type: "select", options: ["Eternal Love", "Midnight Party", "Memory of Faith"], hint: "Pilih server tempat karakter kamu berada" },
     ],
   },
 
@@ -75,8 +76,8 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     label: "Wuthering Waves (UID + Server)",
     description: "UID + pilihan Server region",
     fields: [
-      { key: "userId", label: "UID", placeholder: "Masukkan UID", inputMode: "numeric", required: true },
-      { key: "server", label: "Server", placeholder: "Pilih Server", required: true, type: "select", options: ["Asia Pacific", "America", "Europe", "South East Asia"] },
+      { key: "userId", label: "UID", placeholder: "Masukkan UID", inputMode: "numeric", required: true, hint: "Buka Menu → Profile → lihat UID di sisi kiri" },
+      { key: "server", label: "Server", placeholder: "Pilih Server", required: true, type: "select", options: ["Asia Pacific", "America", "Europe", "South East Asia"], hint: "Pilih sesuai region server akun kamu" },
     ],
   },
 
@@ -84,8 +85,8 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     label: "Call of Duty Mobile (Player ID + Open ID)",
     description: "Player ID + Open ID",
     fields: [
-      { key: "userId", label: "Player ID", placeholder: "Masukkan Player ID", inputMode: "numeric", required: true },
-      { key: "server", label: "Open ID", placeholder: "Masukkan Open ID", inputMode: "text", required: true },
+      { key: "userId", label: "Player ID", placeholder: "Masukkan Player ID", inputMode: "numeric", required: true, hint: "Buka profil → lihat ID numerik di bawah nama" },
+      { key: "server", label: "Open ID", placeholder: "Masukkan Open ID", inputMode: "text", required: true, hint: "Tersedia di Settings → Legal & Privacy → Open ID" },
     ],
   },
 
@@ -93,7 +94,7 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     label: "Valorant (Riot ID)",
     description: "Riot ID format: Nama#Tag",
     fields: [
-      { key: "userId", label: "Riot ID", placeholder: "Contoh: Nama#1234", inputMode: "text", required: true },
+      { key: "userId", label: "Riot ID", placeholder: "Contoh: Nama#1234", inputMode: "text", required: true, hint: "Format: NamaAkun#Tagline (contoh: Sultan#1234)" },
     ],
   },
 
@@ -101,7 +102,7 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
     label: "Arena of Valor / AOV (Player ID)",
     description: "Hanya Player ID",
     fields: [
-      { key: "userId", label: "Player ID", placeholder: "Masukkan Player ID", inputMode: "numeric", required: true },
+      { key: "userId", label: "Player ID", placeholder: "Masukkan Player ID", inputMode: "numeric", required: true, hint: "Buka profil → Player ID ada di bawah avatar" },
     ],
   },
 };
