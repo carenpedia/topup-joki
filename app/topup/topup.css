@@ -88,8 +88,7 @@
 
 @media (max-width: 760px) {
   .topupScope .tpNewHeroBanner {
-    height: auto;
-    aspect-ratio: 1 / 1;
+    height: 160px;
   }
 }
 
