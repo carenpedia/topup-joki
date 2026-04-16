@@ -51,10 +51,12 @@ export default function Navbar() {
   const [searchLoading, setSearchLoading] = useState(false);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const searchRef = useRef<HTMLFormElement | null>(null);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const mobileSearchInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -79,6 +81,7 @@ export default function Navbar() {
   useEffect(() => {
     setMobileMenuOpen(false);
     setSearchOpen(false);
+    setMobileSearchOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -105,6 +108,14 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (mobileSearchOpen) {
+      setTimeout(() => {
+        mobileSearchInputRef.current?.focus();
+      }, 300);
+    }
+  }, [mobileSearchOpen]);
 
   useEffect(() => {
     const q = keyword.trim();
@@ -179,6 +190,18 @@ export default function Navbar() {
               <div className="siteBrandLogo">{config.SITE_NAME.charAt(0)}</div>
             )}
           </Link>
+
+          <button
+            type="button"
+            className="siteMobileSearchTrigger"
+            onClick={() => setMobileSearchOpen(true)}
+            aria-label="Cari Game"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
 
           <div className="siteSearchWrap">
             <form className="siteSearch" onSubmit={submitSearch} ref={searchRef}>
@@ -368,6 +391,65 @@ export default function Navbar() {
                 Daftar
               </Link>
             </>
+          )}
+        </div>
+      </div>
+
+      <div
+        className={`siteMobileOverlay ${mobileSearchOpen ? "isOpen" : ""}`}
+        onClick={() => setMobileSearchOpen(false)}
+        style={{ zIndex: 109 }}
+      />
+      <div className={`siteMobileSearchPanel ${mobileSearchOpen ? "isOpen" : ""}`}>
+        <div className="siteMobileSearchHeader">
+          <form className="siteMobileSearchForm" onSubmit={submitSearch}>
+            <svg style={{ opacity: 0.6, width: 18, height: 18 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              ref={mobileSearchInputRef}
+              className="siteMobileSearchInput"
+              type="text"
+              placeholder="Cari Game atau Voucher"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+          </form>
+          <button className="siteMobileSearchClose" onClick={() => setMobileSearchOpen(false)}>
+            Batal
+          </button>
+        </div>
+
+        <div className="siteMobileSearchResults">
+          {searchLoading ? (
+            <div className="siteSearchEmpty">Mencari game...</div>
+          ) : results.length > 0 ? (
+            results.map((game) => (
+              <Link
+                key={game.id}
+                href={`/topup/${game.key}`}
+                className="siteSearchItem"
+                onClick={() => setMobileSearchOpen(false)}
+              >
+                <div className="siteSearchItemThumb">
+                  {game.logoUrl ? (
+                    <img src={game.logoUrl} alt={game.name} className="siteSearchItemImg" />
+                  ) : (
+                    <div className="siteSearchItemFallback">G</div>
+                  )}
+                </div>
+
+                <div className="siteSearchItemMeta">
+                  <div className="siteSearchItemName">{game.name}</div>
+                  <div className="siteSearchItemSlug">/topup/{game.key}</div>
+                </div>
+              </Link>
+            ))
+          ) : keyword.trim() ? (
+            <div className="siteSearchEmpty">Game tidak ditemukan.</div>
+          ) : (
+            <div className="siteSearchEmpty">Ketik untuk mencari game favoritmu...</div>
           )}
         </div>
       </div>
