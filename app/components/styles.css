@@ -100,6 +100,26 @@ body {
   box-shadow: 0 0 20px rgba(59,130,246,.2);
 }
 
+.siteBrandImg {
+  display: block;
+  max-height: 42px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .siteBrandImg {
+    max-height: 32px;
+    max-width: 110px;
+  }
+}
+
+.siteBrand:hover .siteBrandImg {
+  transform: translateY(-1px);
+}
+
 /* ---------- Search ---------- */
 .siteSearchWrap {
   position: relative;
