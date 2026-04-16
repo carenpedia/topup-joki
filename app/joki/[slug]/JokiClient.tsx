@@ -328,16 +328,17 @@ export default function JokiClient({
       </div>
 
       <div className="topupWrap">
-        <div className="spacer" />
+        <div className="spacer desktop-only" />
 
         {/* Tab Switcher */}
-        <div style={{
-          display: "flex",
+        <div 
+          className="tpTabSwitcher"
+          style={{
+            display: "flex",
           background: "rgba(255,255,255,.06)",
           border: "1px solid rgba(255,255,255,.10)",
           borderRadius: 16,
           padding: 4,
-          marginTop: 24,
         }}>
           <Link
             href={`/topup/${game.key}`}
