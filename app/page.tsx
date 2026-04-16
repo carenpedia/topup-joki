@@ -14,8 +14,9 @@ export default async function Home({ searchParams }: { searchParams: any }) {
     const query = typeof searchParams?.q === "string" ? searchParams.q.toLowerCase() : "";
     const activeCatId = typeof searchParams?.cat === "string" ? searchParams.cat : null;
 
-    // 1, 1.5, 2) Ambil data secara paralel untuk mempercepat loading
-    const [banners, categories, dbGames] = await Promise.all([
+    // 1, 1.5, 2, 2.5) Ambil data secara paralel untuk mempercepat loading
+    const now = new Date();
+    const [banners, categories, dbGames, flashSales] = await Promise.all([
       // 1) Banners
       prisma.promoBanner.findMany({
         where: { isActive: true },
@@ -39,6 +40,15 @@ export default async function Home({ searchParams }: { searchParams: any }) {
           links: { select: { categoryId: true } },
         },
         orderBy: { createdAt: "asc" },
+      }),
+      // 2.5) Active Flash Sales
+      prisma.flashSale.findMany({
+        where: {
+          isActive: true,
+          startAt: { lte: now },
+          endAt: { gte: now },
+        },
+        take: 5,
       }),
     ]);
 
@@ -89,17 +99,22 @@ export default async function Home({ searchParams }: { searchParams: any }) {
                 </div>
               </div>
             </div>
+          </div>
 
-            <div className="flashStrip">
-              <span className="flashIcon">⚡</span>
-              <div>
-                <div className="flashTitle">Flash Sale</div>
-                <div className="flashSub">
-                  Nanti: tampilkan item diskon dari admin (setting flash sale).
+          {/* Flash Sale Strip (Hanya muncul jika ada promo aktif) */}
+          {flashSales.length > 0 && (
+            <div className="homeSection">
+              <div className="flashStrip">
+                <span className="flashIcon">⚡</span>
+                <div style={{ flex: 1 }}>
+                  <div className="flashTitle">Flash Sale Sedang Berlangsung!</div>
+                  <div className="flashSub">
+                    Dapatkan harga spesial untuk {flashSales.length} item pilihan. Buruan sebelum kehabisan!
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* POPULER SEKARANG – horizontal card layout (hanya tampil bila tidak ada filter kategori) */}
           {populer.length > 0 && (

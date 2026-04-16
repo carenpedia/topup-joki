@@ -38,13 +38,21 @@ export default function Footer() {
           {/* Kolom 1: Brand & Deskripsi */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: 12,
-                background: "linear-gradient(135deg, #3b82f6, #6366f1)",
-                display: "grid", placeItems: "center",
-                color: "white", fontWeight: 900, fontSize: 18,
-                boxShadow: "0 4px 16px rgba(59,130,246,0.4)"
-              }}>C</div>
+              {config.SITE_LOGO ? (
+                <img 
+                  src={config.SITE_LOGO} 
+                  alt={config.SITE_NAME} 
+                  style={{ maxHeight: 36, maxWidth: 120, objectFit: "contain" }} 
+                />
+              ) : (
+                <div style={{
+                  width: 36, height: 36, borderRadius: 12,
+                  background: "linear-gradient(135deg, #3b82f6, #6366f1)",
+                  display: "grid", placeItems: "center",
+                  color: "white", fontWeight: 900, fontSize: 18,
+                  boxShadow: "0 4px 16px rgba(59,130,246,0.4)"
+                }}>{config.SITE_NAME.charAt(0)}</div>
+              )}
               <span style={{ fontSize: 24, fontWeight: 900, color: "#fff", letterSpacing: -0.5 }}>
                 {config.SITE_NAME}
               </span>

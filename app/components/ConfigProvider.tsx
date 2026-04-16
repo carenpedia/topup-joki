@@ -8,6 +8,7 @@ const ConfigContext = createContext<Config>({
   SITE_NAME: "CarenPedia",
   SITE_SLOGAN: "Platform top up game termurah & tercepat.",
   SUPPORT_WHATSAPP: "62812345678",
+  SITE_LOGO: "",
 });
 
 export function ConfigProvider({ children }: { children: React.ReactNode }) {

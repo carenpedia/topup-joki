@@ -103,6 +103,12 @@ export default function AdminSettingsPage() {
           {activeTab === "GENERAL" && (
             <>
               <FormGroup 
+                label="Logo Website (URL)"
+                value={formData["SITE_LOGO"] || ""}
+                onChange={(url) => setFormData(p => ({ ...p, SITE_LOGO: url }))}
+                help="Masukkan URL logo (PNG Transparan direkomendasikan). Muncul di Navbar dan Footer."
+              />
+              <FormGroup 
                 label="Nama Website" 
                 value={formData["SITE_NAME"] || ""} 
                 onChange={(v) => setFormData(p => ({ ...p, SITE_NAME: v }))}
@@ -165,6 +171,8 @@ export default function AdminSettingsPage() {
     </div>
   );
 }
+
+
 
 function FormGroup({ label, value, onChange, help }: { label: string, value: string, onChange: (v: string) => void, help?: string }) {
   return (

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useConfig } from "./ConfigProvider";
 
 const items = [
   { href: "/", label: "Topup Game", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect><path d="M6 12h4"></path><path d="M8 10v4"></path><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg> },
@@ -39,6 +40,7 @@ function isActivePath(pathname: string, href: string) {
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
+  const config = useConfig();
 
   const [me, setMe] = useState<Me>({ user: null });
   const [loading, setLoading] = useState(true);
@@ -170,8 +172,12 @@ export default function Navbar() {
     <>
       <header className={`siteTopbar ${isScrolled ? "isScrolled" : ""}`}>
         <div className="siteTopbarRow">
-          <Link href="/" className="siteBrand" aria-label="CarenPedia">
-            <div className="siteBrandLogo">C</div>
+          <Link href="/" className="siteBrand" aria-label={config.SITE_NAME}>
+            {config.SITE_LOGO ? (
+              <img src={config.SITE_LOGO} alt={config.SITE_NAME} className="siteBrandImg" />
+            ) : (
+              <div className="siteBrandLogo">{config.SITE_NAME.charAt(0)}</div>
+            )}
           </Link>
 
           <div className="siteSearchWrap">
