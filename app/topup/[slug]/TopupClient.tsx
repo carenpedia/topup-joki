@@ -519,27 +519,25 @@ export default function TopupClient({
                       style={{ padding: "12px 10px" }}
                     />
                   )}
-                  {field.hint && (
-                    <p style={{
-                      margin: "6px 0 0",
-                      fontSize: 11,
-                      lineHeight: 1.4,
-                      color: "rgba(255,255,255,.45)",
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: 5,
-                    }}>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}>
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M12 16v-4" />
-                        <path d="M12 8h.01" />
-                      </svg>
-                      <span>{field.hint}</span>
-                    </p>
-                  )}
                 </div>
               ))}
             </div>
+            <p style={{
+              margin: "10px 0 0",
+              fontSize: 11,
+              lineHeight: 1.4,
+              color: "rgba(250,204,21,.7)",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 6,
+            }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(250,204,21,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}>
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+              <span>Harap masukkan ID Server dengan benar, kesalahan input bukan tanggung jawab kami.</span>
+            </p>
           </div>
         </div>
 
