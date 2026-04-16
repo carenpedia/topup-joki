@@ -9,6 +9,35 @@ import { UiProgressProvider } from "@/app/components/UiProgress";
 import { ConfigProvider } from "./components/ConfigProvider";
 import Gascript from "./components/Gascript";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await prisma.globalSetting.findMany({
+    where: { key: { in: ["SITE_NAME", "SITE_SLOGAN", "SITE_LOGO"] } }
+  });
+  
+  const config = settings.reduce((acc: any, curr) => {
+    acc[curr.key] = curr.value;
+    return acc;
+  }, {});
+
+  const name = config.SITE_NAME || "CarenPedia";
+  const slogan = config.SITE_SLOGAN || "Platform Top Up Terpercaya";
+  const logo = config.SITE_LOGO || "/favicon.ico";
+
+  return {
+    title: {
+      default: `${name} - ${slogan}`,
+      template: `%s | ${name}`,
+    },
+    description: slogan,
+    icons: {
+      icon: logo,
+      apple: logo,
+    },
+  };
+}
 
 const inter = Inter({
   subsets: ["latin"],
