@@ -8,7 +8,7 @@ export default function Footer() {
   return (
     <footer style={{
       marginTop: "80px",
-      padding: "80px 20px 40px",
+      padding: "40px 20px 40px",
       background: "linear-gradient(180deg, #08080d 0%, rgba(14,18,28,0.95) 100%)",
       borderTop: "1px solid rgba(255,255,255,0.03)",
       position: "relative",
@@ -37,7 +37,7 @@ export default function Footer() {
 
           {/* Kolom 1: Brand & Deskripsi */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px", marginTop: "-24px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px" }}>
               {config.SITE_LOGO ? (
                 <img 
                   src={config.SITE_LOGO} 
