@@ -1949,3 +1949,19 @@ body {
   font-size: 14px;
   line-height: 1.65;
 }
+
+@media (max-width: 640px) {
+  .faqItem {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  .faqSectionTitle {
+    padding-left: 14px; /* give the title slight padding since container padding is removed */
+  }
+  .faqTitle {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+
