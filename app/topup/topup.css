@@ -350,7 +350,7 @@
 .topupScope .contact-input {
   width: 100%;
   border-radius: 12px;
-  padding: 11px 14px; /* Slimmer padding */
+  padding: 8px 12px; /* Ultra-slim padding */
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.08); /* Sedikit lebih terang dari sebelumnya 0.03 */
   color: #fff;
