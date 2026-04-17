@@ -504,7 +504,6 @@ export default function TopupClient({
                       className="contact-input"
                       value={targetInputs[field.key] || ""}
                       onChange={(e) => setTargetField(field.key, e.target.value)}
-                      style={{ padding: "12px 10px" }}
                     >
                       <option value="">-- {field.label} --</option>
                       {field.options.map((opt) => (
@@ -517,7 +516,6 @@ export default function TopupClient({
                       placeholder={field.label}
                       value={targetInputs[field.key] || ""}
                       onChange={(e) => setTargetField(field.key, e.target.value)}
-                      style={{ padding: "12px 10px" }}
                     />
                   )}
                 </div>

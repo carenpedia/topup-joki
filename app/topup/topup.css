@@ -301,18 +301,18 @@
 
 .topupScope .contact-header {
   display: flex;
-  height: 56px;
+  height: 46px; /* Reduced from 56px to make it slimmer */
   overflow: hidden;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .topupScope .contact-step {
-  width: 56px;
+  width: 46px; /* Match the new header height to keep it square */
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 950;
-  font-size: 18px;
+  font-size: 16px; /* Slightly reduced font size */
   color: #fff;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   box-shadow: inset -2px 0 10px rgba(0, 0, 0, 0.2);
@@ -335,7 +335,7 @@
 }
 
 .topupScope .contact-body {
-  padding: 24px;
+  padding: 16px 20px; /* Reduced vertical padding */
 }
 
 .topupScope .contact-label {
@@ -350,7 +350,7 @@
 .topupScope .contact-input {
   width: 100%;
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 11px 14px; /* Slimmer padding */
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.08); /* Sedikit lebih terang dari sebelumnya 0.03 */
   color: #fff;
