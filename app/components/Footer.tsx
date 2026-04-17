@@ -37,7 +37,7 @@ export default function Footer() {
 
           {/* Kolom 1: Brand & Deskripsi */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px", marginTop: "-24px" }}>
               {config.SITE_LOGO ? (
                 <img 
                   src={config.SITE_LOGO} 
