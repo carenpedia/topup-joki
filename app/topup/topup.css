@@ -351,9 +351,9 @@
   width: 100%;
   border-radius: 6px;
   padding: 8px 12px; /* Ultra-slim padding */
-  border: 1px solid #cbd5e1;
-  background: #f1f5f9; /* Abu-abu terang */
-  color: #0f172a; /* Teks gelap agar terlihat kontras */
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.15); /* Abu-abu sedikit cerah */
+  color: #fff;
   font-family: inherit;
   font-size: 12px; /* Reduced for minimalist look */
   font-weight: 700;
@@ -362,13 +362,13 @@
 }
 
 .topupScope .contact-input::placeholder {
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 600;
 }
 
 .topupScope .contact-input:focus {
   border-color: #3b82f6;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.22);
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
 }
 
