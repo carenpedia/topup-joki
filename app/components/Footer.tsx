@@ -53,8 +53,28 @@ export default function Footer() {
                   boxShadow: "0 6px 20px rgba(59,130,246,0.4)"
                 }}>{config.SITE_NAME.charAt(0)}</div>
               )}
-              <span style={{ fontSize: 28, fontWeight: 900, color: "#fff", letterSpacing: -0.5 }}>
-                {config.SITE_NAME}
+              <span style={{ fontSize: 28, fontWeight: 900, letterSpacing: -0.5 }}>
+                {(() => {
+                  const name = config.SITE_NAME || "CarenPedia";
+                  // Jika namanya CarenPedia patahkan di 'Pedia', jika tidak, bagi dua saja
+                  const splitIndex = name.toLowerCase() === "carenpedia" ? 5 : Math.ceil(name.length / 2);
+                  const part1 = name.substring(0, splitIndex);
+                  const part2 = name.substring(splitIndex);
+                  return (
+                    <>
+                      <span style={{ color: "#ffffff" }}>{part1}</span>
+                      <span style={{
+                        background: "linear-gradient(135deg, #38bdf8 0%, #2563eb 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                        color: "transparent"
+                      }}>
+                        {part2}
+                      </span>
+                    </>
+                  );
+                })()}
               </span>
             </div>
 
