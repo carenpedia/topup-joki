@@ -609,7 +609,7 @@ body {
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
   .siteTopbar {
-    padding: 2px 14px;
+    padding: 4px 14px;
   }
 
   .siteTopbarRow {
