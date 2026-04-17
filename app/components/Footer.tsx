@@ -37,23 +37,23 @@ export default function Footer() {
 
           {/* Kolom 1: Brand & Deskripsi */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px" }}>
               {config.SITE_LOGO ? (
                 <img 
                   src={config.SITE_LOGO} 
                   alt={config.SITE_NAME} 
-                  style={{ maxHeight: 60, maxWidth: 200, objectFit: "contain" }} 
+                  style={{ maxHeight: 100, maxWidth: 320, objectFit: "contain" }} 
                 />
               ) : (
                 <div style={{
-                  width: 56, height: 56, borderRadius: 14,
+                  width: 80, height: 80, borderRadius: 18,
                   background: "linear-gradient(135deg, #3b82f6, #6366f1)",
                   display: "grid", placeItems: "center",
-                  color: "white", fontWeight: 900, fontSize: 24,
-                  boxShadow: "0 4px 16px rgba(59,130,246,0.4)"
+                  color: "white", fontWeight: 900, fontSize: 36,
+                  boxShadow: "0 6px 20px rgba(59,130,246,0.4)"
                 }}>{config.SITE_NAME.charAt(0)}</div>
               )}
-              <span style={{ fontSize: 24, fontWeight: 900, color: "#fff", letterSpacing: -0.5 }}>
+              <span style={{ fontSize: 28, fontWeight: 900, color: "#fff", letterSpacing: -0.5 }}>
                 {config.SITE_NAME}
               </span>
             </div>
