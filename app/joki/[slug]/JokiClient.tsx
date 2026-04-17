@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import ProductFaqAccordion from "@/app/components/ProductFaqAccordion";
 import { useToast } from "@/app/components/ToastProvider";
 
 export type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
@@ -679,6 +680,7 @@ export default function JokiClient({
         <div className="spacer" />
       </div>
 
+      <ProductFaqAccordion />
       <Footer />
 
       {/* Sticky Bar */}

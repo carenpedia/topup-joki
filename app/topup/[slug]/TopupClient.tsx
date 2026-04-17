@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import ProductFaqAccordion from "@/app/components/ProductFaqAccordion";
 import { useToast } from "@/app/components/ToastProvider";
 import { useAsyncAction } from "@/app/components/useAsyncAction";
 import { getTargetConfig } from "@/lib/targetConfig";
@@ -776,6 +777,7 @@ export default function TopupClient({
         <div className="spacer" />
         <div className="spacer" />
       </div>
+      <ProductFaqAccordion />
       <Footer />
 
       <div className="stickyWrap">
