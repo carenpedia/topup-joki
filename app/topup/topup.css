@@ -351,20 +351,25 @@
   width: 100%;
   border-radius: 6px;
   padding: 8px 12px; /* Ultra-slim padding */
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.08); /* Sedikit lebih terang dari sebelumnya 0.03 */
-  color: #fff;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9; /* Abu-abu terang */
+  color: #0f172a; /* Teks gelap agar terlihat kontras */
   font-family: inherit;
   font-size: 12px; /* Reduced for minimalist look */
-  font-weight: 600;
+  font-weight: 700;
   outline: none;
   transition: all 0.2s ease;
 }
 
+.topupScope .contact-input::placeholder {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
 .topupScope .contact-input:focus {
   border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.05);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
 }
 
 /* ===== NOMINAL GRID ===== */
