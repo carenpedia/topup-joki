@@ -42,14 +42,14 @@ export default function Footer() {
                 <img 
                   src={config.SITE_LOGO} 
                   alt={config.SITE_NAME} 
-                  style={{ maxHeight: 36, maxWidth: 120, objectFit: "contain" }} 
+                  style={{ maxHeight: 60, maxWidth: 200, objectFit: "contain" }} 
                 />
               ) : (
                 <div style={{
-                  width: 36, height: 36, borderRadius: 12,
+                  width: 56, height: 56, borderRadius: 14,
                   background: "linear-gradient(135deg, #3b82f6, #6366f1)",
                   display: "grid", placeItems: "center",
-                  color: "white", fontWeight: 900, fontSize: 18,
+                  color: "white", fontWeight: 900, fontSize: 24,
                   boxShadow: "0 4px 16px rgba(59,130,246,0.4)"
                 }}>{config.SITE_NAME.charAt(0)}</div>
               )}
@@ -57,6 +57,7 @@ export default function Footer() {
                 {config.SITE_NAME}
               </span>
             </div>
+
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 1.7, marginBottom: 24 }}>
               {config.SITE_SLOGAN}
             </p>
