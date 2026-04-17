@@ -106,7 +106,7 @@ body {
   width: auto;
   max-width: 240px;
   object-fit: contain;
-  transform: scaleY(1.25);
+  transform: scale(1.1, 1.25);
   transform-origin: center;
   transition: transform 0.2s ease;
 }
@@ -128,7 +128,7 @@ body {
 }
 
 .siteBrand:hover .siteBrandImg {
-  transform: scaleY(1.25) translateY(-1px);
+  transform: scale(1.1, 1.25) translateY(-1px);
 }
 
 /* ---------- Search ---------- */
