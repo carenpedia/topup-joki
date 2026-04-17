@@ -73,8 +73,6 @@
   }
   .topupScope .tpTabSwitcher {
     margin-top: 4px; /* Lebih rapat di mobile */
-    margin-left: 14px;
-    margin-right: 14px;
   }
 }
 
@@ -753,15 +751,7 @@
 
 @media (max-width: 640px) {
   .topupScope .topupWrap {
-    padding: 0 0;
-    border: none;
-    border-radius: 0;
-  }
-
-  .topupScope .card {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
+    padding: 0 14px;
   }
 
   .topupScope .tpBenefitRow {
