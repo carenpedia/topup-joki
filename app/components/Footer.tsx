@@ -42,7 +42,7 @@ export default function Footer() {
                 <img 
                   src={config.SITE_LOGO} 
                   alt={config.SITE_NAME} 
-                  style={{ maxHeight: 100, maxWidth: 320, objectFit: "contain" }} 
+                  style={{ maxHeight: 100, maxWidth: 320, objectFit: "contain", transform: "scaleY(1.25)", transformOrigin: "center" }} 
                 />
               ) : (
                 <div style={{
