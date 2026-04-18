@@ -108,7 +108,19 @@ body {
   object-fit: contain;
   transform: scale(1.1, 1.25);
   transform-origin: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  animation: logoBreathing 4s ease-in-out infinite;
+}
+
+@keyframes logoBreathing {
+  0%, 100% {
+    transform: scale(1.1, 1.25) translateY(0);
+    filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.1));
+  }
+  50% {
+    transform: scale(1.11, 1.26) translateY(-2px);
+    filter: drop-shadow(0 4px 14px rgba(59, 130, 246, 0.45));
+  }
 }
 
 .siteMobileSearchTrigger {
