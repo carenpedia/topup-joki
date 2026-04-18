@@ -109,17 +109,32 @@ body {
   transform: scale(1.1, 1.25);
   transform-origin: center;
   transition: transform 0.2s ease, filter 0.2s ease;
-  animation: logoBreathing 4s ease-in-out infinite;
+  animation: hideAndSeek 4s ease-in-out infinite;
 }
 
-@keyframes logoBreathing {
-  0%, 100% {
+@keyframes hideAndSeek {
+  0%, 25% {
+    opacity: 1;
     transform: scale(1.1, 1.25) translateY(0);
-    filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.1));
   }
-  50% {
-    transform: scale(1.11, 1.26) translateY(-2px);
-    filter: drop-shadow(0 4px 14px rgba(59, 130, 246, 0.45));
+  40%, 55% {
+    /* Menghilang sambil mengecil dan melayang ke atas */
+    opacity: 0;
+    transform: scale(0.5, 0.5) translateY(-15px);
+  }
+  60% {
+    /* Pindah ke bawah secara transparan */
+    opacity: 0;
+    transform: scale(0.5, 0.5) translateY(15px);
+  }
+  80% {
+    /* Muncul dari bawah dengan efek memantul "boing" */
+    opacity: 1;
+    transform: scale(1.15, 1.3) translateY(-3px);
+  }
+  90%, 100% {
+    opacity: 1;
+    transform: scale(1.1, 1.25) translateY(0);
   }
 }
 
