@@ -109,30 +109,41 @@ body {
   transform: scale(1.1, 1.25);
   transform-origin: center;
   transition: transform 0.2s ease, filter 0.2s ease;
-  animation: hideAndSeek 4s ease-in-out infinite;
+  animation: hideAndSeek 5s ease-in-out infinite;
 }
 
 @keyframes hideAndSeek {
-  0%, 25% {
+  0%, 30% {
     opacity: 1;
     transform: scale(1.1, 1.25) translateY(0);
   }
-  40%, 55% {
-    /* Menghilang sambil mengecil dan melayang ke atas */
+  40%, 60% {
+    /* Menghilang kabur melayang ke atas sambil mengecil */
     opacity: 0;
-    transform: scale(0.5, 0.5) translateY(-15px);
+    transform: scale(0.5, 0.5) translateY(-30px);
   }
-  60% {
-    /* Pindah ke bawah secara transparan */
+  65% {
+    /* Pindah ke bawah secara rahasia */
     opacity: 0;
-    transform: scale(0.5, 0.5) translateY(15px);
+    transform: scale(0.5, 0.5) translateY(40px);
   }
-  80% {
-    /* Muncul dari bawah dengan efek memantul "boing" */
+  75% {
+    /* Tiba-tiba meloncat sangat tinggi (Stretch) */
     opacity: 1;
-    transform: scale(1.15, 1.3) translateY(-3px);
+    transform: scale(0.9, 1.6) translateY(-18px);
   }
-  90%, 100% {
+  82% {
+    /* Jatuh lalu gepeng (Squash) menabrak aspal */
+    opacity: 1;
+    transform: scale(1.3, 0.8) translateY(10px);
+  }
+  88% {
+    /* Pantulan membulat kecil ke atas lagi */
+    opacity: 1;
+    transform: scale(1.0, 1.35) translateY(-5px);
+  }
+  94%, 100% {
+    /* Kembali anteng dan stabil */
     opacity: 1;
     transform: scale(1.1, 1.25) translateY(0);
   }
