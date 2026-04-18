@@ -30,6 +30,7 @@ export default function UserSidebar() {
     { label: "Deposit Saldo", href: "/user/deposit", icon: "💰" },
     { label: "Harga Khusus", href: "/user/pricelist", icon: "🏷️", resellerOnly: true },
     { label: "Pengaturan", href: "/user/settings", icon: "⚙️" },
+    { label: "Pusat Bantuan", href: "/bantuan", icon: "🎧" },
   ];
 
   return (

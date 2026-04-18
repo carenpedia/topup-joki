@@ -19,6 +19,7 @@ const nav = [
   { href: "/admin/deposits", label: "Deposits" },
   { href: "/admin/settings", label: "⚙️ Konfigurasi Web" },
   { href: "/admin/audit-logs", label: "Audit Logs" },
+  { href: "/admin/tickets", label: "🎫 Support Tickets" },
   { href: "/user/profile", label: "👤 Profil Saya" },
 ];
 
