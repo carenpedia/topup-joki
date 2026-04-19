@@ -116,7 +116,8 @@ export default function TopupClient({
             category: p.category,
             finalPrice: p.finalPrice,
             basePrice: p.basePrice,
-            flash: p.flash
+            flash: p.flash,
+            imageUrl: p.imageUrl
           })));
         }
       } catch (e) {
@@ -145,9 +146,7 @@ export default function TopupClient({
   const groupedMethods = useMemo(() => {
     const map = new Map<string, MethodFee[]>();
     for (const m of methodFees) {
-      // Filter by enabled gateway settings
       if (!gateways[m.gateway]) continue;
-
       if (!map.has(m.category)) map.set(m.category, []);
       map.get(m.category)!.push(m);
     }
@@ -227,6 +226,11 @@ export default function TopupClient({
     if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
   };
 
+  const handleProductSelect = (id: string) => {
+    setSelectedItemId(id);
+    setTimeout(() => scrollTo("section-payment"), 100);
+  };
+
   return (
     <main className="topupPage">
       <Script 
@@ -235,7 +239,7 @@ export default function TopupClient({
       />
       <Navbar />
 
-      {/* Hero Banner Section */}
+      {/* Hero Banner Section (Restored features) */}
       <div className="tpNewHero">
         <div className="tpNewHeroBanner">
           {bannerUrl ? <img src={bannerUrl} alt={game.name} className="tpNewHeroBannerImg" /> : <div className="tpNewHeroBannerFallback" />}
@@ -249,13 +253,44 @@ export default function TopupClient({
             <div className="tpNewHeroInfo">
               <h1 className="tpNewHeroTitle">{game.name}</h1>
               <p className="tpNewHeroPublisher">{publisher}</p>
+
+              <div className="tpNewHeroFeatures">
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  </div>
+                  <span>Aman & Terpercaya</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  </div>
+                  <span>Layanan 24 Jam</span>
+                </div>
+                <div className="tpNewFeatureItem">
+                  <div className="tpNewFeatureIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  </div>
+                  <span>Proses satset</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <div className="topupWrap">
-        {/* Step 1: Account Data */}
+        {/* Tab Switcher (Restored) */}
+        {hasJoki && (
+          <div className="tpTabSwitcher" style={{ display: "flex", background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.10)", borderRadius: 16, padding: 4, marginTop: 24 }}>
+            <div style={{ flex: 1, textAlign: "center", padding: "11px 16px", borderRadius: 12, background: "linear-gradient(135deg, rgba(59,130,246,.95), rgba(37,99,235,.95))", color: "#fff", fontWeight: 800, fontSize: 14 }}>💎 Top Up</div>
+            <Link href={`/joki/${game.key}`} style={{ flex: 1, textAlign: "center", padding: "11px 16px", color: "rgba(255,255,255,.60)", fontWeight: 700, fontSize: 14, textDecoration: "none" }}>🎮 Joki</Link>
+          </div>
+        )}
+
+        <div style={{ height: 32 }} />
+
+        {/* Step 1: Account Data (Restored Attention Text) */}
         <div className="card" id="section-id">
           <div className="contact-header">
             <div className="contact-step">1</div>
@@ -270,12 +305,16 @@ export default function TopupClient({
                 </div>
               ))}
             </div>
+            <p style={{ margin: "10px 0 0", fontSize: 11, lineHeight: 1.4, color: "rgba(250,204,21,.7)", display: "flex", alignItems: "flex-start", gap: 6 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(250,204,21,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+              <span>Harap masukkan {targetConfig.fields.map((f) => f.label).join(" & ")} dengan benar, kesalahan input bukan tanggung jawab kami.</span>
+            </p>
           </div>
         </div>
 
         <div className="spacer" />
 
-        {/* Step 2: Nominals */}
+        {/* Step 2: Nominals (Restored bottom border & Instant badge) */}
         <div className="card" id="section-nominal">
           <div className="contact-header">
             <div className="contact-step">2</div>
@@ -287,9 +326,21 @@ export default function TopupClient({
                 <div className="nominalGroupHeader">{g.replace("CAT:", "")}</div>
                 <div className="tpNomGrid">
                   {items.map((p) => (
-                    <button key={p.id} className={`tpNomCard ${selectedItemId === p.id ? "isActive" : ""}`} onClick={() => { setSelectedItemId(p.id); scrollTo("section-payment"); }}>
+                    <button key={p.id} className={`tpNomCard ${selectedItemId === p.id ? "isActive" : ""}`} onClick={() => handleProductSelect(p.id)}>
+                      {p.flash && <span className="tpNomFlash">FLASH SALE</span>}
                       <div className="tpNomTop"><span className="tpNomName">{p.name}</span></div>
-                      <div className="tpNomMain"><span className="tpNomPriceNow">{rupiah(p.finalPrice)}</span></div>
+                      <div className="tpNomMain">
+                        <div className="tpNomIcon">
+                          {p.imageUrl ? <img src={p.imageUrl} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2.5"><path d="M6 3h12l4 8-10 10L2 11l4-8z"></path><path d="M12 3v18"></path><path d="M2 11h20"></path><path d="M6 3L12 11L18 3"></path></svg>}
+                        </div>
+                        <span className="tpNomPriceNow">{rupiah(p.finalPrice).replace(",00","").replace("Rp","Rp ")}</span>
+                      </div>
+                      <div className="tpNomBottom">
+                        <div className="tpInstanBadge">
+                          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                          <span className="tpInstanText">Instan</span>
+                        </div>
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -300,7 +351,7 @@ export default function TopupClient({
 
         <div className="spacer" />
 
-        {/* Step 3: Payment Accordion */}
+        {/* Step 3: Payment Accordion (Preserved new UI) */}
         <div className="card" id="section-payment">
           <div className="contact-header">
             <div className="contact-step">3</div>
@@ -308,7 +359,6 @@ export default function TopupClient({
           </div>
           <div className="contact-body">
             <div className="tpPayAccordion">
-              {/* Carencoin Option (Simplified) */}
               <div className={`tpPayCategory ${activePaymentType === "CarenCoin" ? "isOpen" : ""}`}>
                 <button className="tpPayCategoryHeader" onClick={() => { setActivePaymentType("CarenCoin"); setSelectedMethodId(null); }}>
                   <div className="tpPayCategoryIcon">🪙</div>
@@ -316,7 +366,6 @@ export default function TopupClient({
                 </button>
               </div>
 
-              {/* Gateway Categories */}
               {groupedMethods.map(([cat, methods]) => (
                 <div key={cat} className={`tpPayCategory ${openCategory === cat && activePaymentType === "GATEWAY" ? "isOpen" : ""}`}>
                   <button className="tpPayCategoryHeader" onClick={() => { setOpenCategory(openCategory === cat ? null : cat); setActivePaymentType("GATEWAY"); }}>
@@ -329,13 +378,9 @@ export default function TopupClient({
                   <div className="tpPayCategoryContent">
                     <div className="tpPayInnerList">
                       {methods.map(m => (
-                        <button 
-                          key={m.id} 
-                          className={`tpMethodBtn ${selectedMethodId === m.id ? "isSelected" : ""}`}
-                          onClick={() => setSelectedMethodId(m.id)}
-                        >
+                        <button key={m.id} className={`tpMethodBtn ${selectedMethodId === m.id ? "isSelected" : ""}`} onClick={() => setSelectedMethodId(m.id)}>
                           <div className="tpMethodLogoWrap">
-                            {m.image ? <img src={m.image} alt={m.label} className="tpMethodLogo" /> : <span className="tpMethodLogoFallback">{m.label[0]}</span>}
+                            {m.image ? <img src={m.image} alt={m.label} className="tpMethodLogo" /> : <span className="tpMethodLogoFallback">{m.label?.[0]}</span>}
                           </div>
                           <div className="tpMethodInfo">
                             <span className="tpMethodName">{m.label}</span>
@@ -356,11 +401,11 @@ export default function TopupClient({
 
         <div className="spacer" />
 
-        {/* Step 4: Checkout Action */}
+        {/* Step 4: Checkout Action (Included in Sticky now) */}
         <div className="card">
           <div className="contact-header">
             <div className="contact-step">4</div>
-            <div className="contact-title-wrap"><h4 className="contact-title">Pembayaran</h4></div>
+            <div className="contact-title-wrap"><h4 className="contact-title">Konfirmasi WhatsApp</h4></div>
           </div>
           <div className="contact-body">
             <input className="contact-input" placeholder="Nomor WhatsApp (628...)" value={contact} onChange={(e)=>setContact(e.target.value)} style={{ marginBottom: 12 }} />
@@ -369,14 +414,42 @@ export default function TopupClient({
               <button className="btn-ghost" style={{ padding: "0 20px" }} onClick={() => {setVoucherApplied(true); setVoucherMsg("Voucher dicek...");}}>Pakai</button>
             </div>
             {voucherMsg && <div style={{ fontSize: 11, marginTop: 4, color: "#3b82f6" }}>{voucherMsg}</div>}
-            
-            <button className="stickyBtn" style={{ marginTop: 24, padding: "16px" }} disabled={checkoutLoading} onClick={onCheckout}>
-              {checkoutLoading ? "Memproses..." : `Beli Sekarang — ${selectedItem ? rupiah(totalToPayComputed) : "Pilih Nominal"}`}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ height: 120 }} />
+
+      {/* Sticky Checkout Bar (Restored) */}
+      <div className="stickyWrap">
+        <div className="stickyCard">
+          <div className={`stickyInfoBox ${selectedItem ? "isFilled" : "isEmpty"}`}>
+            {selectedItem ? (
+              <>
+                <img src={selectedItem.imageUrl || logoUrl || ""} alt="Game" className="stickyInfoLogo" />
+                <div className="stickyInfoContent">
+                  <div className="stickyInfoGame">{game.name}</div>
+                  <div className="stickyInfoProduct">{selectedItem.name}</div>
+                </div>
+                <div className="stickyInfoChevron">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                </div>
+              </>
+            ) : (
+              <div className="stickyInfoText">Pilih nominal produk & metode pembayaran</div>
+            )}
+          </div>
+          <div className="stickyAction">
+            <button className="stickyBtn" disabled={checkoutLoading || !selectedItem} onClick={onCheckout}>
+              <div className="stickyBtnIcon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              {checkoutLoading ? "Memproses..." : selectedItem ? `Beli Sekarang — ${rupiah(totalToPayComputed)}` : "Pilih Produk"}
             </button>
           </div>
         </div>
       </div>
-      <div style={{ height: 80 }} />
+
       <Footer />
     </main>
   );
