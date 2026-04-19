@@ -50,6 +50,15 @@ export async function POST(req: Request) {
   // Create Ticket & Automated Reply via transaction
   try {
     const ticket = await prisma.$transaction(async (tx) => {
+      // Lookup actual internal ID of the order if orderId (orderNo) is provided
+      let actualOrderId = null;
+      if (orderId) {
+        const foundOrder = await tx.order.findUnique({
+          where: { orderNo: orderId }
+        });
+        actualOrderId = foundOrder ? foundOrder.id : null;
+      }
+
       const newTicket = await tx.supportTicket.create({
         data: {
           ticketNo,
@@ -57,7 +66,7 @@ export async function POST(req: Request) {
           title,
           userId,
           contactWa: contactWa || null,
-          orderId: orderId || null,
+          orderId: actualOrderId,
           status: "OPEN",
         },
       });
@@ -100,6 +109,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, ticket });
   } catch (err: any) {
     console.error("[CreateTicketError]", err);
-    return NextResponse.json({ error: "Gagal membuat tiket bantuan." }, { status: 500 });
+    return NextResponse.json({ error: "Gagal membuat tiket bantuan: " + err.message }, { status: 500 });
   }
 }

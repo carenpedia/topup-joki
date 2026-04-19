@@ -462,6 +462,8 @@ enum PaymentMethod {
 enum PaymentGateway {
   XENDIT
   TRIPAY
+  MIDTRANS
+  DUITKU
 }
 
 enum PaymentStatus {

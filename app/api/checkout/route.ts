@@ -20,6 +20,8 @@ import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { createTransaction as tripayCreate } from "@/lib/tripay";
 import { createInvoice as xenditCreate } from "@/lib/xendit";
+import { createSnapToken as midtransCreate } from "@/lib/midtrans";
+import { createDuitkuInquiry as duitkuCreate } from "@/lib/duitku";
 import { fulfillOrder } from "@/lib/fulfillOrder";
 import crypto from "crypto";
 
@@ -292,6 +294,74 @@ export async function POST(req: Request) {
         gateway: "XENDIT",
         paymentUrl: xenditInv.invoice_url,
         expiry: xenditInv.expiry_date,
+      });
+    }
+
+    if (paymentGateway === "MIDTRANS") {
+      const midtransTx = await midtransCreate({
+        orderId: orderNo,
+        amount: finalPayable,
+        customerName: dbUser?.username || "Guest",
+        customerEmail: contactEmail || undefined,
+        customerPhone: contactWhatsapp,
+        itemDetails: [
+          {
+            id: product.id,
+            price: finalPayable,
+            quantity: 1,
+            name: `${game.name} - ${product.name}`,
+          }
+        ]
+      });
+
+      await prisma.payment.create({
+        data: {
+          orderId: order.id,
+          gateway: "MIDTRANS",
+          gatewayRef: orderNo,
+          status: "PENDING",
+          rawPayload: midtransTx as any,
+        },
+      });
+
+      return NextResponse.json({
+        ok: true,
+        orderNo,
+        orderId: order.id,
+        paymentMethod: "GATEWAY",
+        gateway: "MIDTRANS",
+        snapToken: midtransTx.token, // For popup
+        paymentUrl: midtransTx.redirectUrl, // Fallback
+      });
+    }
+
+    if (paymentGateway === "DUITKU") {
+      const duitkuTx = await duitkuCreate({
+        merchantOrderId: orderNo,
+        paymentAmount: finalPayable,
+        productDetails: `${game.name} - ${product.name}`,
+        customerVaName: dbUser?.username || "Guest",
+        email: contactEmail || "guest@carenpedia.com",
+        phoneNumber: contactWhatsapp,
+      });
+
+      await prisma.payment.create({
+        data: {
+          orderId: order.id,
+          gateway: "DUITKU",
+          gatewayRef: duitkuTx.reference || orderNo,
+          status: "PENDING",
+          rawPayload: duitkuTx as any,
+        },
+      });
+
+      return NextResponse.json({
+        ok: true,
+        orderNo,
+        orderId: order.id,
+        paymentMethod: "GATEWAY",
+        gateway: "DUITKU",
+        paymentUrl: duitkuTx.paymentUrl,
       });
     }
 

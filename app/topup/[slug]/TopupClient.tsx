@@ -9,6 +9,7 @@ import ProductFaqAccordion from "@/app/components/ProductFaqAccordion";
 import { useToast } from "@/app/components/ToastProvider";
 import { useAsyncAction } from "@/app/components/useAsyncAction";
 import { getTargetConfig } from "@/lib/targetConfig";
+import Script from "next/script";
 
 export type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
 type PaymentMethod = "CarenCoin" | "Payment Gateway";
@@ -119,6 +120,7 @@ export default function TopupClient({
 
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("Payment Gateway");
+  const [selectedGateway, setSelectedGateway] = useState<"TRIPAY" | "MIDTRANS" | "DUITKU" | "XENDIT">("MIDTRANS");
 
   const [voucher, setVoucher] = useState("");
   const [voucherApplied, setVoucherApplied] = useState(false);
@@ -310,7 +312,7 @@ export default function TopupClient({
           inputServer: hasServer ? server : undefined,
           contactWhatsapp: contactDisplay,
           paymentMethod: paymentMethod === "CarenCoin" ? "CARENCOIN" : "GATEWAY",
-          paymentGateway: paymentMethod === "Payment Gateway" ? "TRIPAY" : undefined,
+          paymentGateway: paymentMethod === "Payment Gateway" ? selectedGateway : undefined,
           gatewayMethodKey: paymentMethod === "Payment Gateway" ? "QRIS" : undefined,
           voucherCode: voucherApplied ? voucher.trim().toUpperCase() : undefined,
         };
@@ -325,6 +327,34 @@ export default function TopupClient({
 
         if (!res.ok) {
           throw new Error(data.error || "Gagal melakukan checkout");
+        }
+
+        // Handle Midtrans Snap Popup
+        if (data.gateway === "MIDTRANS" && data.snapToken) {
+          if ((window as any).snap) {
+            (window as any).snap.pay(data.snapToken, {
+              onSuccess: function (result: any) {
+                toast.success("Pembayaran berhasil!");
+                router.push(`/invoice/${data.orderNo}`);
+              },
+              onPending: function (result: any) {
+                toast.success("Menunggu pembayaran...");
+                router.push(`/invoice/${data.orderNo}`);
+              },
+              onError: function (result: any) {
+                toast.error("Pembayaran gagal!");
+              },
+              onClose: function () {
+                toast.info("Jendela pembayaran ditutup.");
+                router.push(`/invoice/${data.orderNo}`);
+              }
+            });
+            return;
+          } else {
+            // Fallback to redirect
+            window.location.href = data.paymentUrl;
+            return;
+          }
         }
 
         toast.success("Pesanan berhasil dibuat!");
@@ -375,6 +405,10 @@ export default function TopupClient({
 
   return (
     <main className="topupPage">
+      <Script 
+        src="https://app.sandbox.midtrans.com/snap/snap.js" 
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+      />
       <Navbar />
 
       <div className="tpNewHero">
@@ -688,8 +722,49 @@ export default function TopupClient({
               </button>
             </div>
 
+            {paymentMethod === "Payment Gateway" && (
+              <>
+                <div className="spacer" />
+                <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.4)", marginBottom: 12, textTransform: "uppercase" }}>Pilih Provider</div>
+                <div className="row" style={{ gap: 8 }}>
+                   {[
+                     { id: "MIDTRANS", label: "MIDTRANS (Pop-up)", icon: "✨" },
+                     { id: "DUITKU", label: "DUITKU (Redirect)", icon: "💳" },
+                     { id: "TRIPAY", label: "TRIPAY", icon: "💎" },
+                     { id: "XENDIT", label: "XENDIT", icon: "🌐" }
+                   ].map(gw => (
+                     <button
+                        key={gw.id}
+                        type="button"
+                        onClick={() => setSelectedGateway(gw.id as any)}
+                        style={{
+                          flex: "1 0 calc(50% - 4px)",
+                          padding: "14px 12px",
+                          borderRadius: 12,
+                          border: `1px solid ${selectedGateway === gw.id ? "#3b82f6" : "rgba(255,255,255,0.08)"}`,
+                          background: selectedGateway === gw.id ? "rgba(59,130,246,0.1)" : "rgba(255,255,255,0.03)",
+                          color: selectedGateway === gw.id ? "#fff" : "rgba(255,255,255,0.6)",
+                          fontSize: 12,
+                          fontWeight: 800,
+                          textAlign: "left",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 10,
+                          transition: "all 0.2s"
+                        }}
+                     >
+                       <span style={{ fontSize: 16 }}>{gw.icon}</span>
+                       {gw.label}
+                     </button>
+                   ))}
+                </div>
+              </>
+            )}
+
             <div className="spacer" />
-            <div className="cardMuted">Dipilih: {paymentMethod}</div>
+            <div className="cardMuted">
+              Dipilih: {paymentMethod === "CarenCoin" ? "CarenCoin" : `${paymentMethod} - ${selectedGateway}`}
+            </div>
           </div>
         </div>
 
