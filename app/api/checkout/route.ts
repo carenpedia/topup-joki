@@ -214,12 +214,12 @@ export async function POST(req: Request) {
     if (gatewayToUse === "TRIPAY") {
       const tripayTx = await tripayCreate({
         method: methodKeyToUse!,
-        merchant_ref: orderNo,
+        merchantRef: orderNo,
         amount: totalToPay,
-        customer_name: dbUser?.username || "Guest",
-        customer_email: contactEmail || "guest@carenpedia.com",
-        customer_phone: contactWhatsapp,
-        order_items: [{ name: `${game.name} - ${product.name}`, price: totalToPay, quantity: 1 }],
+        customerName: dbUser?.username || "Guest",
+        customerEmail: contactEmail || "guest@carenpedia.com",
+        customerPhone: contactWhatsapp,
+        orderItems: [{ name: `${game.name} - ${product.name}`, price: totalToPay, quantity: 1 }],
       });
 
       await prisma.payment.create({
@@ -244,9 +244,9 @@ export async function POST(req: Request) {
 
     if (gatewayToUse === "XENDIT") {
        const xenditInv = await xenditCreate({
-         external_id: orderNo,
+         externalId: orderNo,
          amount: totalToPay,
-         payer_email: contactEmail || "guest@carenpedia.com",
+         customerEmail: contactEmail || "guest@carenpedia.com",
          description: `${game.name} - ${product.name}`,
        });
 

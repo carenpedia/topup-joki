@@ -4,7 +4,8 @@ import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import { cookies } from "next/headers";
 import { verifySession } from "@/lib/session";
-import { Audience } from "@/lib/prices";
+
+type Audience = "PUBLIC" | "GOLD" | "SILVER";
 
 type Props = {
   params: { slug: string };
@@ -43,9 +44,6 @@ export default async function TopupGamePage({ params }: Props) {
     where: {
       key: slug,
       isActive: true,
-    },
-    include: {
-      category: true,
     },
   });
 

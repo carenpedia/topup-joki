@@ -163,6 +163,16 @@ export default function TopupClient({
 
   const { loading: checkoutLoading, run: runCheckout } = useAsyncAction();
 
+  // Helper: calculate total displayed in button (nominal + payment fee)
+  function getComputedTotal() {
+    if (!selectedItem) return 0;
+    if (activePaymentType === "CarenCoin") return selectedItem.finalPrice;
+    const m = methodFees.find(x => x.id === selectedMethodId);
+    if (!m) return selectedItem.finalPrice;
+    return calculatePrice(selectedItem.finalPrice, m);
+  }
+  const totalToPayComputed = getComputedTotal();
+
   async function onCheckout() {
     if (!selectedItem) return toast.error("Pilih nominal produk dulu.");
     if (activePaymentType === "GATEWAY" && !selectedMethodId) return toast.error("Pilih metode pembayaran.");
@@ -370,14 +380,4 @@ export default function TopupClient({
       <Footer />
     </main>
   );
-
-  // Helper inside component to calculate total displayed in button
-  function getComputedTotal() {
-    if (!selectedItem) return 0;
-    if (activePaymentType === "CarenCoin") return selectedItem.finalPrice;
-    const m = methodFees.find(x => x.id === selectedMethodId);
-    if (!m) return selectedItem.finalPrice;
-    return calculatePrice(selectedItem.finalPrice, m);
-  }
-  const totalToPayComputed = getComputedTotal();
 }

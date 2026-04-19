@@ -8,6 +8,8 @@ type Row = {
   id: string;
   methodKey: string;
   label: string;
+  category: string;
+  image: string | null;
   feeFlat: number;
   feePercent: number;
   minFee: number | null;
