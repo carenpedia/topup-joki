@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin";
 import { revalidatePath } from "next/cache";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
@@ -46,11 +46,11 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
      // Log admin activity
      await prisma.adminAuditLog.create({
         data: {
-           userId: auth.session.userId,
+           actorId: auth.session.userId,
            action: "UPDATE",
            entityType: "TICKET",
            entityId: updated.id,
-           details: `Status tiket ${ticketNo} diubah menjadi ${body.status}`
+           message: `Status tiket ${ticketNo} diubah menjadi ${body.status}`
         }
      });
 

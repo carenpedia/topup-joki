@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/auth";
+import { requireUser } from "@/lib/admin";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   const { searchParams } = new URL(req.url);

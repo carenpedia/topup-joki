@@ -1,132 +1,138 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AdminTable from "../../components/AdminTable";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function AdminTicketsPage() {
-  const router = useRouter();
   const [items, setItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [filteredItems, setFilteredItems] = useState<any[]>([]);
   const [statusFilter, setStatusFilter] = useState("ALL");
 
   const load = async () => {
-    setLoading(true);
     try {
       const sp = new URLSearchParams();
       if (search) sp.set("search", search);
       const res = await fetch(`/api/admin/tickets?${sp.toString()}`);
       const data = await res.json();
-      if (data.items) {
-         setItems(data.items);
-         applyFilters(data.items, statusFilter);
-      }
+      if (data.items) setItems(data.items);
     } catch (e) {
       console.error(e);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
     load();
-  }, [search]); // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const applyFilters = (data: any[], filter: string) => {
-     if (filter === "ALL") {
-        setFilteredItems(data);
-     } else {
-        setFilteredItems(data.filter(t => t.status === filter));
-     }
-  };
-
-  useEffect(() => {
-     applyFilters(items, statusFilter);
+  const filtered = useMemo(() => {
+    if (statusFilter === "ALL") return items;
+    return items.filter(t => t.status === statusFilter);
   }, [statusFilter, items]);
 
-  const columns = [
-    { header: "Tanggal", key: "createdAt", format: (val: any) => new Date(val).toLocaleString("id-ID") },
-    { header: "No. Tiket", key: "ticketNo", render: (item: any) => (
-       <div>
-          <div style={{ fontWeight: 800 }}>{item.ticketNo}</div>
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{item.orderId ? `Order: ${item.orderId}` : "Status Transaksi"}</div>
-       </div>
-    )},
-    { header: "Pelapor", key: "userId", render: (item: any) => (
-       <div>
-          {item.userId ? (
-             <span style={{ color: "#60a5fa", fontWeight: 700 }}>{item.user?.username || "ID User"}</span>
+  const rows = useMemo(() => {
+    return filtered.map((t) => ({
+      date: new Date(t.createdAt).toLocaleString("id-ID"),
+      ticketInfo: (
+        <div>
+          <div style={{ fontWeight: 800 }}>{t.ticketNo}</div>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>
+            {t.orderId ? `Order: ${t.orderId}` : "—"}
+          </div>
+        </div>
+      ),
+      reporter: (
+        <div>
+          {t.userId ? (
+            <span style={{ color: "#60a5fa", fontWeight: 700 }}>{t.user?.username || "User"}</span>
           ) : (
-             <span style={{ color: "#f59e0b", fontWeight: 700 }}>[GUEST] {item.contactWa}</span>
+            <span style={{ color: "#f59e0b", fontWeight: 700 }}>[GUEST] {t.contactWa}</span>
           )}
-       </div>
-    )},
-    { header: "Topik & Judul", key: "topic", render: (item: any) => (
-       <div style={{ maxWidth: 200, whiteSpace: "normal" }}>
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", fontWeight: 700 }}>{item.topic}</div>
-          <div style={{ fontSize: 13, fontWeight: 800 }}>{item.title}</div>
-       </div>
-    )},
-    { header: "Status", key: "status", render: (item: any) => (
-       <span style={{ 
-            padding: "4px 8px", borderRadius: 8, fontSize: 11, fontWeight: 800,
-            background: item.status === "CLOSED" ? "rgba(239,68,68,0.15)" : item.status === "ANSWERED" ? "rgba(34,197,94,0.15)" : item.status === "CUSTOMER_REPLY" ? "rgba(245,158,11,0.15)" : "rgba(59,130,246,0.15)",
-            color: item.status === "CLOSED" ? "#f87171" : item.status === "ANSWERED" ? "#4ade80" : item.status === "CUSTOMER_REPLY" ? "#f59e0b" : "#60a5fa"
-          }}>
-             {item.status}
-       </span>
-    )}
+        </div>
+      ),
+      topicTitle: (
+        <div style={{ maxWidth: 200 }}>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", fontWeight: 700 }}>{t.topic}</div>
+          <div style={{ fontSize: 13, fontWeight: 800 }}>{t.title}</div>
+        </div>
+      ),
+      status: (
+        <span style={{
+          padding: "4px 8px", borderRadius: 8, fontSize: 11, fontWeight: 800,
+          background: t.status === "CLOSED" ? "rgba(239,68,68,0.15)" : t.status === "ANSWERED" ? "rgba(34,197,94,0.15)" : t.status === "CUSTOMER_REPLY" ? "rgba(245,158,11,0.15)" : "rgba(59,130,246,0.15)",
+          color: t.status === "CLOSED" ? "#f87171" : t.status === "ANSWERED" ? "#4ade80" : t.status === "CUSTOMER_REPLY" ? "#f59e0b" : "#60a5fa"
+        }}>
+          {t.status}
+        </span>
+      ),
+      action: (
+        <Link
+          href={`/admin/tickets/${t.ticketNo}`}
+          style={{
+            padding: "8px 10px", borderRadius: 10,
+            border: "1px solid rgba(59,130,246,.28)",
+            background: "rgba(59,130,246,.10)",
+            color: "rgba(255,255,255,.92)",
+            fontWeight: 900, fontSize: 12, textDecoration: "none",
+          }}
+        >
+          Buka
+        </Link>
+      ),
+      _id: t.id,
+    }));
+  }, [filtered]);
+
+  const columns = [
+    { key: "date", title: "Tanggal" },
+    { key: "ticketInfo", title: "No. Tiket" },
+    { key: "reporter", title: "Pelapor" },
+    { key: "topicTitle", title: "Topik & Judul" },
+    { key: "status", title: "Status" },
+    { key: "action", title: "Aksi" },
   ];
 
-  const actions = (item: any) => (
-    <div style={{ display: "flex", gap: "8px" }}>
-      <button 
-         onClick={() => router.push(`/admin/tickets/${item.ticketNo}`)}
-         className="adminActionBtn edit" 
-         title="Buka Tiket"
-      >
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-      </button>
-    </div>
-  );
-
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div>
-           <h1 style={{ fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Kelola Support Tickets</h1>
-           <p style={{ color: "rgba(255,255,255,0.6)" }}>Pusat resolusi keluhan transaksi dari Member maupun Pelanggan Tamu (Guest).</p>
+    <div className="contact-section">
+      <div className="contact-card">
+        <div className="contact-header">
+          <div className="contact-step">🎫</div>
+          <div className="contact-title-wrap">
+            <h4 className="contact-title">Support Tickets</h4>
+          </div>
+        </div>
+
+        <div className="contact-body">
+          <div className="admin-filter-bar">
+            <input
+              className="contact-input"
+              placeholder="Cari No. Tiket / WhatsApp / Order ID..."
+              style={{ flex: 1.4 }}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+
+            <select className="contact-input" style={{ flex: 0.8 }} value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+              <option value="ALL">Status: Semua</option>
+              <option value="OPEN">OPEN</option>
+              <option value="CUSTOMER_REPLY">CUSTOMER REPLY</option>
+              <option value="ANSWERED">ANSWERED</option>
+              <option value="CLOSED">CLOSED</option>
+            </select>
+
+            <div className="auto-width" style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+              <button className="voucherBtn" type="button" onClick={load}>
+                Filter
+              </button>
+            </div>
+          </div>
+
+          <div className="spacer" />
+
+          <AdminTable columns={columns} rows={rows} rowKey={(r) => r._id} />
         </div>
       </div>
-
-      <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
-         {["ALL", "OPEN", "CUSTOMER_REPLY", "ANSWERED", "CLOSED"].map(filter => (
-            <button
-               key={filter}
-               onClick={() => setStatusFilter(filter)}
-               style={{
-                  padding: "8px 16px", borderRadius: 100, fontSize: 12, fontWeight: 800, cursor: "pointer",
-                  background: statusFilter === filter ? "rgba(59,130,246,0.2)" : "rgba(255,255,255,0.05)",
-                  color: statusFilter === filter ? "#60a5fa" : "rgba(255,255,255,0.6)",
-                  border: statusFilter === filter ? "1px solid rgba(59,130,246,0.4)" : "1px solid rgba(255,255,255,0.1)"
-               }}
-            >
-               {filter === "CUSTOMER_REPLY" ? "REPLY" : filter}
-            </button>
-         ))}
-      </div>
-
-      <AdminTable
-        columns={columns}
-        data={filteredItems}
-        actions={actions}
-        searchPlaceholder="Cari Nomor Tiket / WhatsApp / Order ID..."
-        targetSearch={search}
-        onSearchChange={setSearch}
-      />
     </div>
   );
 }

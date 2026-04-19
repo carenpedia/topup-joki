@@ -13,3 +13,16 @@ export async function requireAdmin() {
     return { ok: false as const, status: 401, error: "Invalid session" };
   }
 }
+
+export async function requireUser() {
+  const token = cookies().get("session")?.value;
+  if (!token) return { ok: false as const, status: 401, error: "Unauthorized" };
+
+  try {
+    const s = await verifySession(token);
+    return { ok: true as const, session: s };
+  } catch {
+    return { ok: false as const, status: 401, error: "Invalid session" };
+  }
+}
+

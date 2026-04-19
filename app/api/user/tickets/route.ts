@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/auth";
+import { requireUser } from "@/lib/admin";
 
 function generateTicketNo() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
