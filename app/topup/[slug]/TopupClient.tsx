@@ -401,19 +401,31 @@ export default function TopupClient({
 
         <div className="spacer" />
 
-        {/* Step 4: Checkout Action (Included in Sticky now) */}
+        {/* Step 4: Voucher */}
         <div className="card">
           <div className="contact-header">
             <div className="contact-step">4</div>
-            <div className="contact-title-wrap"><h4 className="contact-title">Konfirmasi WhatsApp</h4></div>
+            <div className="contact-title-wrap"><h4 className="contact-title">Kode Voucher</h4></div>
           </div>
           <div className="contact-body">
-            <input className="contact-input" placeholder="Nomor WhatsApp (628...)" value={contact} onChange={(e)=>setContact(e.target.value)} style={{ marginBottom: 12 }} />
             <div style={{ display: "flex", gap: 10 }}>
-              <input className="contact-input" placeholder="Kode Voucher" value={voucher} onChange={(e)=>setVoucher(e.target.value)} />
+              <input className="contact-input" placeholder="Masukkan Kode Voucher" value={voucher} onChange={(e)=>setVoucher(e.target.value)} />
               <button className="btn-ghost" style={{ padding: "0 20px" }} onClick={() => {setVoucherApplied(true); setVoucherMsg("Voucher dicek...");}}>Pakai</button>
             </div>
             {voucherMsg && <div style={{ fontSize: 11, marginTop: 4, color: "#3b82f6" }}>{voucherMsg}</div>}
+          </div>
+        </div>
+
+        <div className="spacer" />
+
+        {/* Step 5: Contact */}
+        <div className="card">
+          <div className="contact-header">
+            <div className="contact-step">5</div>
+            <div className="contact-title-wrap"><h4 className="contact-title">Konfirmasi WhatsApp</h4></div>
+          </div>
+          <div className="contact-body">
+            <input className="contact-input" placeholder="Masukkan Nomor WhatsApp (628...)" value={contact} onChange={(e)=>setContact(e.target.value)} />
           </div>
         </div>
       </div>
@@ -442,7 +454,7 @@ export default function TopupClient({
           <div className="stickyAction">
             <button className="stickyBtn" disabled={checkoutLoading || !selectedItem} onClick={onCheckout}>
               <div className="stickyBtnIcon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
               </div>
               {checkoutLoading ? "Memproses..." : selectedItem ? `Beli Sekarang — ${rupiah(totalToPayComputed)}` : "Pilih Produk"}
             </button>
