@@ -173,9 +173,31 @@ export default function TopupClient({
   const totalToPayComputed = getComputedTotal();
 
   async function onCheckout() {
-    if (!selectedItem) return toast.error("Pilih nominal produk dulu.");
-    if (activePaymentType === "GATEWAY" && !selectedMethodId) return toast.error("Pilih metode pembayaran.");
-    if (!contact.trim()) return toast.error("Masukkan nomor WhatsApp Anda.");
+    if (!selectedItem) {
+      toast.critical("Pilih nominal produk terlebih dahulu.");
+      scrollTo("section-nominal");
+      return;
+    }
+
+    // Validasi Data Akun (ID / Server)
+    const missingField = targetConfig.fields.find(f => !targetInputs[f.key]?.trim());
+    if (missingField) {
+      toast.critical(`Harap isi ${missingField.label} terlebih dahulu`);
+      scrollTo("section-id");
+      return;
+    }
+
+    if (activePaymentType === "GATEWAY" && !selectedMethodId) {
+      toast.critical("Pilih metode pembayaran terlebih dahulu.");
+      scrollTo("section-payment");
+      return;
+    }
+
+    if (!contact.trim()) {
+      toast.critical("Harap masukkan nomer whatsapp/email kamu");
+      scrollTo("section-contact");
+      return;
+    }
 
     await runCheckout(async () => {
       try {
@@ -235,7 +257,7 @@ export default function TopupClient({
     setTimeout(() => {
       if (missingField) {
         scrollTo("section-id");
-        toast.error(`Harap isi ${missingField.label} terlebih dahulu`);
+        toast.critical(`Harap isi ${missingField.label} terlebih dahulu`);
       } else {
         scrollTo("section-payment");
       }
@@ -433,7 +455,7 @@ export default function TopupClient({
         <div className="spacer" />
 
         {/* Step 5: Contact */}
-        <div className="card">
+        <div className="card" id="section-contact">
           <div className="contact-header">
             <div className="contact-step">5</div>
             <div className="contact-title-wrap"><h4 className="contact-title">Konfirmasi WhatsApp</h4></div>
