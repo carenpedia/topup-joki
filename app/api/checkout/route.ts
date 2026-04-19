@@ -1,15 +1,6 @@
 /**
  * POST /api/checkout
  * Inti flow checkout: Validasi → Buat Order → Panggil Payment Gateway → Return payment URL
- * 
- * Body: {
- *   gameKey, productId, inputUserId, inputServer?,
- *   contactWhatsapp, contactEmail?,
- *   paymentMethod: "CARENCOIN" | "GATEWAY",
- *   paymentGateway?: "TRIPAY" | "XENDIT",
- *   gatewayMethodKey?: "QRIS" | "BRIVA" | ...
- *   voucherCode?,
- * }
  */
 
 export const dynamic = 'force-dynamic';
@@ -27,18 +18,16 @@ import crypto from "crypto";
 
 const JWT_SECRET = new TextEncoder().encode(process.env.AUTH_SECRET || "");
 
-// Helper: generate orderNo unik
 function generateOrderNo(): string {
   const ts = Date.now().toString(36).toUpperCase();
   const rand = crypto.randomBytes(3).toString("hex").toUpperCase();
   return `CP-${ts}-${rand}`;
 }
 
-// Helper: get user from JWT cookie
 async function getUser() {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
+    const cookieStore = cookies();
+    const token = cookieStore.get("session")?.value;
     if (!token) return null;
     const { payload } = await jwtVerify(token, JWT_SECRET);
     return payload as { id: string; role: string };
@@ -58,39 +47,37 @@ export async function POST(req: Request) {
       contactWhatsapp,
       contactEmail,
       paymentMethod,     // "CARENCOIN" | "GATEWAY"
-      paymentGateway,    // "TRIPAY" | "XENDIT"
-      gatewayMethodKey,  // Channel code: "QRIS", "BRIVA", "OVO", etc.
+      methodId,          // NEW: ID from PaymentMethodFee
       voucherCode,
     } = body;
-
-    // ========== VALIDASI ==========
 
     if (!gameKey || !productId || !inputUserId || !contactWhatsapp || !paymentMethod) {
       return NextResponse.json({ error: "Data tidak lengkap" }, { status: 400 });
     }
 
-    // Ambil game
     const game = await prisma.game.findUnique({
       where: { key: gameKey },
       select: { id: true, name: true },
     });
-    if (!game) {
-      return NextResponse.json({ error: "Game tidak ditemukan" }, { status: 404 });
-    }
+    if (!game) return NextResponse.json({ error: "Game tidak ditemukan" }, { status: 404 });
 
-    // Ambil product
     const product = await prisma.product.findUnique({
       where: { id: productId },
-      include: { prices: true, flashSales: { where: { isActive: true, startAt: { lte: new Date() }, endAt: { gte: new Date() } }, take: 1 } },
+      include: { 
+        prices: true, 
+        flashSales: { 
+          where: { isActive: true, startAt: { lte: new Date() }, endAt: { gte: new Date() } }, 
+          take: 1 
+        } 
+      },
     });
     if (!product || !product.isActive) {
       return NextResponse.json({ error: "Produk tidak ditemukan atau tidak aktif" }, { status: 404 });
     }
 
-    // Tentukan audience dan harga
     const jwtUser = await getUser();
-    let audience: "PUBLIC" | "MEMBER" | "RESELLER" = "PUBLIC";
-    let dbUser: { id: string; role: string; carencoinBalance: number; username: string; whatsapp: string } | null = null;
+    let audience: "PUBLIC" | "GOLD" | "SILVER" = "PUBLIC";
+    let dbUser: any = null;
 
     if (jwtUser?.id) {
       const u = await prisma.user.findUnique({
@@ -99,22 +86,18 @@ export async function POST(req: Request) {
       });
       if (u) {
         dbUser = u;
-        audience = u.role === "RESELLER" ? "RESELLER" : "MEMBER";
+        audience = u.role as any;
       }
     }
 
-    // Cari harga sesuai audience (fallback ke PUBLIC jika tidak ada)
     let priceRow = product.prices.find((p) => p.audience === audience);
     if (!priceRow) priceRow = product.prices.find((p) => p.audience === "PUBLIC");
-    if (!priceRow) {
-      return NextResponse.json({ error: "Harga produk tidak ditemukan" }, { status: 400 });
-    }
+    if (!priceRow) return NextResponse.json({ error: "Harga produk tidak ditemukan" }, { status: 400 });
 
     let basePrice = priceRow.price;
     let flashSaleId: string | null = null;
     let flashPriceApplied: number | null = null;
 
-    // Flash sale check
     const activeFlash = product.flashSales?.[0];
     if (activeFlash) {
       flashSaleId = activeFlash.id;
@@ -122,7 +105,6 @@ export async function POST(req: Request) {
       basePrice = activeFlash.flashPrice;
     }
 
-    // Voucher (basic implementation)
     let voucherId: string | null = null;
     let voucherDiscount = 0;
     if (voucherCode) {
@@ -142,10 +124,32 @@ export async function POST(req: Request) {
 
     const finalPayable = Math.max(basePrice - voucherDiscount, 0);
 
+    // ========== HITUNG FEE & GATEWAY ==========
+    let gatewayToUse = null;
+    let methodKeyToUse = null;
+    let feeAmount = 0;
+    let totalToPay = finalPayable;
+
+    if (paymentMethod === "GATEWAY") {
+      if (!methodId) return NextResponse.json({ error: "Pilih metode pembayaran" }, { status: 400 });
+      
+      const mFee = await prisma.paymentMethodFee.findUnique({ where: { id: methodId } });
+      if (!mFee || !mFee.isActive) return NextResponse.json({ error: "Metode pembayaran tidak tersedia" }, { status: 400 });
+
+      gatewayToUse = mFee.gateway;
+      methodKeyToUse = mFee.methodKey;
+
+      // Hitung fee
+      let calculatedFee = mFee.feeFixed + Math.floor((finalPayable * mFee.feePercent) / 100);
+      if (mFee.minFee !== null && calculatedFee < mFee.minFee) calculatedFee = mFee.minFee;
+      if (mFee.maxFee !== null && calculatedFee > mFee.maxFee) calculatedFee = mFee.maxFee;
+      
+      feeAmount = calculatedFee;
+      totalToPay = finalPayable + feeAmount;
+    }
+
     // ========== BUAT ORDER ==========
-
     const orderNo = generateOrderNo();
-
     const order = await prisma.order.create({
       data: {
         orderNo,
@@ -163,26 +167,20 @@ export async function POST(req: Request) {
         flashSaleId,
         flashPriceApplied,
         basePrice,
-        finalPayable,
+        finalPayable: totalToPay, // Store the total include fee
         paymentMethod: paymentMethod === "CARENCOIN" ? "CARENCOIN" : "GATEWAY",
-        paymentGateway: paymentMethod === "GATEWAY" ? (paymentGateway || "TRIPAY") : null,
-        gatewayMethodKey: paymentMethod === "GATEWAY" ? (gatewayMethodKey || null) : null,
-        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 jam
+        paymentGateway: gatewayToUse,
+        gatewayMethodKey: methodKeyToUse,
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
       },
     });
 
     // ========== PROSES PEMBAYARAN ==========
 
-    // Jalur A: Carencoin (potong saldo langsung)
     if (paymentMethod === "CARENCOIN") {
-      if (!dbUser) {
-        return NextResponse.json({ error: "Anda harus login untuk bayar via Carencoin" }, { status: 401 });
-      }
-      if (dbUser.carencoinBalance < finalPayable) {
-        return NextResponse.json({ error: "Saldo Carencoin tidak cukup" }, { status: 400 });
-      }
+      if (!dbUser) return NextResponse.json({ error: "Anda harus login untuk bayar via Carencoin" }, { status: 401 });
+      if (dbUser.carencoinBalance < finalPayable) return NextResponse.json({ error: "Saldo Carencoin tidak cukup" }, { status: 400 });
 
-      // Potong saldo atomik
       const newBalance = dbUser.carencoinBalance - finalPayable;
       await prisma.$transaction([
         prisma.user.update({
@@ -199,49 +197,31 @@ export async function POST(req: Request) {
             refOrderId: order.id,
           },
         }),
-        prisma.order.update({
-          where: { id: order.id },
-          data: {
-            status: "PAID",
-            carencoinUsed: finalPayable,
-            paidAt: new Date(),
-          },
-        }),
       ]);
 
-      // Langsung trigger fulfillment (Digiflazz topup)
-      const fulfillResult = await fulfillOrder(order.id);
-
+      const fulfillRes = await fulfillOrder(order.id);
       return NextResponse.json({
         ok: true,
         orderNo,
         orderId: order.id,
         paymentMethod: "CARENCOIN",
-        message: fulfillResult.message,
-        redirectUrl: `/invoice/${orderNo}`,
+        status: "PAID",
+        fulfillStatus: fulfillRes.success ? "SUCCESS" : "FAILED",
       });
     }
 
-    // Jalur B: Payment Gateway (Tripay / Xendit)
-    if (paymentGateway === "TRIPAY") {
+    // GATEWAY PATH
+    if (gatewayToUse === "TRIPAY") {
       const tripayTx = await tripayCreate({
-        method: gatewayMethodKey || "QRIS",
-        merchantRef: orderNo,
-        amount: finalPayable,
-        customerName: dbUser?.username || "Guest",
-        customerEmail: contactEmail || "",
-        customerPhone: contactWhatsapp,
-        orderItems: [
-          {
-            sku: product.providerSku,
-            name: `${game.name} - ${product.name}`,
-            price: finalPayable,
-            quantity: 1,
-          },
-        ],
+        method: methodKeyToUse!,
+        merchant_ref: orderNo,
+        amount: totalToPay,
+        customer_name: dbUser?.username || "Guest",
+        customer_email: contactEmail || "guest@carenpedia.com",
+        customer_phone: contactWhatsapp,
+        order_items: [{ name: `${game.name} - ${product.name}`, price: totalToPay, quantity: 1 }],
       });
 
-      // Simpan Payment record
       await prisma.payment.create({
         data: {
           orderId: order.id,
@@ -253,65 +233,52 @@ export async function POST(req: Request) {
       });
 
       return NextResponse.json({
-        ok: true,
-        orderNo,
-        orderId: order.id,
-        paymentMethod: "GATEWAY",
-        gateway: "TRIPAY",
-        paymentUrl: tripayTx.checkout_url,
-        payCode: tripayTx.pay_code,
-        qrUrl: tripayTx.qr_url,
-        expiry: tripayTx.expired_time,
+         ok: true,
+         orderNo,
+         orderId: order.id,
+         paymentMethod: "GATEWAY",
+         gateway: "TRIPAY",
+         paymentUrl: tripayTx.checkout_url,
       });
     }
 
-    if (paymentGateway === "XENDIT") {
-      const xenditInv = await xenditCreate({
-        externalId: orderNo,
-        amount: finalPayable,
-        description: `${game.name} - ${product.name}`,
-        customerName: dbUser?.username || "Guest",
-        customerEmail: contactEmail || undefined,
-        customerPhone: contactWhatsapp,
-      });
+    if (gatewayToUse === "XENDIT") {
+       const xenditInv = await xenditCreate({
+         external_id: orderNo,
+         amount: totalToPay,
+         payer_email: contactEmail || "guest@carenpedia.com",
+         description: `${game.name} - ${product.name}`,
+       });
 
-      // Simpan Payment record
-      await prisma.payment.create({
-        data: {
-          orderId: order.id,
-          gateway: "XENDIT",
-          gatewayRef: xenditInv.id,
-          status: "PENDING",
-          rawPayload: xenditInv as any,
-        },
-      });
+       await prisma.payment.create({
+         data: {
+           orderId: order.id,
+           gateway: "XENDIT",
+           gatewayRef: xenditInv.id,
+           status: "PENDING",
+           rawPayload: xenditInv as any,
+         },
+       });
 
-      return NextResponse.json({
-        ok: true,
-        orderNo,
-        orderId: order.id,
-        paymentMethod: "GATEWAY",
-        gateway: "XENDIT",
-        paymentUrl: xenditInv.invoice_url,
-        expiry: xenditInv.expiry_date,
-      });
+       return NextResponse.json({
+         ok: true,
+         orderNo,
+         orderId: order.id,
+         paymentMethod: "GATEWAY",
+         gateway: "XENDIT",
+         paymentUrl: xenditInv.invoice_url,
+         expiry: xenditInv.expiry_date,
+       });
     }
 
-    if (paymentGateway === "MIDTRANS") {
+    if (gatewayToUse === "MIDTRANS") {
       const midtransTx = await midtransCreate({
         orderId: orderNo,
-        amount: finalPayable,
+        amount: totalToPay,
         customerName: dbUser?.username || "Guest",
         customerEmail: contactEmail || undefined,
         customerPhone: contactWhatsapp,
-        itemDetails: [
-          {
-            id: product.id,
-            price: finalPayable,
-            quantity: 1,
-            name: `${game.name} - ${product.name}`,
-          }
-        ]
+        itemDetails: [{ id: product.id, price: totalToPay, quantity: 1, name: `${game.name} - ${product.name}` }]
       });
 
       await prisma.payment.create({
@@ -326,23 +293,23 @@ export async function POST(req: Request) {
 
       return NextResponse.json({
         ok: true,
-        orderNo,
         orderId: order.id,
         paymentMethod: "GATEWAY",
         gateway: "MIDTRANS",
-        snapToken: midtransTx.token, // For popup
-        paymentUrl: midtransTx.redirectUrl, // Fallback
+        snapToken: midtransTx.token,
+        paymentUrl: midtransTx.redirectUrl,
       });
     }
 
-    if (paymentGateway === "DUITKU") {
+    if (gatewayToUse === "DUITKU") {
       const duitkuTx = await duitkuCreate({
         merchantOrderId: orderNo,
-        paymentAmount: finalPayable,
+        paymentAmount: totalToPay,
         productDetails: `${game.name} - ${product.name}`,
         customerVaName: dbUser?.username || "Guest",
         email: contactEmail || "guest@carenpedia.com",
         phoneNumber: contactWhatsapp,
+        paymentMethod: methodKeyToUse!,
       });
 
       await prisma.payment.create({
@@ -357,7 +324,6 @@ export async function POST(req: Request) {
 
       return NextResponse.json({
         ok: true,
-        orderNo,
         orderId: order.id,
         paymentMethod: "GATEWAY",
         gateway: "DUITKU",
@@ -366,8 +332,9 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ error: "Gateway tidak didukung" }, { status: 400 });
-  } catch (error: any) {
-    console.error("[checkout] Error:", error);
-    return NextResponse.json({ error: error?.message || "Internal server error" }, { status: 500 });
+
+  } catch (e: any) {
+    console.error("Checkout Error:", e);
+    return NextResponse.json({ error: e?.message || "Internal server error" }, { status: 500 });
   }
 }

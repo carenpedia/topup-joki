@@ -38,6 +38,8 @@ export async function GET(req: Request) {
         gateway: true,
         methodKey: true,
         label: true,
+        category: true,
+        image: true,
         feeFixed: true,
         feePercent: true,
         minFee: true,
@@ -64,6 +66,8 @@ export async function POST(req: Request) {
     const gateway = String(body.gateway || "").trim();
     const methodKey = String(body.methodKey || "").trim();
     const label = String(body.label || "").trim();
+    const category = String(body.category || "Lainnya").trim();
+    const image = body.image ? String(body.image).trim() : null;
     const feeFixed = toInt(body.feeFixed, 0);
     const feePercent = toFloat(body.feePercent, 0);
     const minFee =
@@ -77,8 +81,8 @@ export async function POST(req: Request) {
     const isActive = Boolean(body.isActive ?? true);
     const sortOrder = toInt(body.sortOrder, 0);
 
-    if (!gateway || (gateway !== "XENDIT" && gateway !== "TRIPAY")) {
-      return NextResponse.json({ error: "Gateway wajib diisi (XENDIT / TRIPAY)" }, { status: 400 });
+    if (!gateway || !["XENDIT", "TRIPAY", "MIDTRANS", "DUITKU"].includes(gateway)) {
+      return NextResponse.json({ error: "Gateway wajib diisi (XENDIT / TRIPAY / MIDTRANS / DUITKU)" }, { status: 400 });
     }
 
     if (!methodKey) {
@@ -119,6 +123,8 @@ export async function POST(req: Request) {
         gateway: gateway as any,
         methodKey,
         label,
+        category,
+        image,
         feeFixed,
         feePercent,
         minFee,

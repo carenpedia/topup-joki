@@ -5,8 +5,11 @@ import { useParams, useRouter } from "next/navigation";
 
 type Detail = {
   id: string;
+  gateway: string;
   methodKey: string;
   label: string;
+  category: string;
+  image: string | null;
   feeFlat: number;
   feePercent: number;
   minFee: number | null;
@@ -113,32 +116,72 @@ export default function PaymentMethodFeeDetailPage() {
 
         <div className="contact-body">
           <form onSubmit={save} style={{ display: "grid", gap: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div>
+                <label className="contact-label">Gateway</label>
+                <select 
+                  className="contact-input"
+                  value={data.gateway}
+                  onChange={(e) => setData({ ...data, gateway: e.target.value })}
+                >
+                  <option value="MIDTRANS">MIDTRANS</option>
+                  <option value="DUITKU">DUITKU</option>
+                  <option value="TRIPAY">TRIPAY</option>
+                  <option value="XENDIT">XENDIT</option>
+                </select>
+              </div>
+              <div>
+                <label className="contact-label">Kategori</label>
+                <input
+                  className="contact-input"
+                  value={data.category}
+                  onChange={(e) => setData({ ...data, category: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <label className="contact-label">Method Key (ID System)</label>
             <input
               className="contact-input"
               value={data.methodKey}
               onChange={(e) => setData({ ...data, methodKey: e.target.value })}
             />
 
+            <label className="contact-label">Label (Nama Publik)</label>
             <input
               className="contact-input"
               value={data.label}
               onChange={(e) => setData({ ...data, label: e.target.value })}
             />
 
+            <label className="contact-label">Image/Logo URL</label>
+            <input
+              className="contact-input"
+              value={data.image || ""}
+              onChange={(e) => setData({ ...data, image: e.target.value })}
+              placeholder="https://..."
+            />
+
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              <input
-                className="contact-input"
-                type="number"
-                value={data.feeFlat}
-                onChange={(e) => setData({ ...data, feeFlat: Number(e.target.value) })}
-              />
-              <input
-                className="contact-input"
-                type="number"
-                step="0.01"
-                value={data.feePercent}
-                onChange={(e) => setData({ ...data, feePercent: Number(e.target.value) })}
-              />
+              <div>
+                <label className="contact-label">Fee Flat (Rp)</label>
+                <input
+                  className="contact-input"
+                  type="number"
+                  value={data.feeFlat}
+                  onChange={(e) => setData({ ...data, feeFlat: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="contact-label">Fee Percent (%)</label>
+                <input
+                  className="contact-input"
+                  type="number"
+                  step="0.01"
+                  value={data.feePercent}
+                  onChange={(e) => setData({ ...data, feePercent: Number(e.target.value) })}
+                />
+              </div>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -171,6 +214,7 @@ export default function PaymentMethodFeeDetailPage() {
             <input
               className="contact-input"
               type="number"
+              placeholder="Sort Order"
               value={data.sortOrder}
               onChange={(e) => setData({ ...data, sortOrder: Number(e.target.value) })}
             />

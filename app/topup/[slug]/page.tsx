@@ -1,82 +1,59 @@
-export const dynamic = 'force-dynamic';
-import TopupClient, { Audience } from "./TopupClient";
 import { prisma } from "@/lib/prisma";
-import { cookies } from "next/headers";
-import { verifySession } from "@/lib/session";
+import TopupClient from "./TopupClient";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import { cookies } from "next/headers";
+import { verifySession } from "@/lib/session";
+import { Audience } from "@/lib/prices";
 
-function roleToAudience(role?: string): Audience {
-  if (role === "RESELLER") return "RESELLER";
-  if (role === "MEMBER") return "MEMBER";
-  if (role === "ADMIN") return "MEMBER";
-  return "PUBLIC";
+type Props = {
+  params: { slug: string };
+};
+
+/**
+ * Memetakan role user ke tipe Audience untuk perhitungan harga.
+ */
+function roleToAudience(role: string): Audience {
+  switch (role) {
+    case "ADMIN":
+    case "GOLD":
+      return "GOLD";
+    case "SILVER":
+      return "SILVER";
+    default:
+      return "PUBLIC";
+  }
 }
 
-function publisherFromSlug(slug: string) {
-  if (slug === "mobile-legends") return "Moonton";
+/**
+ * Menentukan publisher berdasarkan slug game (sederhana).
+ */
+function publisherFromSlug(slug: string): string {
+  if (slug.includes("mlbb") || slug.includes("mobile-legends")) return "Moonton";
+  if (slug.includes("free-fire") || slug.includes("ff")) return "Garena";
+  if (slug.includes("genshin")) return "HoYoverse";
   return "Official Publisher";
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function TopupGamePage({ params }: { params: any }) {
-  let slug = "";
-  try {
-    slug = params?.slug || "";
-  } catch {
-    slug = "";
-  }
+export default async function TopupGamePage({ params }: Props) {
+  const { slug } = params;
+  const token = cookies().get("session")?.value;
 
-  if (!slug) {
+  const game = await prisma.game.findFirst({
+    where: {
+      key: slug,
+      isActive: true,
+    },
+    include: {
+      category: true,
+    },
+  });
+
+  if (!game) {
     return (
-      <main className="topupPage">
+      <main className="main-layout">
         <Navbar />
-        <div className="topupWrap">
-          <div className="spacer" />
-          <div className="card" style={{ padding: 16 }}>
-            <div className="cardTitle">Halaman tidak valid</div>
-          </div>
-        </div>
-        <Footer />
-      </main>
-    );
-  }
-
-  let token: string | undefined;
-  try {
-    const cookieStore = cookies();
-    token = cookieStore.get("session")?.value;
-  } catch {
-    token = undefined;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let game: any = null;
-
-  try {
-    game = await prisma.game.findUnique({ where: { key: slug } });
-  } catch (err) {
-    console.error("[TopupPage] Prisma error:", err);
-    return (
-      <main className="topupPage">
-        <Navbar />
-        <div className="topupWrap">
-          <div className="spacer" />
-          <div className="card" style={{ padding: 16 }}>
-            <div className="cardTitle">Terjadi kesalahan server</div>
-            <div className="cardMuted">Silakan coba lagi nanti.</div>
-          </div>
-        </div>
-        <Footer />
-      </main>
-    );
-  }
-
-  if (!game || !game.isActive) {
-    return (
-      <main className="topupPage">
-        <Navbar />
-        <div className="topupWrap">
+        <div className="container" style={{ paddingTop: 100, minHeight: "60vh" }}>
           <div className="spacer" />
           <div className="card" style={{ padding: 16 }}>
             <div className="cardTitle">Game tidak ditemukan / nonaktif</div>
@@ -109,6 +86,12 @@ export default async function TopupGamePage({ params }: { params: any }) {
     XENDIT: gSets.find(s => s.key === "ENABLE_XENDIT")?.value !== "OFF",
   };
 
+  // Ambil detail fee & logo tiap metode
+  const methodFees = await prisma.paymentMethodFee.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: "asc" },
+  });
+
   return (
     <TopupClient
       game={{ id: game.id, key: game.key, name: game.name }}
@@ -119,6 +102,7 @@ export default async function TopupGamePage({ params }: { params: any }) {
       hasJoki={game.hasJoki}
       targetType={game.targetType ?? "DEFAULT"}
       gateways={gateways}
+      methodFees={JSON.parse(JSON.stringify(methodFees))}
     />
   );
 }

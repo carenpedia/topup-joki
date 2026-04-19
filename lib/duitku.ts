@@ -46,6 +46,7 @@ export async function createDuitkuInquiry(params: DuitkuCreateParams) {
     customerVaName: params.customerVaName,
     email: params.email,
     phoneNumber: params.phoneNumber,
+    paymentMethod: params.paymentMethod,
     callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/webhooks/duitku`,
     returnUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/invoice/${params.merchantOrderId}`,
     signature,

@@ -61,7 +61,8 @@ export default function AdminPaymentMethodFeesPage() {
   const columns = [
     { key: "methodKey", title: "Method Key", render: (r: Row) => r.methodKey },
     { key: "label", title: "Label", render: (r: Row) => r.label },
-    { key: "feeFlat", title: "Flat", render: (r: Row) => `Rp ${rupiah(r.feeFlat)}` },
+    { key: "category", title: "Kategori", render: (r: Row) => r.category },
+    { key: "feeFlat", title: "Flat", render: (r: Row) => `Rp ${rupiah(r.feeFlat || 0)}` },
     { key: "feePercent", title: "%", render: (r: Row) => `${r.feePercent}%` },
     { key: "minFee", title: "Min", render: (r: Row) => (r.minFee === null ? "-" : `Rp ${rupiah(r.minFee)}`) },
     { key: "maxFee", title: "Max", render: (r: Row) => (r.maxFee === null ? "-" : `Rp ${rupiah(r.maxFee)}`) },

@@ -8,7 +8,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-
 model User {
   id               String               @id @default(cuid())
   username         String               @unique
@@ -27,27 +26,27 @@ model User {
   orders           Order[]
   resetTokens      PasswordResetToken[]
   pointLedger      PointLedger[]
-  voucherUses      VoucherUse[]
   supportTickets   SupportTicket[]
   ticketReplies    TicketReply[]
+  voucherUses      VoucherUse[]
 
   @@index([role])
   @@index([status])
 }
 
 model Game {
-  id         String         @id @default(cuid())
-  key        String         @unique
-  name       String
-  logoUrl    String?
-  isActive   Boolean        @default(true)
-  isPopuler  Boolean        @default(false)
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-  hasJoki    Boolean        @default(false)
-  bannerUrl  String?
-  targetType String         @default("DEFAULT")
-  links      GameCategory[]
+  id                String            @id @default(cuid())
+  key               String            @unique
+  name              String
+  logoUrl           String?
+  isActive          Boolean           @default(true)
+  isPopuler         Boolean           @default(false)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  hasJoki           Boolean           @default(false)
+  bannerUrl         String?
+  targetType        String            @default("DEFAULT")
+  links             GameCategory[]
   orders            Order[]
   products          Product[]
   productCategories ProductCategory[]
@@ -80,26 +79,24 @@ model GameCategory {
 }
 
 model Product {
-  id          String         @id @default(cuid())
-  gameId      String
-  name        String
-  group       ProductGroup
-  provider    Provider
-  providerSku String
-  isActive          Boolean           @default(true)
+  id                String           @id @default(cuid())
+  gameId            String
+  name              String
+  group             ProductGroup
+  provider          Provider
+  providerSku       String
+  isActive          Boolean          @default(true)
   minPayable        Int?
-  
   productCategoryId String?
-  productCategory   ProductCategory?  @relation(fields: [productCategoryId], references: [id])
-  
-  createdAt         DateTime          @default(now())
-  type        ProductType    @default(TOPUP)
-  imageUrl    String?
-  updatedAt   DateTime       @updatedAt
-  flashSales  FlashSale[]
-  orders      Order[]
-  game        Game           @relation(fields: [gameId], references: [id], onDelete: Cascade)
-  prices      ProductPrice[]
+  createdAt         DateTime         @default(now())
+  type              ProductType      @default(TOPUP)
+  imageUrl          String?
+  updatedAt         DateTime         @updatedAt
+  flashSales        FlashSale[]
+  orders            Order[]
+  game              Game             @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  productCategory   ProductCategory? @relation(fields: [productCategoryId], references: [id])
+  prices            ProductPrice[]
 
   @@index([gameId, isActive])
   @@index([provider])
@@ -137,10 +134,10 @@ model ProductCategory {
   type      ProductType @default(TOPUP)
   order     Int         @default(0)
   gameId    String
-  game      Game      @relation(fields: [gameId], references: [id])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  game      Game        @relation(fields: [gameId], references: [id])
 
   @@index([gameId])
 }
@@ -207,6 +204,8 @@ model PaymentMethodFee {
   updatedAt  DateTime       @updatedAt
   feePercent Float
   label      String
+  category   String         @default("Lainnya")
+  image      String?
   maxFee     Int?
   minFee     Int?
   sortOrder  Int            @default(0)
@@ -313,9 +312,9 @@ model Order {
   voucher           Voucher?          @relation(fields: [voucherId], references: [id])
   payment           Payment?
   pointLedgers      PointLedger[]
+  supportTickets    SupportTicket[]
   topupLogs         TopupLog[]
   voucherUse        VoucherUse?
-  supportTickets    SupportTicket[]
 
   @@index([status, createdAt])
   @@index([userId, createdAt])
@@ -403,6 +402,49 @@ model JokiHeroRequest {
   joki      JokiOrderDetail @relation(fields: [jokiId], references: [id], onDelete: Cascade)
 
   @@index([jokiId])
+}
+
+model GlobalSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  group     String   @default("GENERAL")
+  updatedAt DateTime @updatedAt
+}
+
+model SupportTicket {
+  id        String         @id @default(cuid())
+  ticketNo  String         @unique
+  topic     String
+  title     String
+  status    TicketStatus   @default(OPEN)
+  priority  TicketPriority @default(NORMAL)
+  userId    String?
+  contactWa String?
+  orderId   String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  order     Order?         @relation(fields: [orderId], references: [id])
+  user      User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies   TicketReply[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([contactWa])
+}
+
+model TicketReply {
+  id        String        @id @default(cuid())
+  ticketId  String
+  userId    String?
+  message   String
+  isAdmin   Boolean       @default(false)
+  isSystem  Boolean       @default(false)
+  createdAt DateTime      @default(now())
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user      User?         @relation(fields: [userId], references: [id])
+
+  @@index([ticketId, createdAt])
 }
 
 enum UserRole {
@@ -530,54 +572,6 @@ enum JokiStatus {
   IN_PROGRESS
   COMPLETED
   CANCELLED
-}
-
-model GlobalSetting {
-  id        String   @id @default(cuid())
-  key       String   @unique
-  value     String
-  group     String   @default("GENERAL") // e.g. "GENERAL", "CONTACT", "SEO"
-  updatedAt DateTime @updatedAt
-}
-
-
-model SupportTicket {
-  id          String   @id @default(cuid())
-  ticketNo    String   @unique
-  topic       String   
-  title       String
-  status      TicketStatus   @default(OPEN)
-  priority    TicketPriority @default(NORMAL)
-  
-  userId      String?
-  contactWa   String?
-  
-  orderId     String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  order       Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  replies     TicketReply[]
-
-  @@index([userId])
-  @@index([status])
-  @@index([contactWa])
-}
-
-model TicketReply {
-  id          String   @id @default(cuid())
-  ticketId    String
-  userId      String?
-  message     String
-  isAdmin     Boolean  @default(false)
-  isSystem    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-
-  ticket      SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  user        User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-  @@index([ticketId, createdAt])
 }
 
 enum TicketStatus {

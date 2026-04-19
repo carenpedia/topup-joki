@@ -6,8 +6,11 @@ import { useState } from "react";
 export default function NewPaymentMethodFeePage() {
   const router = useRouter();
 
+  const [gateway, setGateway] = useState("MIDTRANS");
   const [methodKey, setMethodKey] = useState("");
   const [label, setLabel] = useState("");
+  const [category, setCategory] = useState("E-Wallet");
+  const [image, setImage] = useState("");
   const [feeFlat, setFeeFlat] = useState(0);
   const [feePercent, setFeePercent] = useState(0);
   const [minFee, setMinFee] = useState("");
@@ -25,8 +28,11 @@ export default function NewPaymentMethodFeePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          gateway,
           methodKey,
           label,
+          category,
+          image,
           feeFlat,
           feePercent,
           minFee,
@@ -43,7 +49,7 @@ export default function NewPaymentMethodFeePage() {
         return;
       }
 
-      router.push(`/admin/payment-method-fees/${j.id}`);
+      router.push(`/admin/payment-method-fees`);
       router.refresh();
     } finally {
       setSaving(false);
@@ -62,6 +68,31 @@ export default function NewPaymentMethodFeePage() {
 
         <div className="contact-body">
           <form onSubmit={submit} style={{ display: "grid", gap: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div>
+                <label className="contact-label">Gateway</label>
+                <select 
+                  className="contact-input"
+                  value={gateway}
+                  onChange={(e) => setGateway(e.target.value)}
+                >
+                  <option value="MIDTRANS">MIDTRANS</option>
+                  <option value="DUITKU">DUITKU</option>
+                  <option value="TRIPAY">TRIPAY</option>
+                  <option value="XENDIT">XENDIT</option>
+                </select>
+              </div>
+              <div>
+                <label className="contact-label">Kategori (E-Wallet, VA, QRIS, dll)</label>
+                <input
+                  className="contact-input"
+                  placeholder="Kategori"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                />
+              </div>
+            </div>
+
             <input
               className="contact-input"
               placeholder="Method Key (contoh: QRIS, DANA, BCA_VA)"
@@ -71,9 +102,16 @@ export default function NewPaymentMethodFeePage() {
 
             <input
               className="contact-input"
-              placeholder="Label"
+              placeholder="Label (Nama Tampilan)"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
+            />
+
+            <input
+              className="contact-input"
+              placeholder="URL Logo (opsional)"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
             />
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
