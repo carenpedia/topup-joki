@@ -84,7 +84,7 @@ export default function TopupClient({
   const router = useRouter();
   const toast = useToast();
   const targetConfig = getTargetConfig(targetType);
-  
+
   const [targetInputs, setTargetInputs] = useState<Record<string, string>>({});
   const [nominals, setNominals] = useState<NominalRow[]>([]);
   const [nominalLoading, setNominalLoading] = useState(false);
@@ -139,7 +139,7 @@ export default function TopupClient({
       if (!map.has(g)) map.set(g, []);
       map.get(g)!.push(it);
     }
-    return Array.from(map.entries()).sort((a,b) => a[0].localeCompare(b[0]));
+    return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
   }, [nominals]);
 
   // Grouped Gateway Methods
@@ -228,13 +228,24 @@ export default function TopupClient({
 
   const handleProductSelect = (id: string) => {
     setSelectedItemId(id);
-    setTimeout(() => scrollTo("section-payment"), 100);
+
+    // UX: Check if account fields are filled
+    const missingField = targetConfig.fields.find(f => !targetInputs[f.key]?.trim());
+
+    setTimeout(() => {
+      if (missingField) {
+        scrollTo("section-id");
+        toast.error(`Harap isi ${missingField.label} terlebih dahulu`);
+      } else {
+        scrollTo("section-payment");
+      }
+    }, 100);
   };
 
   return (
     <main className="topupPage">
-      <Script 
-        src="https://app.sandbox.midtrans.com/snap/snap.js" 
+      <Script
+        src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
       />
       <Navbar />
@@ -301,7 +312,7 @@ export default function TopupClient({
               {targetConfig.fields.map((f) => (
                 <div key={f.key} style={{ flex: "1 0 calc(50% - 6px)" }}>
                   <label className="contact-label">{f.label}</label>
-                  <input className="contact-input" placeholder={f.label} value={targetInputs[f.key]||""} onChange={(e)=>setTargetInputs({...targetInputs, [f.key]: e.target.value})} />
+                  <input className="contact-input" placeholder={f.label} value={targetInputs[f.key] || ""} onChange={(e) => setTargetInputs({ ...targetInputs, [f.key]: e.target.value })} />
                 </div>
               ))}
             </div>
@@ -333,7 +344,7 @@ export default function TopupClient({
                         <div className="tpNomIcon">
                           {p.imageUrl ? <img src={p.imageUrl} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2.5"><path d="M6 3h12l4 8-10 10L2 11l4-8z"></path><path d="M12 3v18"></path><path d="M2 11h20"></path><path d="M6 3L12 11L18 3"></path></svg>}
                         </div>
-                        <span className="tpNomPriceNow">{rupiah(p.finalPrice).replace(",00","").replace("Rp","Rp ")}</span>
+                        <span className="tpNomPriceNow">{rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}</span>
                       </div>
                       <div className="tpNomBottom">
                         <div className="tpInstanBadge">
@@ -409,9 +420,12 @@ export default function TopupClient({
           </div>
           <div className="contact-body">
             <div style={{ display: "flex", gap: 10 }}>
-              <input className="contact-input" placeholder="Masukkan Kode Voucher" value={voucher} onChange={(e)=>setVoucher(e.target.value)} />
-              <button className="btn-ghost" style={{ padding: "0 20px" }} onClick={() => {setVoucherApplied(true); setVoucherMsg("Voucher dicek...");}}>Pakai</button>
+              <input className="contact-input" placeholder="Masukkan Kode Voucher" value={voucher} onChange={(e) => setVoucher(e.target.value)} />
+              <button className="btn-ghost" style={{ padding: "0 20px" }} onClick={() => { setVoucherApplied(true); setVoucherMsg("Voucher dicek..."); }}>Pakai</button>
             </div>
+            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
+              Masukkan kode promo jika ada (Opsional)
+            </p>
             {voucherMsg && <div style={{ fontSize: 11, marginTop: 4, color: "#3b82f6" }}>{voucherMsg}</div>}
           </div>
         </div>
@@ -425,7 +439,10 @@ export default function TopupClient({
             <div className="contact-title-wrap"><h4 className="contact-title">Konfirmasi WhatsApp</h4></div>
           </div>
           <div className="contact-body">
-            <input className="contact-input" placeholder="Masukkan Nomor WhatsApp (628...)" value={contact} onChange={(e)=>setContact(e.target.value)} />
+            <input className="contact-input" placeholder="Masukkan Nomor WhatsApp (628...)" value={contact} onChange={(e) => setContact(e.target.value)} />
+            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
+              Nomer ini akan dihubungi jika terjadi masalah
+            </p>
           </div>
         </div>
       </div>
@@ -448,7 +465,7 @@ export default function TopupClient({
                 </div>
               </>
             ) : (
-              <div className="stickyInfoText">Pilih nominal produk & metode pembayaran</div>
+              <div className="stickyInfoText">Belum ada item produk yang dipilih.</div>
             )}
           </div>
           <div className="stickyAction">
