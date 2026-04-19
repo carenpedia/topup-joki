@@ -62,6 +62,7 @@ export default function AdminSettingsPage() {
   const tabs = [
     { id: "GENERAL", label: "Umum", icon: "🌐" },
     { id: "CONTACT", label: "Kontak", icon: "📞" },
+    { id: "GATEWAY", label: "Payment Gateway", icon: "💳" },
     { id: "SEO", label: "SEO & Metadata", icon: "🔍" },
   ];
 
@@ -136,6 +137,35 @@ export default function AdminSettingsPage() {
                 value={formData["INSTAGRAM_URL"] || ""} 
                 onChange={(v) => setFormData(p => ({ ...p, INSTAGRAM_URL: v }))}
                 help="Link profil instagram Anda."
+              />
+            </>
+          )}
+
+          {activeTab === "GATEWAY" && (
+            <>
+              <FormGroup 
+                label="Status Midtrans" 
+                value={formData["ENABLE_MIDTRANS"] || "ON"} 
+                onChange={(v) => setFormData(p => ({ ...p, ENABLE_MIDTRANS: v }))}
+                help="Ketik 'ON' untuk aktif, 'OFF' untuk nonaktif."
+              />
+              <FormGroup 
+                label="Status Duitku" 
+                value={formData["ENABLE_DUITKU"] || "ON"} 
+                onChange={(v) => setFormData(p => ({ ...p, ENABLE_DUITKU: v }))}
+                help="Ketik 'ON' untuk aktif, 'OFF' untuk nonaktif."
+              />
+              <FormGroup 
+                label="Status Tripay" 
+                value={formData["ENABLE_TRIPAY"] || "ON"} 
+                onChange={(v) => setFormData(p => ({ ...p, ENABLE_TRIPAY: v }))}
+                help="Ketik 'ON' untuk aktif, 'OFF' untuk nonaktif."
+              />
+              <FormGroup 
+                label="Status Xendit" 
+                value={formData["ENABLE_XENDIT"] || "ON"} 
+                onChange={(v) => setFormData(p => ({ ...p, ENABLE_XENDIT: v }))}
+                help="Ketik 'ON' untuk aktif, 'OFF' untuk nonaktif."
               />
             </>
           )}

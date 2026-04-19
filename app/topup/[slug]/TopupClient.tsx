@@ -26,6 +26,12 @@ type Props = {
   publisher?: string;
   hasJoki?: boolean;
   targetType?: string;
+  gateways?: {
+    MIDTRANS: boolean;
+    DUITKU: boolean;
+    TRIPAY: boolean;
+    XENDIT: boolean;
+  };
 };
 
 type NominalRow = {
@@ -98,6 +104,7 @@ export default function TopupClient({
   publisher = "Official Publisher",
   hasJoki = false,
   targetType = "DEFAULT",
+  gateways = { MIDTRANS: true, DUITKU: true, TRIPAY: true, XENDIT: true },
 }: Props) {
   const router = useRouter();
   const targetConfig = getTargetConfig(targetType);
@@ -120,7 +127,15 @@ export default function TopupClient({
 
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("Payment Gateway");
-  const [selectedGateway, setSelectedGateway] = useState<"TRIPAY" | "MIDTRANS" | "DUITKU" | "XENDIT">("MIDTRANS");
+  
+  // Find first active gateway for initial state
+  const defaultGateway = gateways.MIDTRANS ? "MIDTRANS" 
+    : gateways.DUITKU ? "DUITKU" 
+    : gateways.TRIPAY ? "TRIPAY" 
+    : gateways.XENDIT ? "XENDIT" 
+    : "MIDTRANS";
+
+  const [selectedGateway, setSelectedGateway] = useState<"TRIPAY" | "MIDTRANS" | "DUITKU" | "XENDIT">(defaultGateway as any);
 
   const [voucher, setVoucher] = useState("");
   const [voucherApplied, setVoucherApplied] = useState(false);
@@ -732,7 +747,7 @@ export default function TopupClient({
                      { id: "DUITKU", label: "DUITKU (Redirect)", icon: "💳" },
                      { id: "TRIPAY", label: "TRIPAY", icon: "💎" },
                      { id: "XENDIT", label: "XENDIT", icon: "🌐" }
-                   ].map(gw => (
+                   ].filter(gw => gateways[gw.id as keyof typeof gateways]).map(gw => (
                      <button
                         key={gw.id}
                         type="button"

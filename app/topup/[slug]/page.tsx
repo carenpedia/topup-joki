@@ -98,6 +98,17 @@ export default async function TopupGamePage({ params }: { params: any }) {
     }
   }
 
+  // Get gateway status from settings
+  const gSets = await prisma.globalSetting.findMany({
+    where: { key: { in: ["ENABLE_MIDTRANS", "ENABLE_DUITKU", "ENABLE_TRIPAY", "ENABLE_XENDIT"] } }
+  });
+  const gateways = {
+    MIDTRANS: gSets.find(s => s.key === "ENABLE_MIDTRANS")?.value !== "OFF",
+    DUITKU: gSets.find(s => s.key === "ENABLE_DUITKU")?.value !== "OFF",
+    TRIPAY: gSets.find(s => s.key === "ENABLE_TRIPAY")?.value !== "OFF",
+    XENDIT: gSets.find(s => s.key === "ENABLE_XENDIT")?.value !== "OFF",
+  };
+
   return (
     <TopupClient
       game={{ id: game.id, key: game.key, name: game.name }}
@@ -107,6 +118,7 @@ export default async function TopupGamePage({ params }: { params: any }) {
       publisher={publisherFromSlug(game.key)}
       hasJoki={game.hasJoki}
       targetType={game.targetType ?? "DEFAULT"}
+      gateways={gateways}
     />
   );
 }
