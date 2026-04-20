@@ -16,6 +16,23 @@ type Props = {
   logoUrl?: string | null;
   bannerUrl?: string | null;
   publisher?: string;
+  gateways?: Record<string, boolean>;
+  methodFees?: MethodFee[];
+  userBalance?: number;
+  carenCoinLogo?: string | null;
+};
+
+type MethodFee = {
+  id: string;
+  gateway: string;
+  methodKey: string;
+  label: string;
+  category: string;
+  image: string | null;
+  feeFixed: number;
+  feePercent: number;
+  minFee: number | null;
+  maxFee: number | null;
 };
 
 type NominalRow = {
@@ -60,6 +77,10 @@ export default function JokiClient({
   logoUrl,
   bannerUrl,
   publisher = "Professional Joki",
+  gateways = { MIDTRANS: true, DUITKU: true, TRIPAY: true, XENDIT: true },
+  methodFees = [],
+  userBalance = 0,
+  carenCoinLogo = null,
 }: Props) {
   const router = useRouter();
 
@@ -80,7 +101,9 @@ export default function JokiClient({
   const [heroes, setHeroes] = useState<string[]>([""]);
 
   // Step 4 — Pembayaran
-  const [paymentMethod, setPaymentMethod] = useState<"CarenCoin" | "Payment Gateway">("Payment Gateway");
+  const [activePaymentType, setActivePaymentType] = useState<"CARENCOIN" | "GATEWAY">("GATEWAY");
+  const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
+  const [openCategory, setOpenCategory] = useState<string | null>("E-Wallet");
 
   // Step 5 — Kontak
   const [contact, setContact] = useState("");
@@ -149,6 +172,31 @@ export default function JokiClient({
     load();
     return () => { alive = false; };
   }, [game.key]);
+
+  // Grouped Gateway Methods
+  const groupedMethods = useMemo(() => {
+    const map = new Map<string, MethodFee[]>();
+    for (const m of methodFees) {
+      if (!gateways[m.gateway]) continue;
+      if (!map.has(m.category)) map.set(m.category, []);
+      map.get(m.category)!.push(m);
+    }
+    return Array.from(map.entries());
+  }, [methodFees, gateways]);
+
+  function calculatePrice(basePrice: number, method: MethodFee) {
+    let fee = method.feeFixed + Math.floor((basePrice * method.feePercent) / 100);
+    if (method.minFee !== null && fee < method.minFee) fee = method.minFee;
+    if (method.maxFee !== null && fee > method.maxFee) fee = method.maxFee;
+    return basePrice + fee;
+  }
+
+  function getFeeAmount(basePrice: number, method: MethodFee) {
+    let fee = method.feeFixed + Math.floor((basePrice * method.feePercent) / 100);
+    if (method.minFee !== null && fee < method.minFee) fee = method.minFee;
+    if (method.maxFee !== null && fee > method.maxFee) fee = method.maxFee;
+    return fee;
+  }
 
   const selectedItem = useMemo(() => nominals.find((x) => x.id === selectedId) || null, [selectedId, nominals]);
 
@@ -244,10 +292,8 @@ export default function JokiClient({
         body.finalPayable = 0;
       }
 
-      if (paymentMethod === "Payment Gateway") {
-        body.paymentGateway = "TRIPAY";
-        body.gatewayMethodKey = "QRIS";
-      }
+      body.paymentMethod = activePaymentType;
+      body.methodId = selectedMethodId;
 
       const res = await fetch("/api/checkout/joki", {
         method: "POST",
@@ -616,33 +662,77 @@ export default function JokiClient({
 
         <div className="spacer" />
 
-        {/* Step 4 — Metode Pembayaran */}
+        {/* Step 4 — Pilihan Pembayaran (Redesigned) */}
         <div className="card" id="section-payment">
           <div className="contact-header">
             <div className="contact-step">4</div>
             <div className="contact-title-wrap">
-              <h4 className="contact-title">Metode Pembayaran</h4>
+              <h4 className="contact-title">Pilih Pembayaran</h4>
             </div>
           </div>
           <div className="contact-body">
-            <div className="row" style={{ flexWrap: "wrap" }}>
-              {(["CarenCoin", "Payment Gateway"] as const).map((m) => (
-                <button
-                  key={m}
-                  className="authBtn authBtnGhost"
-                  type="button"
-                  onClick={() => setPaymentMethod(m)}
-                  style={{
-                    borderColor: paymentMethod === m ? "rgba(59,130,246,.65)" : "rgba(255,255,255,.10)",
-                    background: paymentMethod === m ? "rgba(59,130,246,.15)" : "rgba(255,255,255,.06)",
-                  }}
+            <div className="tpPayAccordion">
+              {/* Special CarenCoin Category */}
+              <div className={`tpPayCategory premium-cat ${activePaymentType === "CARENCOIN" ? "isSelected" : ""}`}>
+                <div className="tpRibbon">BEST PRICE</div>
+                <button 
+                  className="tpPayCategoryHeader" 
+                  onClick={() => { setActivePaymentType("CARENCOIN"); setSelectedMethodId(null); }}
+                  style={{ minHeight: 80 }}
                 >
-                  {m}
+                  <div className="tpPayCategoryIcon caren-icon">
+                    {carenCoinLogo ? <img src={carenCoinLogo} alt="CC" style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : "🪙"}
+                  </div>
+                  <div className="tpPayCategorySubTitle">
+                    <div className="tpPayCategoryTitle">CarenCoin (Saldo)</div>
+                    <div className="tpPayCategoryBalance" style={{ color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff" }}>
+                      {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
+                    </div>
+                  </div>
                 </button>
+              </div>
+
+              {groupedMethods.map(([cat, methods]) => (
+                <div key={cat} className={`tpPayCategory ${openCategory === cat && activePaymentType === "GATEWAY" ? "isOpen" : ""}`}>
+                  <button className="tpPayCategoryHeader" onClick={() => { setOpenCategory(openCategory === cat ? null : cat); setActivePaymentType("GATEWAY"); }}>
+                    <div className="tpPayCategoryMeta">
+                      <div className="tpPayCategoryTitle">{cat}</div>
+                      {openCategory !== cat && (
+                        <div className="tpPayLogoPreview">
+                          {methods.slice(0, 8).map(m => (
+                            <img key={m.id} src={m.image || ""} alt={m.label} className="preview-logo-tiny" />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="tpPayCategoryChevron">▼</div>
+                  </button>
+                  <div className="tpPayCategoryContent">
+                    <div className="tpPayInnerGrid">
+                      {methods.map(m => (
+                        <button key={m.id} className={`tpMethodCard ${selectedMethodId === m.id ? "isSelected" : ""}`} onClick={() => setSelectedMethodId(m.id)}>
+                          <div className="tpMethodTop">
+                            <div className="tpMethodLogoExpand">
+                              {m.image ? <img src={m.image} alt={m.label} className="expand-logo" /> : <span className="expand-logo-text">{m.label?.[0]}</span>}
+                            </div>
+                            <div className="tpMethodPriceMain">
+                              {selectedItem ? rupiah(calculatePrice(selectedItem.finalPrice, m)) : "Pilih nominal"}
+                            </div>
+                          </div>
+                          <div className="tpMethodDashed" />
+                          <div className="tpMethodBottom">
+                            <div className="tpMethodFeeText">
+                              Biaya: {selectedItem ? rupiah(getFeeAmount(selectedItem.finalPrice, m)) : "-"}
+                            </div>
+                          </div>
+                          {selectedMethodId === m.id && <div className="tpMethodMark">✓</div>}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
-            <div className="spacer" />
-            <div className="cardMuted">Dipilih: {paymentMethod}</div>
           </div>
         </div>
 

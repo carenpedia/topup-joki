@@ -167,6 +167,12 @@ export default function AdminSettingsPage() {
                 onChange={(v) => setFormData(p => ({ ...p, ENABLE_XENDIT: v }))}
                 help="Ketik 'ON' untuk aktif, 'OFF' untuk nonaktif."
               />
+              <FormGroup 
+                label="Logo CarenCoin (URL)" 
+                value={formData["CARENCOIN_LOGO"] || ""} 
+                onChange={(v) => setFormData(p => ({ ...p, CARENCOIN_LOGO: v }))}
+                help="Masukkan URL gambar logo koin (misal: emas/coin png). Digunakan di sistem pembayaran CarenCoin."
+              />
             </>
           )}
 

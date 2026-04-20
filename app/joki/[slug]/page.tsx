@@ -118,23 +118,33 @@ export default async function JokiGamePage({ params }: { params: any }) {
     );
   }
 
-  let audience: Audience = "PUBLIC";
-  if (token) {
-    try {
-      const s = await verifySession(token);
-      audience = roleToAudience(s.role);
-    } catch {
-      audience = "PUBLIC";
-    }
-  }
+  const gSets = await prisma.globalSetting.findMany({
+    where: { key: { in: ["ENABLE_MIDTRANS", "ENABLE_DUITKU", "ENABLE_TRIPAY", "ENABLE_XENDIT", "CARENCOIN_LOGO"] } }
+  });
+  const gateways = {
+    MIDTRANS: gSets.find(s => s.key === "ENABLE_MIDTRANS")?.value !== "OFF",
+    DUITKU: gSets.find(s => s.key === "ENABLE_DUITKU")?.value !== "OFF",
+    TRIPAY: gSets.find(s => s.key === "ENABLE_TRIPAY")?.value !== "OFF",
+    XENDIT: gSets.find(s => s.key === "ENABLE_XENDIT")?.value !== "OFF",
+  };
+  const carenCoinLogo = gSets.find(s => s.key === "CARENCOIN_LOGO")?.value || null;
+
+  const methodFees = await prisma.paymentMethodFee.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: "asc" },
+  });
 
   return (
     <JokiClient
       game={{ id: game.id, key: game.key, name: game.name }}
       audience={audience}
+      userBalance={userBalance}
+      carenCoinLogo={carenCoinLogo}
       logoUrl={game.logoUrl ?? null}
       bannerUrl={game.bannerUrl ?? null}
       publisher={publisherFromSlug(game.key)}
+      gateways={gateways}
+      methodFees={JSON.parse(JSON.stringify(methodFees))}
     />
   );
 }

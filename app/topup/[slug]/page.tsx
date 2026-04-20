@@ -75,7 +75,7 @@ export default async function TopupGamePage({ params }: Props) {
 
   // Get gateway status from settings
   const gSets = await prisma.globalSetting.findMany({
-    where: { key: { in: ["ENABLE_MIDTRANS", "ENABLE_DUITKU", "ENABLE_TRIPAY", "ENABLE_XENDIT"] } }
+    where: { key: { in: ["ENABLE_MIDTRANS", "ENABLE_DUITKU", "ENABLE_TRIPAY", "ENABLE_XENDIT", "CARENCOIN_LOGO"] } }
   });
   const gateways = {
     MIDTRANS: gSets.find(s => s.key === "ENABLE_MIDTRANS")?.value !== "OFF",
@@ -83,6 +83,20 @@ export default async function TopupGamePage({ params }: Props) {
     TRIPAY: gSets.find(s => s.key === "ENABLE_TRIPAY")?.value !== "OFF",
     XENDIT: gSets.find(s => s.key === "ENABLE_XENDIT")?.value !== "OFF",
   };
+  const carenCoinLogo = gSets.find(s => s.key === "CARENCOIN_LOGO")?.value || null;
+
+  // Ambil saldo user jika login
+  let userBalance = 0;
+  if (token) {
+    try {
+      const s = await verifySession(token);
+      const user = await prisma.user.findUnique({
+        where: { id: s.userId },
+        select: { carencoinBalance: true }
+      });
+      userBalance = user?.carencoinBalance || 0;
+    } catch {}
+  }
 
   // Ambil detail fee & logo tiap metode
   const methodFees = await prisma.paymentMethodFee.findMany({
@@ -94,6 +108,8 @@ export default async function TopupGamePage({ params }: Props) {
     <TopupClient
       game={{ id: game.id, key: game.key, name: game.name }}
       audience={audience}
+      userBalance={userBalance}
+      carenCoinLogo={carenCoinLogo}
       logoUrl={game.logoUrl ?? null}
       bannerUrl={game.bannerUrl ?? null}
       publisher={publisherFromSlug(game.key)}

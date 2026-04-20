@@ -41,6 +41,8 @@ type Props = {
   targetType?: string;
   gateways?: Record<string, boolean>;
   methodFees?: MethodFee[];
+  userBalance?: number;
+  carenCoinLogo?: string | null;
 };
 
 type NominalRow = {
@@ -80,6 +82,8 @@ export default function TopupClient({
   targetType = "DEFAULT",
   gateways = { MIDTRANS: true, DUITKU: true, TRIPAY: true, XENDIT: true },
   methodFees = [],
+  userBalance = 0,
+  carenCoinLogo = null,
 }: Props) {
   const router = useRouter();
   const toast = useToast();
@@ -158,6 +162,13 @@ export default function TopupClient({
     if (method.minFee !== null && fee < method.minFee) fee = method.minFee;
     if (method.maxFee !== null && fee > method.maxFee) fee = method.maxFee;
     return basePrice + fee;
+  }
+
+  function getFeeAmount(basePrice: number, method: MethodFee) {
+    let fee = method.feeFixed + Math.floor((basePrice * method.feePercent) / 100);
+    if (method.minFee !== null && fee < method.minFee) fee = method.minFee;
+    if (method.maxFee !== null && fee > method.maxFee) fee = method.maxFee;
+    return fee;
   }
 
   const { loading: checkoutLoading, run: runCheckout } = useAsyncAction();
@@ -354,7 +365,9 @@ export default function TopupClient({
             <div className="contact-title-wrap"><h4 className="contact-title">Pilih Nominal</h4></div>
           </div>
           <div className="contact-body">
-            {nominalLoading ? <div>Loading...</div> : groupedNominals.map(([g, items]) => (
+            {nominalLoading ? (
+              <div style={{ padding: 20, textAlign: "center", color: "rgba(255,255,255,0.4)" }}>Memuat produk...</div>
+            ) : groupedNominals.map(([g, items]) => (
               <div key={g} className="nominalGroup" style={{ marginBottom: 24 }}>
                 <div className="nominalGroupHeader">{g.replace("CAT:", "")}</div>
                 <div className="tpNomGrid">
@@ -384,44 +397,68 @@ export default function TopupClient({
 
         <div className="spacer" />
 
-        {/* Step 3: Payment Accordion (Preserved new UI) */}
+        {/* Step 3: Pilihan Pembayaran (Redesigned) */}
         <div className="card" id="section-payment">
           <div className="contact-header">
             <div className="contact-step">3</div>
-            <div className="contact-title-wrap"><h4 className="contact-title">Metode Pembayaran</h4></div>
+            <div className="contact-title-wrap"><h4 className="contact-title">Pilih Pembayaran</h4></div>
           </div>
           <div className="contact-body">
             <div className="tpPayAccordion">
-              <div className={`tpPayCategory ${activePaymentType === "CarenCoin" ? "isOpen" : ""}`}>
-                <button className="tpPayCategoryHeader" onClick={() => { setActivePaymentType("CarenCoin"); setSelectedMethodId(null); }}>
-                  <div className="tpPayCategoryIcon">🪙</div>
-                  <div className="tpPayCategoryTitle">CarenCoin (Saldo)</div>
+              {/* Special CarenCoin Category */}
+              <div className={`tpPayCategory premium-cat ${activePaymentType === "CarenCoin" ? "isSelected" : ""}`}>
+                <div className="tpRibbon">BEST PRICE</div>
+                <button 
+                  className="tpPayCategoryHeader" 
+                  onClick={() => { setActivePaymentType("CarenCoin"); setSelectedMethodId(null); }}
+                  style={{ minHeight: 80 }}
+                >
+                  <div className="tpPayCategoryIcon caren-icon">
+                    {carenCoinLogo ? <img src={carenCoinLogo} alt="CC" style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : "🪙"}
+                  </div>
+                  <div className="tpPayCategorySubTitle">
+                    <div className="tpPayCategoryTitle">CarenCoin (Saldo)</div>
+                    <div className="tpPayCategoryBalance" style={{ color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff" }}>
+                      {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
+                    </div>
+                  </div>
                 </button>
               </div>
 
               {groupedMethods.map(([cat, methods]) => (
                 <div key={cat} className={`tpPayCategory ${openCategory === cat && activePaymentType === "GATEWAY" ? "isOpen" : ""}`}>
                   <button className="tpPayCategoryHeader" onClick={() => { setOpenCategory(openCategory === cat ? null : cat); setActivePaymentType("GATEWAY"); }}>
-                    <div className="tpPayCategoryIcon">
-                      {cat === "E-Wallet" ? "📱" : cat === "Virtual Account" ? "🏛️" : cat === "QRIS" ? "🤳" : "💳"}
+                    <div className="tpPayCategoryMeta">
+                      <div className="tpPayCategoryTitle">{cat}</div>
+                      {openCategory !== cat && (
+                        <div className="tpPayLogoPreview">
+                          {methods.slice(0, 8).map(m => (
+                            <img key={m.id} src={m.image || ""} alt={m.label} className="preview-logo-tiny" />
+                          ))}
+                        </div>
+                      )}
                     </div>
-                    <div className="tpPayCategoryTitle">{cat}</div>
                     <div className="tpPayCategoryChevron">▼</div>
                   </button>
                   <div className="tpPayCategoryContent">
-                    <div className="tpPayInnerList">
+                    <div className="tpPayInnerGrid">
                       {methods.map(m => (
-                        <button key={m.id} className={`tpMethodBtn ${selectedMethodId === m.id ? "isSelected" : ""}`} onClick={() => setSelectedMethodId(m.id)}>
-                          <div className="tpMethodLogoWrap">
-                            {m.image ? <img src={m.image} alt={m.label} className="tpMethodLogo" /> : <span className="tpMethodLogoFallback">{m.label?.[0]}</span>}
-                          </div>
-                          <div className="tpMethodInfo">
-                            <span className="tpMethodName">{m.label}</span>
-                            <span className="tpMethodPrice">
+                        <button key={m.id} className={`tpMethodCard ${selectedMethodId === m.id ? "isSelected" : ""}`} onClick={() => setSelectedMethodId(m.id)}>
+                          <div className="tpMethodTop">
+                            <div className="tpMethodLogoExpand">
+                              {m.image ? <img src={m.image} alt={m.label} className="expand-logo" /> : <span className="expand-logo-text">{m.label?.[0]}</span>}
+                            </div>
+                            <div className="tpMethodPriceMain">
                               {selectedItem ? rupiah(calculatePrice(selectedItem.finalPrice, m)) : "Pilih nominal"}
-                            </span>
+                            </div>
                           </div>
-                          <div className="tpMethodCheck">✓</div>
+                          <div className="tpMethodDashed" />
+                          <div className="tpMethodBottom">
+                            <div className="tpMethodFeeText">
+                              Biaya: {selectedItem ? rupiah(getFeeAmount(selectedItem.finalPrice, m)) : "-"}
+                            </div>
+                          </div>
+                          {selectedMethodId === m.id && <div className="tpMethodMark">✓</div>}
                         </button>
                       ))}
                     </div>
