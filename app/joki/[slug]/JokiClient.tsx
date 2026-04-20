@@ -684,10 +684,12 @@ export default function JokiClient({
                       <div className="tpPayCategoryIcon caren-icon">
                         {carenCoinLogo ? <img src={carenCoinLogo} alt="CC" style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : "🪙"}
                       </div>
-                      <div className="tpPayCategoryTitle">CarenCoin (Saldo)</div>
-                    </div>
-                    <div className="tpPayCategoryBalance" style={{ color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff" }}>
-                      {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
+                      <div className="tpPayCategorySubTitle">
+                        <div className="tpPayCategoryTitle" style={{ fontSize: '13px' }}>CarenCoin</div>
+                        <div className="tpPayCategoryBalance" style={{ color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff" }}>
+                          {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </button>
