@@ -926,13 +926,24 @@
 
 .tpPayHeaderBottom {
   padding: 8px 16px;
-  background: #535050;
+  background: #353535;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   width: 100%;
   min-height: 40px;
   border-top: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all 0.3s ease;
+}
+
+.tpPayCategory.isOpen .tpPayHeaderBottom {
+  max-height: 0;
+  min-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-top-color: transparent;
+  pointer-events: none;
 }
 
 .tpPayCategoryTitle {
