@@ -276,7 +276,7 @@ export default function JokiClient({
       const body: any = {
         gameKey: game.key,
         contactWhatsapp: contact,
-        paymentMethod: paymentMethod === "CarenCoin" ? "CARENCOIN" : "GATEWAY",
+        paymentMethod: activePaymentType,
         loginVia,
         userIdNickname: userIdNickname.trim(),
         loginId: loginId.trim(),
