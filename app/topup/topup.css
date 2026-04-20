@@ -43,13 +43,13 @@
   border: 4px solid var(--bg1);
   padding-top: 24px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
 }
 
 .topupScope .spacer {
-  height: 16px;
+  height: 12px;
 }
 
 /* ===== NEW HERO / GAME BANNER (Match Screenshot) ===== */
@@ -299,7 +299,7 @@
 /* ===== FORM CARDS (STEPS) ===== */
 
 .topupScope .card {
-  border-radius: 20px;
+  border-radius: 12px;
   background: rgba(44, 45, 58, 0.9);
   /* Solid-looking dark navy/grey but with opacity for blur */
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -311,21 +311,21 @@
 
 .topupScope .contact-header {
   display: flex;
-  height: 46px;
-  /* Reduced from 56px to make it slimmer */
+  height: 40px;
+  /* Reduced height to make it slimmer */
   overflow: hidden;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .topupScope .contact-step {
-  width: 46px;
+  width: 40px;
   /* Match the new header height to keep it square */
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 950;
-  font-size: 16px;
-  /* Slightly reduced font size */
+  font-size: 14px;
+  /* Reduced font size */
   color: #fff;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   box-shadow: inset -2px 0 10px rgba(0, 0, 0, 0.2);
@@ -341,15 +341,15 @@
 
 .topupScope .contact-title {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   color: #fff;
   letter-spacing: 0.5px;
 }
 
 .topupScope .contact-body {
-  padding: 16px 20px;
-  /* Reduced vertical padding */
+  padding: 12px 16px;
+  /* Reduced internal padding for compact look */
 }
 
 .topupScope .contact-label {
@@ -395,14 +395,14 @@
 .topupScope .nominalGroups {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
 .topupScope .nominalGroupHeader {
   font-size: 15px;
   font-weight: 900;
   color: #fff;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -439,10 +439,10 @@
   flex-direction: column;
   position: relative;
   text-align: left;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
-  min-height: 130px;
+  min-height: 120px;
   background: #2d2f44;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -887,7 +887,7 @@
 }
 
 .tpPayCategory {
-  border-radius: 12px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
@@ -977,10 +977,10 @@
   padding: 10px 14px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-height: 56px;
+  min-height: 50px;
 }
 
 .tpMethodBtn:hover {
