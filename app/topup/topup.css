@@ -895,7 +895,8 @@
   transition: all 0.3s ease;
 }
 
-.tpPayCategory.isOpen, .tpPayCategory.isSelected {
+.tpPayCategory.isOpen,
+.tpPayCategory.isSelected {
   background: rgba(44, 45, 58, 0.9);
   border-color: #3b82f6;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
@@ -916,7 +917,7 @@
 
 .tpPayHeaderTop {
   padding: 12px 20px;
-  background: #2a2a2a;
+  background: #3b3939b0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -925,7 +926,7 @@
 
 .tpPayHeaderBottom {
   padding: 8px 16px;
-  background: #353535;
+  background: #535050;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -956,7 +957,7 @@
   background: #fff;
   padding: 2px 4px;
   border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .tpPayCategoryChevron {
@@ -993,7 +994,8 @@
 .tpPayCategoryHeader.caren-header .tpPayHeaderTop {
   padding: 18px 20px;
   min-height: 80px;
-  background: #2a2a2a; /* Back to solid standard for premium look */
+  background: #3d3c3c;
+  /* Back to solid standard for premium look */
 }
 
 .caren-left-group {
@@ -1088,7 +1090,7 @@
   max-width: 80%;
   object-fit: contain;
   /* Premium look: subtle pop */
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
 .tpMethodPriceMain {
