@@ -409,15 +409,16 @@ export default function TopupClient({
               <div className={`tpPayCategory premium-cat ${activePaymentType === "CarenCoin" ? "isSelected" : ""}`}>
                 <div className="tpRibbon">BEST PRICE</div>
                 <button 
-                  className="tpPayCategoryHeader" 
+                  className="tpPayCategoryHeader caren-header" 
                   onClick={() => { setActivePaymentType("CarenCoin"); setSelectedMethodId(null); }}
-                  style={{ minHeight: 80 }}
                 >
-                  <div className="tpPayCategoryIcon caren-icon">
-                    {carenCoinLogo ? <img src={carenCoinLogo} alt="CC" style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : "🪙"}
-                  </div>
-                  <div className="tpPayCategorySubTitle">
-                    <div className="tpPayCategoryTitle">CarenCoin (Saldo)</div>
+                  <div className="tpPayHeaderTop">
+                    <div className="caren-left-group">
+                      <div className="tpPayCategoryIcon caren-icon">
+                        {carenCoinLogo ? <img src={carenCoinLogo} alt="CC" style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : "🪙"}
+                      </div>
+                      <div className="tpPayCategoryTitle">CarenCoin (Saldo)</div>
+                    </div>
                     <div className="tpPayCategoryBalance" style={{ color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff" }}>
                       {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
                     </div>
@@ -428,17 +429,17 @@ export default function TopupClient({
               {groupedMethods.map(([cat, methods]) => (
                 <div key={cat} className={`tpPayCategory ${openCategory === cat && activePaymentType === "GATEWAY" ? "isOpen" : ""}`}>
                   <button className="tpPayCategoryHeader" onClick={() => { setOpenCategory(openCategory === cat ? null : cat); setActivePaymentType("GATEWAY"); }}>
-                    <div className="tpPayCategoryMeta">
+                    <div className="tpPayHeaderTop">
                       <div className="tpPayCategoryTitle">{cat}</div>
-                      {openCategory !== cat && (
-                        <div className="tpPayLogoPreview">
-                          {methods.slice(0, 8).map(m => (
-                            <img key={m.id} src={m.image || ""} alt={m.label} className="preview-logo-tiny" />
-                          ))}
-                        </div>
-                      )}
+                      <div className="tpPayCategoryChevron">▼</div>
                     </div>
-                    <div className="tpPayCategoryChevron">▼</div>
+                    <div className="tpPayHeaderBottom">
+                      <div className="tpPayLogoPreview">
+                        {methods.slice(0, 8).map(m => (
+                          <img key={m.id} src={m.image || ""} alt={m.label} className="preview-logo-tiny" />
+                        ))}
+                      </div>
+                    </div>
                   </button>
                   <div className="tpPayCategoryContent">
                     <div className="tpPayInnerGrid">
