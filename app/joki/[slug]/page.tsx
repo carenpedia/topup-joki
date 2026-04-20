@@ -118,6 +118,22 @@ export default async function JokiGamePage({ params }: { params: any }) {
     );
   }
 
+  let audience: Audience = "PUBLIC";
+  let userBalance = 0;
+  if (token) {
+    try {
+      const s = await verifySession(token);
+      audience = roleToAudience(s.role);
+      const user = await prisma.user.findUnique({
+        where: { id: s.userId },
+        select: { carencoinBalance: true }
+      });
+      userBalance = user?.carencoinBalance || 0;
+    } catch {
+      audience = "PUBLIC";
+    }
+  }
+
   const gSets = await prisma.globalSetting.findMany({
     where: { key: { in: ["ENABLE_MIDTRANS", "ENABLE_DUITKU", "ENABLE_TRIPAY", "ENABLE_XENDIT", "CARENCOIN_LOGO"] } }
   });
