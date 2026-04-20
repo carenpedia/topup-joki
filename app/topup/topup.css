@@ -1063,7 +1063,7 @@
   display: flex;
   flex-direction: column;
   height: 120px;
-  background: rgba(88, 88, 88, 0.993);
+  background: rgba(83, 83, 83, 0.993);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   cursor: pointer;
