@@ -501,6 +501,7 @@ export default function TopupClient({
         </div>
       </div>
 
+      <ProductFaqAccordion />
       <Footer />
     </main>
   );
