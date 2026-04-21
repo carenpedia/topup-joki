@@ -847,15 +847,18 @@ export default function JokiClient({
           <div className="tpRightCol">
             {/* Rating Widget */}
             <div className="tpSidebarCard tpRatingCard">
+              <div className="tpRatingLabel">Ulasan dan rating</div>
               <div className="tpRatingTop">
                 <div className="tpRatingValue">{reviewsData.averageRating}</div>
-                <div className="tpRatingStars">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                  ))}
+                <div className="tpRatingStarsWrap">
+                  <div className="tpRatingStars">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    ))}
+                  </div>
+                  <div className="tpRatingTotal">Berdasarkan total {reviewsData.totalCount.toLocaleString("id-ID")} rating</div>
                 </div>
               </div>
-              <div className="tpRatingTotal">Berdasarkan total ulasan {reviewsData.totalCount.toLocaleString("id-ID")} rating</div>
             </div>
 
             {/* Support Widget */}
