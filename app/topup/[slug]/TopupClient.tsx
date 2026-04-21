@@ -484,7 +484,7 @@ export default function TopupClient({
           <div className="contact-body">
             <div style={{ display: "flex", gap: 10 }}>
               <input className="contact-input" placeholder="Masukkan Kode Voucher" value={voucher} onChange={(e) => setVoucher(e.target.value)} />
-              <button className="btn-ghost" style={{ padding: "0 20px" }} onClick={() => { setVoucherApplied(true); setVoucherMsg("Voucher dicek..."); }}>Pakai</button>
+              <button className="btn-promo" onClick={() => { setVoucherApplied(true); setVoucherMsg("Voucher dicek..."); }}>Pakai</button>
             </div>
             <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
               Masukkan kode promo jika ada (Opsional)

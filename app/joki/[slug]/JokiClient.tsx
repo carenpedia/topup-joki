@@ -105,7 +105,12 @@ export default function JokiClient({
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
   const [openCategory, setOpenCategory] = useState<string | null>("E-Wallet");
 
-  // Step 5 — Kontak
+  // Step 5 — Voucher
+  const [voucher, setVoucher] = useState("");
+  const [voucherApplied, setVoucherApplied] = useState(false);
+  const [voucherMsg, setVoucherMsg] = useState("");
+
+  // Step 6 — Kontak
   const [contact, setContact] = useState("");
 
   // Submit state
@@ -283,6 +288,7 @@ export default function JokiClient({
         password: password.trim(),
         noteForJoki: noteForJoki.trim() || undefined,
         heroes: filteredHeroes,
+        voucherCode: voucherApplied ? voucher.trim().toUpperCase() : undefined,
       };
 
       if (selectedItem) {
@@ -741,10 +747,49 @@ export default function JokiClient({
 
         <div className="spacer" />
 
-        {/* Step 5 — Kontak */}
+        {/* Step 5 — Voucher */}
         <div className="card">
           <div className="contact-header">
             <div className="contact-step">5</div>
+            <div className="contact-title-wrap">
+              <h4 className="contact-title">Kode Voucher</h4>
+            </div>
+          </div>
+          <div className="contact-body">
+            <div style={{ display: "flex", gap: 10 }}>
+              <input
+                className="contact-input"
+                placeholder="Masukkan Kode Voucher"
+                value={voucher}
+                onChange={(e) => setVoucher(e.target.value)}
+              />
+              <button
+                className="btn-promo"
+                onClick={() => {
+                  setVoucherApplied(true);
+                  setVoucherMsg("Voucher dicek...");
+                }}
+              >
+                Pakai
+              </button>
+            </div>
+            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
+              Masukkan kode promo jika ada (Opsional)
+            </p>
+            {voucherMsg && (
+              <div style={{ fontSize: 11, marginTop: 4, color: "#3b82f6" }}>
+                {voucherMsg}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="spacer" />
+
+        {/* Step 6 — Kontak */}
+        <div className="card">
+          <div className="contact-header">
+            <div className="contact-step">6</div>
             <div className="contact-title-wrap">
               <h4 className="contact-title">Detail Kontak</h4>
             </div>
