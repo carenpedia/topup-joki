@@ -50,6 +50,7 @@ model Game {
   orders            Order[]
   products          Product[]
   productCategories ProductCategory[]
+  reviews           ProductReview[]
 
   @@index([isActive])
   @@index([isPopuler])
@@ -445,6 +446,19 @@ model TicketReply {
   user      User?         @relation(fields: [userId], references: [id])
 
   @@index([ticketId, createdAt])
+}
+
+model ProductReview {
+  id         String   @id @default(cuid())
+  userName   String
+  rating     Int      @default(5)
+  comment    String
+  isVerified Boolean  @default(true)
+  gameId     String?
+  game       Game?    @relation(fields: [gameId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@index([gameId])
 }
 
 enum UserRole {

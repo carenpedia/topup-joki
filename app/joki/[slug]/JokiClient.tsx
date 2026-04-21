@@ -113,6 +113,26 @@ export default function JokiClient({
   // Step 6 — Kontak
   const [contact, setContact] = useState("");
 
+  const [reviewsData, setReviewsData] = useState<{ reviews: any[], totalCount: number, averageRating: number }>({
+    reviews: [],
+    totalCount: 5692,
+    averageRating: 5.0
+  });
+
+  // Load Reviews
+  useEffect(() => {
+    async function loadReviews() {
+      try {
+        const res = await fetch(`/api/reviews?gameId=${game.id}`);
+        const j = await res.json();
+        if (res.ok) setReviewsData(j);
+      } catch (e) {
+        console.error("Review Load Error:", e);
+      }
+    }
+    loadReviews();
+  }, [game.id]);
+
   // Submit state
   const [submitting, setSubmitting] = useState(false);
   const [submitErr, setSubmitErr] = useState("");
@@ -835,7 +855,7 @@ export default function JokiClient({
                   ))}
                 </div>
               </div>
-              <div className="tpRatingTotal">Berdasarkan total ulasan 1.88jt rating</div>
+              <div className="tpRatingTotal">Berdasarkan total ulasan {reviewsData.totalCount.toLocaleString("id-ID")} rating</div>
             </div>
 
             {/* Support Widget */}
@@ -897,42 +917,28 @@ export default function JokiClient({
             <h3 className="tpReviewTitle">Apa kata mereka?</h3>
             <div className="tpRatingStars" style={{ color: "#fbbf24", display: "flex", gap: 3 }}>
               {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
-              <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>4.99/5.0</span>
+              <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>{reviewsData.averageRating.toFixed(1)}/5.0</span>
             </div>
           </div>
           <div className="tpReviewList">
-            <div className="tpReviewItem">
-              <div className="tpReviewUser">
-                <div className="tpReviewAvatar">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            {reviewsData.reviews.map((rev, i) => (
+              <div key={rev.id || i} className="tpReviewItem">
+                <div className="tpReviewUser">
+                  <div className="tpReviewAvatar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  </div>
+                  <div className="tpReviewMeta">
+                    <b>{rev.userName}</b>
+                    <span>{rev.createdAt ? new Date(rev.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'long' }) : "Baru saja"} • Terverifikasi</span>
+                  </div>
+                  <div className="tpReviewStars">
+                    {[...Array(rev.rating)].map((_, i) => <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
+                  </div>
                 </div>
-                <div className="tpReviewMeta">
-                  <b>Sultan Gaming</b>
-                  <span>Baru saja • Terverifikasi</span>
-                </div>
-                <div className="tpReviewStars">
-                  {[...Array(5)].map((_, i) => <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
-                </div>
+                <p className="tpReviewContent">{rev.comment}</p>
+                {rev.isVerified && <div className="tpReviewBadge">✓ Produk Sesuai</div>}
               </div>
-              <p className="tpReviewContent">Gila sih, prosesnya beneran satset! Langsung masuk detikan setelah bayar. UI nya juga mewah banget sekarang!</p>
-              <div className="tpReviewBadge">✓ Produk Sesuai</div>
-            </div>
-            <div className="tpReviewItem">
-              <div className="tpReviewUser">
-                <div className="tpReviewAvatar">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                </div>
-                <div className="tpReviewMeta">
-                  <b>Raffi Ahmad</b>
-                  <span>1 jam yang lalu • Terverifikasi</span>
-                </div>
-                <div className="tpReviewStars">
-                  {[...Array(5)].map((_, i) => <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
-                </div>
-              </div>
-              <p className="tpReviewContent">Langganan disini gak pernah mengecewakan. Harga paling bersahabat buat dompet.</p>
-              <div className="tpReviewBadge">✓ Pelayanan Cepat</div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
