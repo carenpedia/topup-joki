@@ -118,6 +118,7 @@ export default function JokiClient({
     totalCount: 14515,
     averageRating: 4.99
   });
+  const [expandedReviews, setExpandedReviews] = useState(false);
 
   // Load Reviews
   useEffect(() => {
@@ -931,7 +932,7 @@ export default function JokiClient({
             </div>
           </div>
           <div className="tpReviewList">
-            {reviewsData.reviews.map((rev, i) => (
+            {reviewsData.reviews.slice(0, expandedReviews ? 10 : 4).map((rev, i) => (
               <div key={rev.id || i} className="tpReviewItem">
                 <div className="tpReviewUser">
                   <div className="tpReviewAvatar">
@@ -949,6 +950,16 @@ export default function JokiClient({
                 {rev.isVerified && <div className="tpReviewBadge">✓ Produk Sesuai</div>}
               </div>
             ))}
+
+            {!expandedReviews && reviewsData.reviews.length > 4 && (
+              <button 
+                onClick={() => setExpandedReviews(true)}
+                className="tpBtnShowMore"
+              >
+                Lihat ulasan lainnya
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+            )}
           </div>
         </div>
       </div>
