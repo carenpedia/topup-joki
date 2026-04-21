@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import AdminTable from "../../components/AdminTable";
-import { toast } from "react-hot-toast";
 
 type Review = {
   id: string;
@@ -45,7 +44,7 @@ export default function AdminReviewsPage() {
       const gameData = await gameRes.json();
       setGames(gameData.items || []);
     } catch (e) {
-      toast.error("Gagal memuat data");
+      alert("Gagal memuat data");
     } finally {
       setLoading(false);
     }
@@ -65,7 +64,7 @@ export default function AdminReviewsPage() {
         body: JSON.stringify({ userName, rating, comment, gameId }),
       });
       if (res.ok) {
-        toast.success("Ulasan berhasil ditambahkan!");
+        alert("Ulasan berhasil ditambahkan!");
         setUserName("");
         setComment("");
         setRating(5);
@@ -74,10 +73,10 @@ export default function AdminReviewsPage() {
         loadData();
       } else {
         const error = await res.json();
-        toast.error(error.error || "Gagal menyimpan ulasan");
+        alert(error.error || "Gagal menyimpan ulasan");
       }
     } catch (e) {
-      toast.error("Terjadi kesalahan");
+      alert("Terjadi kesalahan");
     } finally {
       setSubmitting(false);
     }
@@ -88,11 +87,11 @@ export default function AdminReviewsPage() {
     try {
       const res = await fetch(`/api/reviews?id=${id}`, { method: "DELETE" });
       if (res.ok) {
-        toast.success("Berhasil dihapus");
+        alert("Berhasil dihapus");
         loadData();
       }
     } catch (e) {
-      toast.error("Gagal menghapus");
+      alert("Gagal menghapus");
     }
   }
 
