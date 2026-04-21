@@ -917,10 +917,10 @@ export default function JokiClient({
         {/* Reviews Section */}
         <div className="tpReviewSection">
           <div className="tpReviewHeader">
-            <h3 className="tpReviewTitle">Apa kata mereka?</h3>
+            <h3 className="tpReviewTitle">Ulasan dan Rating</h3>
             <div className="tpRatingStars" style={{ color: "#fbbf24", display: "flex", gap: 3 }}>
               {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
-              <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>{reviewsData.averageRating}/5.0</span>
+              <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>{reviewsData.averageRating}/5.0 ({reviewsData.totalCount.toLocaleString("id-ID")} ulasan)</span>
             </div>
           </div>
           <div className="tpReviewList">
