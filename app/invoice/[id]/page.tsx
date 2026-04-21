@@ -9,6 +9,7 @@ import "../invoice.css";
 type OrderData = {
   orderNo: string;
   status: string;
+  gameId: string | null;
   game: {
     name: string;
     logoUrl: string | null;
@@ -44,6 +45,12 @@ export default function Invoice({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState<number>(0);
+
+  // Review states
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   async function fetchOrder() {
     try {
@@ -95,6 +102,34 @@ export default function Invoice({ params }: { params: { id: string } }) {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     alert("Berhasil disalin!");
+  };
+
+  const submitReview = async () => {
+    if (!data) return;
+    setSubmittingReview(true);
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userName: data.inputUserId,
+          rating: reviewRating,
+          comment: reviewComment,
+          gameId: data.gameId,
+          orderNo: data.orderNo,
+        }),
+      });
+      if (res.ok) {
+        setReviewSubmitted(true);
+      } else {
+        const err = await res.json();
+        alert(err.error || "Gagal mengirim ulasan");
+      }
+    } catch (e) {
+      alert("Terjadi kesalahan saat mengirim ulasan");
+    } finally {
+      setSubmittingReview(false);
+    }
   };
 
   if (loading) {
@@ -226,11 +261,63 @@ export default function Invoice({ params }: { params: { id: string } }) {
         )}
 
         {(data.status === "PAID" || data.status === "SUCCESS") && (
-          <div className="invoiceCard" style={{ borderColor: "rgba(16, 185, 129, 0.3)", background: "rgba(16, 185, 129, 0.05)" }}>
-             <p style={{ textAlign: "center", color: "#10b981", fontWeight: 800 }}>
-               ✅ Pembayaran Berhasil! Pesanan Anda sedang diproses dan akan segera masuk.
-             </p>
-          </div>
+          <>
+            <div className="invoiceCard" style={{ borderColor: "rgba(16, 185, 129, 0.3)", background: "rgba(16, 185, 129, 0.05)" }}>
+               <p style={{ textAlign: "center", color: "#10b981", fontWeight: 800 }}>
+                 ✅ Pembayaran Berhasil! Pesanan Anda sedang diproses dan akan segera masuk.
+               </p>
+            </div>
+
+            {!reviewSubmitted ? (
+              <div className="invoiceCard">
+                <div className="invoiceSectionTitle">Beri Ulasan Kami</div>
+                <p className="invoiceSub" style={{ marginBottom: 16 }}>Bagaimana pengalaman belanja Anda di Carenpedia?</p>
+                
+                <div style={{ display: "flex", gap: 10, justifyContent: "center", marginBottom: 20 }}>
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <button 
+                      key={s} 
+                      onClick={() => setReviewRating(s)}
+                      style={{ 
+                        background: "none", 
+                        border: "none", 
+                        cursor: "pointer", 
+                        color: s <= reviewRating ? "#fbbf24" : "rgba(255,255,255,0.1)",
+                        transition: "transform 0.1s"
+                      }}
+                      onMouseDown={e => e.currentTarget.style.transform = "scale(0.9)"}
+                      onMouseUp={e => e.currentTarget.style.transform = "scale(1)"}
+                    >
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    </button>
+                  ))}
+                </div>
+
+                <textarea 
+                  placeholder="Ceritakan pengalaman satset Anda..."
+                  className="contact-input"
+                  style={{ minHeight: 100, padding: 16, marginBottom: 16, width: '100%', boxSizing: 'border-box' }}
+                  value={reviewComment}
+                  onChange={e => setReviewComment(e.target.value)}
+                />
+
+                <button 
+                  className="invoiceBtn invoiceBtnPrimary" 
+                  style={{ width: "100%" }}
+                  disabled={submittingReview || !reviewComment}
+                  onClick={submitReview}
+                >
+                  {submittingReview ? "Mengirim..." : "Kirim Ulasan"}
+                </button>
+              </div>
+            ) : (
+              <div className="invoiceCard" style={{ textAlign: "center", borderColor: "rgba(59, 130, 246, 0.3)" }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>✨</div>
+                <h4 style={{ color: "#fff", marginBottom: 8 }}>Terima Kasih atas Ulasannya!</h4>
+                <p className="invoiceSub">Ulasan Anda sangat berharga bagi kami untuk terus berkembang.</p>
+              </div>
+            )}
+          </>
         )}
 
         <div className="invoiceActions">

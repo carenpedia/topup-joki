@@ -15,6 +15,7 @@ const nav = [
   { href: "/admin/payment-method-fees", label: "Payment Fees" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/joki-orders", label: "Joki Orders" },
+  { href: "/admin/reviews", label: "⭐ Kelola Ulasan" },
   { href: "/admin/users", label: "Users" },
   { href: "/admin/deposits", label: "Deposits" },
   { href: "/admin/settings", label: "⚙️ Konfigurasi Web" },

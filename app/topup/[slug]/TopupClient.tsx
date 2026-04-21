@@ -595,10 +595,17 @@ export default function TopupClient({
         {/* Reviews Section (Desktop side, Mobile bottom) */}
         <div className="tpReviewSection">
           <div className="tpReviewHeader">
-            <h3 className="tpReviewTitle">Ulasan & Rating</h3>
-            <div className="tpRatingStars" style={{ color: "#fbbf24", display: "flex", gap: 3, marginLeft: 'auto' }}>
-              {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>)}
-              <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>{reviewsData.averageRating}/5.0 ({reviewsData.totalCount.toLocaleString("id-ID")} ulasan)</span>
+            <h3 className="tpReviewTitle">Ulasan dan Rating</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginLeft: 'auto', gap: 4 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 3, color: "#fbbf24" }}>
+                  {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>)}
+                </div>
+                <span style={{ fontSize: 13, color: "#fff", fontWeight: 800 }}>{reviewsData.averageRating}/5.0</span>
+              </div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>
+                ({reviewsData.totalCount.toLocaleString("id-ID")} ulasan)
+              </div>
             </div>
           </div>
           <div className="tpReviewList">

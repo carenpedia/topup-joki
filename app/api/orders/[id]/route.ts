@@ -42,6 +42,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       orderNo: order.orderNo,
       status: order.status,
       serviceType: order.serviceType,
+      gameId: order.gameId,
       game: order.game ? {
         name: order.game.name,
         logoUrl: order.game.logoUrl,
