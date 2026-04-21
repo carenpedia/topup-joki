@@ -450,6 +450,8 @@ model TicketReply {
 
 model ProductReview {
   id         String   @id @default(cuid())
+  userId     String?
+  orderNo    String?
   userName   String
   rating     Int      @default(5)
   comment    String
@@ -459,6 +461,8 @@ model ProductReview {
   createdAt  DateTime @default(now())
 
   @@index([gameId])
+  @@index([userId])
+  @@index([orderNo])
 }
 
 enum UserRole {

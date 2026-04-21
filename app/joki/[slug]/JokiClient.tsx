@@ -115,8 +115,8 @@ export default function JokiClient({
 
   const [reviewsData, setReviewsData] = useState<{ reviews: any[], totalCount: number, averageRating: number }>({
     reviews: [],
-    totalCount: 5692,
-    averageRating: 5.0
+    totalCount: 14515,
+    averageRating: 4.99
   });
 
   // Load Reviews
