@@ -324,195 +324,296 @@ export default function TopupClient({
         </div>
       </div>
 
-      <div className="topupWrap">
-        {/* Tab Switcher (Restored) */}
-        {hasJoki && (
-          <div className="tpTabSwitcher" style={{ display: "flex", background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.10)", borderRadius: 16, padding: 4, marginTop: 24 }}>
-            <div style={{ flex: 1, textAlign: "center", padding: "11px 16px", borderRadius: 12, background: "linear-gradient(135deg, rgba(59,130,246,.95), rgba(37,99,235,.95))", color: "#fff", fontWeight: 800, fontSize: 14 }}>💎 Top Up</div>
-            <Link href={`/joki/${game.key}`} style={{ flex: 1, textAlign: "center", padding: "11px 16px", color: "rgba(255,255,255,.60)", fontWeight: 700, fontSize: 14, textDecoration: "none" }}>🎮 Joki</Link>
-          </div>
-        )}
-
-        <div style={{ height: 32 }} />
-
-        {/* Step 1: Account Data (Restored Attention Text) */}
-        <div className="card" id="section-id">
-          <div className="contact-header">
-            <div className="contact-step">1</div>
-            <div className="contact-title-wrap"><h4 className="contact-title">Masukkan Data Akun</h4></div>
-          </div>
-          <div className="contact-body">
-            <div className="row" style={{ gap: 12 }}>
-              {targetConfig.fields.map((f) => (
-                <div key={f.key} style={{ flex: "1 0 calc(50% - 6px)" }}>
-                  <label className="contact-label">{f.label}</label>
-                  <input className="contact-input" placeholder={f.label} value={targetInputs[f.key] || ""} onChange={(e) => setTargetInputs({ ...targetInputs, [f.key]: e.target.value })} />
-                </div>
-              ))}
-            </div>
-            <p style={{ margin: "10px 0 0", fontSize: 11, lineHeight: 1.4, color: "rgba(250,204,21,.7)", display: "flex", alignItems: "flex-start", gap: 6 }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(250,204,21,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
-              <span>Harap masukkan {targetConfig.fields.map((f) => f.label).join(" & ")} dengan benar, kesalahan input bukan tanggung jawab kami.</span>
-            </p>
-          </div>
-        </div>
-
-        <div className="spacer" />
-
-        {/* Step 2: Nominals (Restored bottom border & Instant badge) */}
-        <div className="card" id="section-nominal">
-          <div className="contact-header">
-            <div className="contact-step">2</div>
-            <div className="contact-title-wrap"><h4 className="contact-title">Pilih Nominal</h4></div>
-          </div>
-          <div className="contact-body">
-            {nominalLoading ? (
-              <div style={{ padding: 20, textAlign: "center", color: "rgba(255,255,255,0.4)" }}>Memuat produk...</div>
-            ) : groupedNominals.map(([g, items]) => (
-              <div key={g} className="nominalGroup" style={{ marginBottom: 24 }}>
-                <div className="nominalGroupHeader">{g.replace("CAT:", "")}</div>
-                <div className="tpNomGrid">
-                  {items.map((p) => (
-                    <button key={p.id} className={`tpNomCard ${selectedItemId === p.id ? "isActive" : ""}`} onClick={() => handleProductSelect(p.id)}>
-                      {p.flash && <span className="tpNomFlash">FLASH SALE</span>}
-                      <div className="tpNomTop"><span className="tpNomName">{p.name}</span></div>
-                      <div className="tpNomMain">
-                        <div className="tpNomIcon">
-                          {p.imageUrl ? <img src={p.imageUrl} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2.5"><path d="M6 3h12l4 8-10 10L2 11l4-8z"></path><path d="M12 3v18"></path><path d="M2 11h20"></path><path d="M6 3L12 11L18 3"></path></svg>}
-                        </div>
-                        <span className="tpNomPriceNow">{rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}</span>
-                      </div>
-                      <div className="tpNomBottom">
-                        <div className="tpInstanBadge">
-                          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-                          <span className="tpInstanText">Instan</span>
-                        </div>
-                      </div>
-                    </button>
+        <div className="topupWrap">
+          <div className="tpMainLayout">
+          <div className="tpLeftCol">
+            {/* Step 1: Account Data */}
+            <div className="card" id="section-id">
+              <div className="contact-header">
+                <div className="contact-step">1</div>
+                <div className="contact-title-wrap"><h4 className="contact-title">Masukkan Data Akun</h4></div>
+              </div>
+              <div className="contact-body">
+                <div className="row" style={{ gap: 12 }}>
+                  {targetConfig.fields.map((f) => (
+                    <div key={f.key} style={{ flex: "1 0 calc(50% - 6px)" }}>
+                      <label className="contact-label">{f.label}</label>
+                      <input className="contact-input" placeholder={f.label} value={targetInputs[f.key] || ""} onChange={(e) => setTargetInputs({ ...targetInputs, [f.key]: e.target.value })} />
+                    </div>
                   ))}
                 </div>
+                <p style={{ margin: "10px 0 0", fontSize: 11, lineHeight: 1.4, color: "rgba(250,204,21,.7)", display: "flex", alignItems: "flex-start", gap: 6 }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(250,204,21,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+                  <span>Harap masukkan {targetConfig.fields.map((f) => f.label).join(" & ")} dengan benar, kesalahan input bukan tanggung jawab kami.</span>
+                </p>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        <div className="spacer" />
+            <div className="spacer" />
 
-        {/* Step 3: Pilihan Pembayaran (Redesigned) */}
-        <div className="card" id="section-payment">
-          <div className="contact-header">
-            <div className="contact-step">3</div>
-            <div className="contact-title-wrap"><h4 className="contact-title">Pilih Pembayaran</h4></div>
-          </div>
-          <div className="contact-body">
-            <div className="tpPayAccordion">
-              {/* Special CarenCoin Category */}
-              <div className={`tpPayCategory premium-cat ${activePaymentType === "CarenCoin" ? "isSelected" : ""}`}>
-                <div className="tpRibbon">BEST PRICE</div>
-                <button
-                  className="tpPayCategoryHeader caren-header"
-                  onClick={() => { setActivePaymentType("CarenCoin"); setSelectedMethodId(null); }}
-                >
-                  <div className="tpPayHeaderTop">
-                    <div className="caren-left-group">
-                      <div className="tpPayCategoryIcon caren-icon">
-                        {carenCoinLogo ? <img src={carenCoinLogo} alt="CC" style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : "🪙"}
-                      </div>
-                      <div className="tpPayCategorySubTitle">
-                        <div className="tpPayCategoryTitle" style={{ fontSize: '13px' }}>CarenCoin</div>
-                        <div className="tpPayCategoryBalance" style={{ color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff" }}>
-                          {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </button>
+            {/* Step 2: Nominals */}
+            <div className="card" id="section-nominal">
+              <div className="contact-header">
+                <div className="contact-step">2</div>
+                <div className="contact-title-wrap"><h4 className="contact-title">Pilih Nominal</h4></div>
               </div>
-
-              {groupedMethods.map(([cat, methods]) => (
-                <div key={cat} className={`tpPayCategory ${openCategory === cat && activePaymentType === "GATEWAY" ? "isOpen" : ""}`}>
-                  <button className="tpPayCategoryHeader" onClick={() => { setOpenCategory(openCategory === cat ? null : cat); setActivePaymentType("GATEWAY"); }}>
-                    <div className="tpPayHeaderTop">
-                      <div className="tpPayCategoryTitle">{cat}</div>
-                      <div className="tpPayCategoryChevron">▼</div>
-                    </div>
-                    <div className="tpPayHeaderBottom">
-                      <div className="tpPayLogoPreview">
-                        {methods.slice(0, 8).map(m => (
-                          <img key={m.id} src={m.image || ""} alt={m.label} className="preview-logo-tiny" />
-                        ))}
-                      </div>
-                    </div>
-                  </button>
-                  <div className="tpPayCategoryContent">
-                    <div className="tpPayInnerGrid">
-                      {methods.map(m => (
-                        <button key={m.id} className={`tpMethodCard ${selectedMethodId === m.id ? "isSelected" : ""}`} onClick={() => setSelectedMethodId(m.id)}>
-                          <div className="tpMethodTop">
-                            <div className="tpMethodLogoExpand">
-                              {m.image ? <img src={m.image} alt={m.label} className="expand-logo" /> : <span className="expand-logo-text">{m.label?.[0]}</span>}
+              <div className="contact-body">
+                {nominalLoading ? (
+                  <div style={{ padding: 20, textAlign: "center", color: "rgba(255,255,255,0.4)" }}>Memuat produk...</div>
+                ) : groupedNominals.map(([g, items]) => (
+                  <div key={g} className="nominalGroup" style={{ marginBottom: 24 }}>
+                    <div className="nominalGroupHeader">{g.replace("CAT:", "")}</div>
+                    <div className="tpNomGrid">
+                      {items.map((p) => (
+                        <button key={p.id} className={`tpNomCard ${selectedItemId === p.id ? "isActive" : ""}`} onClick={() => handleProductSelect(p.id)}>
+                          {p.flash && <span className="tpNomFlash">FLASH SALE</span>}
+                          <div className="tpNomTop"><span className="tpNomName">{p.name}</span></div>
+                          <div className="tpNomMain">
+                            <div className="tpNomIcon">
+                              {p.imageUrl ? <img src={p.imageUrl} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2.5"><path d="M6 3h12l4 8-10 10L2 11l4-8z"></path><path d="M12 3v18"></path><path d="M2 11h20"></path><path d="M6 3L12 11L18 3"></path></svg>}
                             </div>
-                            <div className="tpMethodPriceMain">
-                              {selectedItem ? rupiah(calculatePrice(selectedItem.finalPrice, m)) : "Pilih nominal"}
+                            <span className="tpNomPriceNow">{rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}</span>
+                          </div>
+                          <div className="tpNomBottom">
+                            <div className="tpInstanBadge">
+                              <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                              <span className="tpInstanText">Instan</span>
                             </div>
                           </div>
-                          <div className="tpMethodDashed" />
-                          <div className="tpMethodBottom">
-                            <div className="tpMethodFeeText">
-                              Biaya: {selectedItem ? rupiah(getFeeAmount(selectedItem.finalPrice, m)) : "-"}
-                            </div>
-                          </div>
-                          {selectedMethodId === m.id && <div className="tpMethodMark">✓</div>}
                         </button>
                       ))}
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="spacer" />
+
+            {/* Step 3: Pilihan Pembayaran */}
+            <div className="card" id="section-payment">
+              <div className="contact-header">
+                <div className="contact-step">3</div>
+                <div className="contact-title-wrap"><h4 className="contact-title">Pilih Pembayaran</h4></div>
+              </div>
+              <div className="contact-body">
+                <div className="tpPayAccordion">
+                  {/* Special CarenCoin Category */}
+                  <div className={`tpPayCategory premium-cat ${activePaymentType === "CarenCoin" ? "isSelected" : ""}`}>
+                    <div className="tpRibbon">BEST PRICE</div>
+                    <button 
+                      className="tpPayCategoryHeader caren-header" 
+                      onClick={() => { setActivePaymentType("CarenCoin"); setSelectedMethodId(null); }}
+                    >
+                      <div className="tpPayHeaderTop">
+                        <div className="caren-left-group">
+                          <div className="tpPayCategoryIcon caren-icon">
+                            {carenCoinLogo ? <img src={carenCoinLogo} alt="CC" style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : "🪙"}
+                          </div>
+                          <div className="tpPayCategorySubTitle">
+                            <div className="tpPayCategoryTitle" style={{ fontSize: '13px' }}>CarenCoin</div>
+                            <div className="tpPayCategoryBalance" style={{ color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff" }}>
+                              {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+
+                  {groupedMethods.map(([cat, methods]) => (
+                    <div key={cat} className={`tpPayCategory ${openCategory === cat && activePaymentType === "GATEWAY" ? "isOpen" : ""}`}>
+                      <button className="tpPayCategoryHeader" onClick={() => { setOpenCategory(openCategory === cat ? null : cat); setActivePaymentType("GATEWAY"); }}>
+                        <div className="tpPayHeaderTop">
+                          <div className="tpPayCategoryTitle">{cat}</div>
+                          <div className="tpPayCategoryChevron">▼</div>
+                        </div>
+                        <div className="tpPayHeaderBottom">
+                          <div className="tpPayLogoPreview">
+                            {methods.slice(0, 8).map(m => (
+                              <img key={m.id} src={m.image || ""} alt={m.label} className="preview-logo-tiny" />
+                            ))}
+                          </div>
+                        </div>
+                      </button>
+                      <div className="tpPayCategoryContent">
+                        <div className="tpPayInnerGrid">
+                          {methods.map(m => (
+                            <button key={m.id} className={`tpMethodCard ${selectedMethodId === m.id ? "isSelected" : ""}`} onClick={() => setSelectedMethodId(m.id)}>
+                              <div className="tpMethodTop">
+                                <div className="tpMethodLogoExpand">
+                                  {m.image ? <img src={m.image} alt={m.label} className="expand-logo" /> : <span className="expand-logo-text">{m.label?.[0]}</span>}
+                                </div>
+                                <div className="tpMethodPriceMain">
+                                  {selectedItem ? rupiah(calculatePrice(selectedItem.finalPrice, m)) : "Pilih nominal"}
+                                </div>
+                              </div>
+                              <div className="tpMethodDashed" />
+                              <div className="tpMethodBottom">
+                                <div className="tpMethodFeeText">
+                                  Biaya: {selectedItem ? rupiah(getFeeAmount(selectedItem.finalPrice, m)) : "-"}
+                                </div>
+                              </div>
+                              {selectedMethodId === m.id && <div className="tpMethodMark">✓</div>}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+            </div>
+
+            <div className="spacer" />
+
+            {/* Step 4: Voucher */}
+            <div className="card">
+              <div className="contact-header">
+                <div className="contact-step">4</div>
+                <div className="contact-title-wrap"><h4 className="contact-title">Kode Voucher</h4></div>
+              </div>
+              <div className="contact-body">
+                <div style={{ display: "flex", gap: 10 }}>
+                  <input className="contact-input" placeholder="Masukkan Kode Voucher" value={voucher} onChange={(e) => setVoucher(e.target.value)} />
+                  <button className="btn-promo" onClick={() => { setVoucherApplied(true); setVoucherMsg("Voucher dicek..."); }}>Gunakan</button>
+                </div>
+                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
+                  Masukkan kode promo jika ada (Opsional)
+                </p>
+                {voucherMsg && <div style={{ fontSize: 11, marginTop: 4, color: "#3b82f6" }}>{voucherMsg}</div>}
+              </div>
+            </div>
+
+            <div className="spacer" />
+
+            {/* Step 5: Contact */}
+            <div className="card" id="section-contact">
+              <div className="contact-header">
+                <div className="contact-step">5</div>
+                <div className="contact-title-wrap"><h4 className="contact-title">Konfirmasi WhatsApp</h4></div>
+              </div>
+              <div className="contact-body">
+                <input className="contact-input" placeholder="Masukkan Nomor WhatsApp (628...)" value={contact} onChange={(e) => setContact(e.target.value)} />
+                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
+                  Nomer ini akan dihubungi jika terjadi masalah
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="tpRightCol">
+            {/* Rating Widget */}
+            <div className="tpSidebarCard tpRatingCard">
+              <div className="tpRatingTop">
+                <div className="tpRatingValue">4.99</div>
+                <div className="tpRatingStars">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  ))}
+                </div>
+              </div>
+              <div className="tpRatingTotal">Berdasarkan total ulasan 1.88jt rating</div>
+            </div>
+
+            {/* Support Widget */}
+            <div className="tpSidebarCard tpHelpCard">
+              <div className="tpHelpIcon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              </div>
+              <div className="tpHelpText">
+                <b>Butuh Bantuan?</b>
+                <p>Kamu bisa hubungi admin disini.</p>
+              </div>
+            </div>
+
+            {/* Checkout Summary Card */}
+            <div className="tpSidebarCard tpCheckoutSideCard">
+              <div className="tpSideProdInfo">
+                <img src={selectedItem?.imageUrl || logoUrl || ""} alt="Prod" className="tpSideProdImg" />
+                <div className="tpSideProdText">
+                  <b>{game.name}</b>
+                  <p>{selectedItem ? selectedItem.name : "Belum memilih nominal"}</p>
+                </div>
+              </div>
+
+              <div className="tpSideDetails">
+                <div className="tpSideRow">
+                  <span>Harga</span>
+                  <b>{selectedItem ? rupiah(selectedItem.finalPrice) : "-"}</b>
+                </div>
+                <div className="tpSideRow">
+                  <span>Metode Pembayaran</span>
+                  <b>{activePaymentType === "CarenCoin" ? "CarenCoin" : (methodFees.find(x => x.id === selectedMethodId)?.label || "-")}</b>
+                </div>
+                <div className="tpSideRow">
+                  <span>Biaya Layanan</span>
+                  <b>
+                    {selectedItem && activePaymentType === "GATEWAY" && selectedMethodId 
+                      ? rupiah(getFeeAmount(selectedItem.finalPrice, methodFees.find(x => x.id === selectedMethodId)!))
+                      : "Rp 0"}
+                  </b>
+                </div>
+              </div>
+
+              <div className="tpSideTotal">
+                <div className="tpSideTotalLabel">Total Pembayaran</div>
+                <div className="tpSideTotalValue">{selectedItem ? rupiah(totalToPayComputed) : "Rp 0"}</div>
+              </div>
+
+              <button className="tpBtnCheckoutSide" disabled={checkoutLoading || !selectedItem} onClick={onCheckout}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                {checkoutLoading ? "Memproses..." : "Pesan Sekarang"}
+              </button>
             </div>
           </div>
         </div>
 
-        <div className="spacer" />
-
-        {/* Step 4: Voucher */}
-        <div className="card">
-          <div className="contact-header">
-            <div className="contact-step">4</div>
-            <div className="contact-title-wrap"><h4 className="contact-title">Kode Voucher</h4></div>
-          </div>
-          <div className="contact-body">
-            <div style={{ display: "flex", gap: 10 }}>
-              <input className="contact-input" placeholder="Masukkan Kode Voucher" value={voucher} onChange={(e) => setVoucher(e.target.value)} />
-              <button className="btn-promo" onClick={() => { setVoucherApplied(true); setVoucherMsg("Voucher dicek..."); }}>Gunakan</button>
+        {/* Reviews Section (Desktop side, Mobile bottom) */}
+        <div className="tpReviewSection">
+          <div className="tpReviewHeader">
+            <h3 className="tpReviewTitle">Apa kata mereka?</h3>
+            <div className="tpRatingStars" style={{ color: "#fbbf24", display: "flex", gap: 3 }}>
+              {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
+              <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>4.99/5.0</span>
             </div>
-            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
-              Masukkan kode promo jika ada (Opsional)
-            </p>
-            {voucherMsg && <div style={{ fontSize: 11, marginTop: 4, color: "#3b82f6" }}>{voucherMsg}</div>}
           </div>
-        </div>
-
-        <div className="spacer" />
-
-        {/* Step 5: Contact */}
-        <div className="card" id="section-contact">
-          <div className="contact-header">
-            <div className="contact-step">5</div>
-            <div className="contact-title-wrap"><h4 className="contact-title">Konfirmasi WhatsApp</h4></div>
-          </div>
-          <div className="contact-body">
-            <input className="contact-input" placeholder="Masukkan Nomor WhatsApp (628...)" value={contact} onChange={(e) => setContact(e.target.value)} />
-            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
-              Nomer ini akan dihubungi jika terjadi masalah
-            </p>
+          <div className="tpReviewList">
+            <div className="tpReviewItem">
+              <div className="tpReviewUser">
+                <div className="tpReviewAvatar">S</div>
+                <div className="tpReviewMeta">
+                  <b>Sultan Gaming</b>
+                  <span>Baru saja • Terverifikasi</span>
+                </div>
+                <div className="tpReviewStars">
+                  {[...Array(5)].map((_, i) => <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
+                </div>
+              </div>
+              <p className="tpReviewContent">Gila sih, prosesnya beneran satset! Langsung masuk detikan setelah bayar. UI nya juga mewah banget sekarang!</p>
+              <div className="tpReviewBadge">✓ Produk Sesuai</div>
+            </div>
+            <div className="tpReviewItem">
+              <div className="tpReviewUser">
+                <div className="tpReviewAvatar">R</div>
+                <div className="tpReviewMeta">
+                  <b>Raffi Ahmad</b>
+                  <span>1 jam yang lalu • Terverifikasi</span>
+                </div>
+                <div className="tpReviewStars">
+                  {[...Array(5)].map((_, i) => <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
+                </div>
+              </div>
+              <p className="tpReviewContent">Langganan disini gak pernah mengecewakan. Harga paling bersahabat buat dompet.</p>
+              <div className="tpReviewBadge">✓ Pelayanan Cepat</div>
+            </div>
           </div>
         </div>
       </div>
 
       <div style={{ height: 120 }} />
 
-      {/* Sticky Checkout Bar (Restored) */}
+      {/* Sticky Checkout Bar (Mobile Only via CSS display:none) */}
       <div className="stickyWrap">
         <div className="stickyCard">
           <div className={`stickyInfoBox ${selectedItem ? "isFilled" : "isEmpty"}`}>

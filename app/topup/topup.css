@@ -1151,6 +1151,331 @@
   }
 }
 
+/* =========================================================
+   2-COLUMN LAYOUT (DESKTOP SIDEBAR)
+   ========================================================= */
+
+.tpMainLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .tpMainLayout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 30px;
+  }
+
+  .tpLeftCol {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .tpRightCol {
+    width: 380px;
+    position: sticky;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Hide Mobile Sticky Bar on Desktop */
+  .stickyWrap {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .tpRightCol {
+    display: none; /* Hide sidebar completely in mobile, moved below */
+  }
+}
+
+/* Sidebar Cards Base */
+.tpSidebarCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+/* Rating Card */
+.tpRatingCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tpRatingTop {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.tpRatingValue {
+  font-size: 38px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.tpRatingStars {
+  display: flex;
+  gap: 4px;
+  color: #fbbf24;
+}
+
+.tpRatingTotal {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}
+
+/* Help Card */
+.tpHelpCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tpHelpIcon {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tpHelpText b {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 2px;
+  color: #fff;
+}
+
+.tpHelpText p {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+/* Checkout Side Card */
+.tpCheckoutSideCard {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tpSideProdInfo {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.tpSideProdImg {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #2a2222;
+}
+
+.tpSideProdText b {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 2px;
+  color: #fff;
+}
+
+.tpSideProdText p {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.tpSideDetails {
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tpSideRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.tpSideRow span {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.tpSideRow b {
+  color: #fff;
+}
+
+.tpSideTotal {
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.tpSideTotalLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.tpSideTotalValue {
+  font-size: 22px;
+  font-weight: 950;
+  color: #fbbf24;
+}
+
+.tpBtnCheckoutSide {
+  width: 100%;
+  height: 54px;
+  background: #fbbf24;
+  color: #000;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3);
+}
+
+.tpBtnCheckoutSide:hover {
+  background: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.5);
+}
+
+.tpBtnCheckoutSide:disabled {
+  filter: grayscale(1);
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Ulasan Section */
+.tpReviewSection {
+  margin-top: 48px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 30px 24px;
+}
+
+.tpReviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.tpReviewTitle {
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.tpReviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tpReviewItem {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 18px;
+  transition: transform 0.2s ease;
+}
+
+.tpReviewItem:hover {
+  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tpReviewUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tpReviewAvatar {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.tpReviewMeta b {
+  display: block;
+  font-size: 14px;
+  color: #fff;
+}
+
+.tpReviewMeta span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.tpReviewStars {
+  margin-left: auto;
+  display: flex;
+  gap: 3px;
+  color: #fbbf24;
+}
+
+.tpReviewContent {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+.tpReviewBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
 .topupScope .btn-promo {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: #fff;
