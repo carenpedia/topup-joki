@@ -37,6 +37,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
           logoUrl: true,
           hasJoki: true,
           isPopuler: true,
+          targetType: true,
           links: { select: { categoryId: true } },
         },
         orderBy: { createdAt: "asc" },
@@ -61,6 +62,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
       logoText: (g.name || "??").substring(0, 2).toUpperCase(),
       imageUrl: g.logoUrl ?? undefined,
       categoryIds: g.links.map((l) => l.categoryId),
+      targetType: g.targetType,
     }));
  
     // 4) Filter berdasarkan search query

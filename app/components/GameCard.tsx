@@ -7,6 +7,7 @@ export type GameDisplay = {
   category: "populer" | "lain";
   logoText: string;
   imageUrl?: string | null;
+  targetType: string;
 };
 
 function getPublisher(slug: string) {
@@ -41,10 +42,12 @@ export default function GameCard({
 }) {
   const animationDelay = `${index * 0.04}s`;
 
+  const destination = game.targetType === "JOKI_TYPE" ? `/joki/${game.slug}` : `/topup/${game.slug}`;
+
   if (variant === "horizontal") {
     return (
       <Link 
-        href={`/topup/${game.slug}`} 
+        href={destination} 
         className="gameCardHorizontal group animateCard"
         style={{ animationDelay }}
       >
@@ -83,7 +86,7 @@ export default function GameCard({
 
   return (
     <Link 
-      href={`/topup/${game.slug}`} 
+      href={destination} 
       className="modernGameCard group animateCard"
       style={{ animationDelay }}
     >

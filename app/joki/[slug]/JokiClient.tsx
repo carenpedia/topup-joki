@@ -423,6 +423,7 @@ export default function JokiClient({
             border: "1px solid rgba(255,255,255,.10)",
             borderRadius: 16,
             padding: 4,
+            marginBottom: 24,
           }}>
           <Link
             href={`/topup/${game.key}`}
@@ -642,7 +643,7 @@ export default function JokiClient({
                     {grouped.map(([g, items]) => {
                       const title = groupTitle(g);
                       return (
-                        <div key={g} className="nominalGroup">
+                        <div key={g} className="nominalGroup" style={{ marginBottom: 24 }}>
                           {title && <div className="nominalGroupHeader">{title}</div>}
                           <div className="tpNomGrid">
                             {items.map((p) => {

@@ -57,9 +57,12 @@ export async function POST(req: Request) {
 
     const game = await prisma.game.findUnique({
       where: { key: gameKey },
-      select: { id: true, name: true },
+      select: { id: true, name: true, targetType: true },
     });
     if (!game) return NextResponse.json({ error: "Game tidak ditemukan" }, { status: 404 });
+
+    // Safety: Jika tipe target adalah Joki, pastikan serviceType diset JOKI_ML (manual fulfillment)
+    const sType = game.targetType === "JOKI_TYPE" ? "JOKI_ML" : "TOPUP";
 
     const product = await prisma.product.findUnique({
       where: { id: productId },
@@ -154,7 +157,7 @@ export async function POST(req: Request) {
       data: {
         orderNo,
         userId: dbUser?.id || null,
-        serviceType: "TOPUP",
+        serviceType: sType as any,
         status: "PENDING_PAYMENT",
         gameId: game.id,
         productId: product.id,
