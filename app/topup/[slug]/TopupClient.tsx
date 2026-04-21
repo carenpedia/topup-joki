@@ -526,7 +526,7 @@ export default function TopupClient({
             {/* Rating Widget */}
             <div className="tpSidebarCard tpRatingCard">
               <div className="tpRatingTop">
-                <div className="tpRatingValue">4.99</div>
+                <div className="tpRatingValue">{reviewsData.averageRating}</div>
                 <div className="tpRatingStars">
                   {[...Array(5)].map((_, i) => (
                     <svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
@@ -595,7 +595,7 @@ export default function TopupClient({
             <h3 className="tpReviewTitle">Apa kata mereka?</h3>
             <div className="tpRatingStars" style={{ color: "#fbbf24", display: "flex", gap: 3 }}>
               {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
-              <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>{reviewsData.averageRating.toFixed(1)}/5.0</span>
+              <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>{reviewsData.averageRating}/5.0</span>
             </div>
           </div>
           <div className="tpReviewList">
