@@ -44,6 +44,22 @@ export async function GET(req: Request) {
     if (reviews.length === 0) {
       reviews = [
         {
+          id: "f4",
+          userName: "rifqisultan",
+          rating: 5,
+          comment: "udah murah, proses nya cepet banget gilak, thanks carenpedia",
+          isVerified: true,
+          createdAt: new Date().toISOString(),
+        },
+        {
+          id: "f5",
+          userName: "Guest #INV88273",
+          rating: 5,
+          comment: "baru tau ada store se murah ini, kalo ga dikasih tau temen ya ga pernah cobain disini, jujur recomended banget",
+          isVerified: true,
+          createdAt: new Date().toISOString(),
+        },
+        {
           id: "f1",
           userName: "Sultan Gaming",
           rating: 5,
