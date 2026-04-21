@@ -7,7 +7,6 @@ export type GameDisplay = {
   category: "populer" | "lain";
   logoText: string;
   imageUrl?: string | null;
-  isJoki?: boolean;
 };
 
 function getPublisher(slug: string) {
@@ -45,7 +44,7 @@ export default function GameCard({
   if (variant === "horizontal") {
     return (
       <Link 
-        href={game.isJoki ? `/joki/${game.slug}` : `/topup/${game.slug}`} 
+        href={`/topup/${game.slug}`} 
         className="gameCardHorizontal group animateCard"
         style={{ animationDelay }}
       >
@@ -73,9 +72,9 @@ export default function GameCard({
               <div className="gchPlusIcon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
               </div>
-              <span>{game.isJoki ? "JOKI" : "TOP UP"}</span>
+              <span>TOP UP</span>
             </div>
-            <div className="gchAbbr">{game.isJoki ? "JOKI" : getAbbr(game.slug)}</div>
+            <div className="gchAbbr">{getAbbr(game.slug)}</div>
           </div>
         </div>
       </Link>
@@ -84,7 +83,7 @@ export default function GameCard({
 
   return (
     <Link 
-      href={game.isJoki ? `/joki/${game.slug}` : `/topup/${game.slug}`} 
+      href={`/topup/${game.slug}`} 
       className="modernGameCard group animateCard"
       style={{ animationDelay }}
     >
@@ -105,8 +104,8 @@ export default function GameCard({
       </div>
 
       <div className="mgInfo">
-        <div className="mgName">{game.name}{game.isJoki && " (Joki)"}</div>
-        <div className="mgAction">{game.isJoki ? "Pesan joki" : "Top up"}</div>
+        <div className="mgName">{game.name}</div>
+        <div className="mgAction">Top up</div>
       </div>
     </Link>
   );

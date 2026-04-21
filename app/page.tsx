@@ -53,72 +53,42 @@ export default async function Home({ searchParams }: { searchParams: any }) {
     ]);
 
     // 3) Konversi ke format GameDisplay
-    const jokiCategoryId = "cat-joki";
-    const jokiCategoryObj = { id: jokiCategoryId, name: "Joki" };
-    
-    // Tambahkan kategori Joki jika belum ada di DB
-    const finalCategories = [...categories];
-    if (!finalCategories.some(c => c.name.toLowerCase() === "joki")) {
-      finalCategories.push(jokiCategoryObj);
-    }
-
-    const allGames: (GameDisplay & { categoryIds: string[] })[] = [];
-    
-    dbGames.forEach((g) => {
-      // 1. Kartu Topup (Regular)
-      allGames.push({
-        slug: g.key,
-        name: g.name,
-        tag: g.hasJoki ? "Populer" : undefined,
-        category: (g.isPopuler ? "populer" : "lain") as "populer" | "lain",
-        logoText: (g.name || "??").substring(0, 2).toUpperCase(),
-        imageUrl: g.logoUrl ?? undefined,
-        categoryIds: g.links.map((l) => l.categoryId),
-        isJoki: false,
-      });
-
-      // 2. Kartu Joki (Jika ada)
-      if (g.hasJoki) {
-        allGames.push({
-          slug: g.key,
-          name: g.name,
-          tag: "Jasa Joki",
-          category: "lain", // Selalu muncul di grid bawah agar tidak memenuhi strip populer
-          logoText: (g.name || "??").substring(0, 2).toUpperCase(),
-          imageUrl: g.logoUrl ?? undefined,
-          categoryIds: [jokiCategoryId],
-          isJoki: true,
-        });
-      }
-    });
-
+    const allGames: (GameDisplay & { categoryIds: string[] })[] = dbGames.map((g) => ({
+      slug: g.key,
+      name: g.name,
+      tag: g.hasJoki ? "Populer" : undefined,
+      category: (g.isPopuler ? "populer" : "lain") as "populer" | "lain",
+      logoText: (g.name || "??").substring(0, 2).toUpperCase(),
+      imageUrl: g.logoUrl ?? undefined,
+      categoryIds: g.links.map((l) => l.categoryId),
+    }));
+ 
     // 4) Filter berdasarkan search query
     const searched = query
       ? allGames.filter((g) => g.name.toLowerCase().includes(query))
       : allGames;
-
+ 
     // 5) Filter berdasarkan kategori aktif tab (jika ada)
     const filtered = activeCatId
       ? searched.filter((g) => g.categoryIds.includes(activeCatId))
       : searched;
-
+ 
     // 6) Split: populer tampil di atas dengan layout horizontal, lain tampil grid di bawah
-    // Catatan: Hanya Topup populer yang muncul di strip horizontal
-    const populer = searched.filter((g) => g.category === "populer" && !g.isJoki);
-    const lain = activeCatId ? filtered : filtered.filter((g) => g.category !== "populer" || g.isJoki);
-
+    const populer = searched.filter((g) => g.category === "populer");
+    const lain = activeCatId ? filtered : filtered.filter((g) => g.category !== "populer");
+ 
     return (
       <main className="homePage">
         <div className="bgGlow" aria-hidden="true" />
         <div className="gridFx" aria-hidden="true" />
         <Navbar />
-
+ 
         <div className="shell">
           {/* Banner promo slider */}
           <PromoSlider banners={banners} />
-
+ 
           <div className="spacerLg" />
-
+ 
           {/* Header Section */}
           <div className="homeSection">
             <div className="homeSectionHeader">
@@ -130,7 +100,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
               </div>
             </div>
           </div>
-
+ 
           {/* Flash Sale Strip (Hanya muncul jika ada promo aktif) */}
           {flashSales.length > 0 && (
             <div className="homeSection">
@@ -145,7 +115,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
               </div>
             </div>
           )}
-
+ 
           {/* POPULER SEKARANG – horizontal card layout (hanya tampil bila tidak ada filter kategori) */}
           {populer.length > 0 && !activeCatId && (
             <div className="homeSection">
@@ -162,11 +132,11 @@ export default async function Home({ searchParams }: { searchParams: any }) {
               </div>
             </div>
           )}
-
+ 
           {/* Tabs Kategori Dinamis */}
-          {finalCategories.length > 0 && (
+          {categories.length > 0 && (
             <HomeCategoryTabs
-              categories={finalCategories}
+              categories={categories}
               activeId={activeCatId}
             />
           )}
