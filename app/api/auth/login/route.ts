@@ -7,7 +7,7 @@ import { signSession } from "../../../../lib/session";
 export async function POST(req: Request) {
   const { username, password } = await req.json();
 
-  const user = await prisma.user.findUnique({ where: { username } });
+  const user = await prisma.user.findUnique({ where: { username: username?.trim() } });
   if (!user) return NextResponse.json({ error: "Username atau password salah" }, { status: 401 });
   if (user.status !== "ACTIVE") return NextResponse.json({ error: "Akun tidak aktif" }, { status: 403 });
 

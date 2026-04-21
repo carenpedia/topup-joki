@@ -14,6 +14,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Username, password, whatsapp wajib" }, { status: 400 });
   }
 
+  // Validasi spasi
+  if (/\s/.test(username)) {
+    return NextResponse.json({ error: "Username tidak boleh mengandung spasi" }, { status: 400 });
+  }
+
+  // Validasi minimal 3 karakter
+  if (username.length < 3) {
+    return NextResponse.json({ error: "Username minimal 3 huruf atau lebih" }, { status: 400 });
+  }
+
   const exists = await prisma.user.findUnique({ where: { username } });
   if (exists) return NextResponse.json({ error: "Username sudah dipakai" }, { status: 409 });
 

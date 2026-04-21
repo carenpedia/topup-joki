@@ -16,6 +16,12 @@ export default function DaftarClient() {
     setMsg(null);
     setLoading(true);
 
+    if (username.length < 3) {
+      setMsg("Gunakan username minimal 3 huruf atau lebih");
+      setLoading(false);
+      return;
+    }
+
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -55,13 +61,22 @@ export default function DaftarClient() {
               className="input" 
               placeholder="Username" 
               value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
+              onChange={(e) => {
+                const val = e.target.value.replace(/\s/g, ""); // No spaces allowed
+                setUsername(val);
+              }} 
             />
             <svg className="authInputIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </div>
+          {username.length > 0 && username.length < 3 && (
+            <div style={{ marginTop: 6, fontSize: 11, color: "rgba(250, 204, 21, 0.9)", display: "flex", alignItems: "center", gap: 4 }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Gunakan username minimal 3 huruf atau lebih
+            </div>
+          )}
 
           <div className="authInputWrap">
             <input 
