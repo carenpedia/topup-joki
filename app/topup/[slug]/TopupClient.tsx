@@ -346,6 +346,48 @@ export default function TopupClient({
       </div>
 
       <div className="topupWrap">
+        {hasJoki && (
+          <div
+            className="tpTabSwitcher"
+            style={{
+              display: "flex",
+              background: "rgba(255,255,255,.06)",
+              border: "1px solid rgba(255,255,255,.10)",
+              borderRadius: 16,
+              padding: 4,
+              marginBottom: 24,
+            }}>
+            <div style={{
+              flex: 1,
+              textAlign: "center",
+              padding: "11px 16px",
+              borderRadius: 12,
+              background: "linear-gradient(135deg, rgba(59,130,246,.95), rgba(37,99,235,.95))",
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: 14,
+            }}>
+              💎 Top Up
+            </div>
+            <Link
+              href={`/joki/${game.key}`}
+              style={{
+                flex: 1,
+                textAlign: "center",
+                padding: "11px 16px",
+                borderRadius: 12,
+                color: "rgba(255,255,255,.60)",
+                fontWeight: 700,
+                fontSize: 14,
+                textDecoration: "none",
+                display: "block",
+              }}
+            >
+              🎮 JOKI
+            </Link>
+          </div>
+        )}
+
         <div className="tpMainLayout">
           <div className="tpLeftCol">
             {/* Step 1: Account Data */}

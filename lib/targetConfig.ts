@@ -105,6 +105,18 @@ export const TARGET_TYPE_MAP: Record<string, TargetTypeConfig> = {
       { key: "userId", label: "Player ID", placeholder: "Masukkan Player ID", inputMode: "numeric", required: true, hint: "Buka profil → Player ID ada di bawah avatar" },
     ],
   },
+
+  JOKI_TYPE: {
+    label: "Jasa Joki (Login Lengkap)",
+    description: "Login Via + Email + Password + Req Hero + Catatan",
+    fields: [
+      { key: "loginVia", label: "Login Via", placeholder: "Pilih Login Via", required: true, type: "select", options: ["Moonton", "Google", "Facebook", "TikTok", "VK"], hint: "Pilih platform login akun kamu" },
+      { key: "userId", label: "Email / ID / Username", placeholder: "Masukkan Email / ID / Username", inputMode: "text", required: true, hint: "Data akun untuk login ke dalam game" },
+      { key: "password", label: "Password Akun", placeholder: "Masukkan Password", inputMode: "text", required: true, hint: "Password akun (Keamanan terjamin oleh sistem)" },
+      { key: "server", label: "Request Hero (Opsional)", placeholder: "Contoh: Gusion / No Hero", inputMode: "text", required: false, hint: "Hero yang ingin diprioritaskan untuk dimainkan" },
+      { key: "note", label: "Catatan Untuk Penjoki", placeholder: "Contoh: Nickname Sultan, Login jam 10 malam", inputMode: "text", required: false, hint: "Pesan khusus untuk orang yang akan mengerjakan joki" },
+    ],
+  },
 };
 
 /** Daftar key untuk dropdown di admin */
