@@ -55,8 +55,8 @@ const LOGIN_VIA_OPTIONS = [
 ];
 
 function rupiah(n: number) {
-  return new Intl.NumberFormat("id-ID", { 
-    style: "currency", 
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
     currency: "IDR",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
@@ -161,7 +161,7 @@ export default function JokiClient({
       scrollTo("section-account");
       return;
     }
-    
+
     setSelectedId(id);
     setTimeout(() => scrollTo("section-payment"), 100);
   };
@@ -414,15 +414,15 @@ export default function JokiClient({
         <div className="spacer desktop-only" />
 
         {/* Tab Switcher */}
-        <div 
+        <div
           className="tpTabSwitcher"
           style={{
             display: "flex",
-          background: "rgba(255,255,255,.06)",
-          border: "1px solid rgba(255,255,255,.10)",
-          borderRadius: 16,
-          padding: 4,
-        }}>
+            background: "rgba(255,255,255,.06)",
+            border: "1px solid rgba(255,255,255,.10)",
+            borderRadius: 16,
+            padding: 4,
+          }}>
           <Link
             href={`/topup/${game.key}`}
             style={{
@@ -644,48 +644,48 @@ export default function JokiClient({
                         <div key={g} className="nominalGroup">
                           {title && <div className="nominalGroupHeader">{title}</div>}
                           <div className="tpNomGrid">
-                          {items.map((p) => {
-                            const active = selectedId === p.id;
-                            return (
-                              <button
-                                key={p.id}
-                                type="button"
-                                className={`tpNomCard ${active ? "isActive" : ""}`}
-                                onClick={() => handlePackageSelect(p.id)}
-                              >
-                                <div className="tpNomTop">
-                                  <span className="tpNomName">{p.name}</span>
-                                </div>
+                            {items.map((p) => {
+                              const active = selectedId === p.id;
+                              return (
+                                <button
+                                  key={p.id}
+                                  type="button"
+                                  className={`tpNomCard ${active ? "isActive" : ""}`}
+                                  onClick={() => handlePackageSelect(p.id)}
+                                >
+                                  <div className="tpNomTop">
+                                    <span className="tpNomName">{p.name}</span>
+                                  </div>
 
-                                <div className="tpNomMain">
-                                  <div className="tpNomIcon">
-                                    {p.imageUrl ? (
-                                      <img src={p.imageUrl} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                                    ) : (
-                                      <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M6 3h12l4 8-10 10L2 11l4-8z"></path>
-                                        <path d="M12 3v18"></path>
-                                        <path d="M2 11h20"></path>
-                                        <path d="M6 3L12 11L18 3"></path>
+                                  <div className="tpNomMain">
+                                    <div className="tpNomIcon">
+                                      {p.imageUrl ? (
+                                        <img src={p.imageUrl} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                                      ) : (
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                          <path d="M6 3h12l4 8-10 10L2 11l4-8z"></path>
+                                          <path d="M12 3v18"></path>
+                                          <path d="M2 11h20"></path>
+                                          <path d="M6 3L12 11L18 3"></path>
+                                        </svg>
+                                      )}
+                                    </div>
+                                    <span className="tpNomPriceNow">
+                                      {rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}
+                                    </span>
+                                  </div>
+
+                                  <div className="tpNomBottom">
+                                    <div className="tpInstanBadge">
+                                      <svg viewBox="0 0 24 24">
+                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
                                       </svg>
-                                    )}
+                                      <span className="tpInstanText">Instan</span>
+                                    </div>
                                   </div>
-                                  <span className="tpNomPriceNow">
-                                    {rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}
-                                  </span>
-                                </div>
-
-                                <div className="tpNomBottom">
-                                  <div className="tpInstanBadge">
-                                    <svg viewBox="0 0 24 24">
-                                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
-                                    </svg>
-                                    <span className="tpInstanText">Instan</span>
-                                  </div>
-                                </div>
-                              </button>
-                            );
-                          })}
+                                </button>
+                              );
+                            })}
                           </div>
                         </div>
                       );
@@ -710,8 +710,8 @@ export default function JokiClient({
                   {/* Special CarenCoin Category */}
                   <div className={`tpPayCategory premium-cat ${activePaymentType === "CARENCOIN" ? "isSelected" : ""}`}>
                     <div className="tpRibbon">BEST PRICE</div>
-                    <button 
-                      className="tpPayCategoryHeader caren-header" 
+                    <button
+                      className="tpPayCategoryHeader caren-header"
                       onClick={() => { setActivePaymentType("CARENCOIN"); setSelectedMethodId(null); }}
                     >
                       <div className="tpPayHeaderTop">
@@ -853,7 +853,7 @@ export default function JokiClient({
                 <div className="tpRatingStarsWrap">
                   <div className="tpRatingStars">
                     {[...Array(5)].map((_, i) => (
-                      <svg key={i} width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                      <svg key={i} width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
                     ))}
                   </div>
                   <div className="tpRatingTotal">Berdasarkan total {reviewsData.totalCount.toLocaleString("id-ID")} rating</div>
@@ -894,7 +894,7 @@ export default function JokiClient({
                 <div className="tpSideRow">
                   <span>Biaya Layanan</span>
                   <b>
-                    {selectedItem && activePaymentType === "GATEWAY" && selectedMethodId 
+                    {selectedItem && activePaymentType === "GATEWAY" && selectedMethodId
                       ? rupiah(getFeeAmount(selectedItem.finalPrice, methodFees.find(x => x.id === selectedMethodId)!))
                       : "Rp 0"}
                   </b>
@@ -917,9 +917,9 @@ export default function JokiClient({
         {/* Reviews Section */}
         <div className="tpReviewSection">
           <div className="tpReviewHeader">
-            <h3 className="tpReviewTitle">Ulasan dan Rating</h3>
-            <div className="tpRatingStars" style={{ color: "#fbbf24", display: "flex", gap: 3 }}>
-              {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
+            <h3 className="tpReviewTitle">Ulasan & Rating</h3>
+            <div className="tpRatingStars" style={{ color: "#fbbf24", display: "flex", gap: 3, marginLeft: 'auto' }}>
+              {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>)}
               <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>{reviewsData.averageRating}/5.0 ({reviewsData.totalCount.toLocaleString("id-ID")} ulasan)</span>
             </div>
           </div>
@@ -935,7 +935,7 @@ export default function JokiClient({
                     <span>{rev.createdAt ? new Date(rev.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'long' }) : "Baru saja"} • Terverifikasi</span>
                   </div>
                   <div className="tpReviewStars">
-                    {[...Array(rev.rating)].map((_, i) => <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
+                    {[...Array(rev.rating)].map((_, i) => <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>)}
                   </div>
                 </div>
                 <p className="tpReviewContent">{rev.comment}</p>

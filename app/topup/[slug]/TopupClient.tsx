@@ -344,8 +344,8 @@ export default function TopupClient({
         </div>
       </div>
 
-        <div className="topupWrap">
-          <div className="tpMainLayout">
+      <div className="topupWrap">
+        <div className="tpMainLayout">
           <div className="tpLeftCol">
             {/* Step 1: Account Data */}
             <div className="card" id="section-id">
@@ -421,8 +421,8 @@ export default function TopupClient({
                   {/* Special CarenCoin Category */}
                   <div className={`tpPayCategory premium-cat ${activePaymentType === "CarenCoin" ? "isSelected" : ""}`}>
                     <div className="tpRibbon">BEST PRICE</div>
-                    <button 
-                      className="tpPayCategoryHeader caren-header" 
+                    <button
+                      className="tpPayCategoryHeader caren-header"
                       onClick={() => { setActivePaymentType("CarenCoin"); setSelectedMethodId(null); }}
                     >
                       <div className="tpPayHeaderTop">
@@ -531,7 +531,7 @@ export default function TopupClient({
                 <div className="tpRatingStarsWrap">
                   <div className="tpRatingStars">
                     {[...Array(5)].map((_, i) => (
-                      <svg key={i} width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                      <svg key={i} width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
                     ))}
                   </div>
                   <div className="tpRatingTotal">Berdasarkan total {reviewsData.totalCount.toLocaleString("id-ID")} rating</div>
@@ -572,7 +572,7 @@ export default function TopupClient({
                 <div className="tpSideRow">
                   <span>Biaya Layanan</span>
                   <b>
-                    {selectedItem && activePaymentType === "GATEWAY" && selectedMethodId 
+                    {selectedItem && activePaymentType === "GATEWAY" && selectedMethodId
                       ? rupiah(getFeeAmount(selectedItem.finalPrice, methodFees.find(x => x.id === selectedMethodId)!))
                       : "Rp 0"}
                   </b>
@@ -595,9 +595,9 @@ export default function TopupClient({
         {/* Reviews Section (Desktop side, Mobile bottom) */}
         <div className="tpReviewSection">
           <div className="tpReviewHeader">
-            <h3 className="tpReviewTitle">Ulasan dan Rating</h3>
-            <div className="tpRatingStars" style={{ color: "#fbbf24", display: "flex", gap: 3 }}>
-              {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
+            <h3 className="tpReviewTitle">Ulasan & Rating</h3>
+            <div className="tpRatingStars" style={{ color: "#fbbf24", display: "flex", gap: 3, marginLeft: 'auto' }}>
+              {[...Array(5)].map((_, i) => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>)}
               <span style={{ fontSize: 13, color: "#fff", marginLeft: 8, fontWeight: 800 }}>{reviewsData.averageRating}/5.0 ({reviewsData.totalCount.toLocaleString("id-ID")} ulasan)</span>
             </div>
           </div>
@@ -613,7 +613,7 @@ export default function TopupClient({
                     <span>{rev.createdAt ? new Date(rev.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'long' }) : "Baru saja"} • Terverifikasi</span>
                   </div>
                   <div className="tpReviewStars">
-                    {[...Array(rev.rating)].map((_, i) => <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>)}
+                    {[...Array(rev.rating)].map((_, i) => <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>)}
                   </div>
                 </div>
                 <p className="tpReviewContent">{rev.comment}</p>
