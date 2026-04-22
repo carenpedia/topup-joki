@@ -21,6 +21,10 @@ export async function sendInvoiceEmail(orderId: string) {
       return { success: false, error: "No email found" };
     }
 
+    const gameName = order.game?.name || "Unknown Game";
+    const productName = order.product?.name || order.serviceType;
+    const userName = order.user?.username || "Pelanggan";
+
     // Get Logo from Settings
     const settings = await prisma.globalSetting.findMany({
       where: { key: { in: ["SITE_LOGO", "SITE_NAME"] } }
@@ -64,18 +68,18 @@ export async function sendInvoiceEmail(orderId: string) {
           </div>
           <div class="content">
             <div class="status-badge status-paid">Lunas / Paid</div>
-            <div class="invoice-title">Terima Kasih, ${order.user?.username || 'Pelanggan'}!</div>
+            <div class="invoice-title">Terima Kasih, ${userName}!</div>
             <p style="margin-top: 0; color: #64748b;">Pesanan Anda telah berhasil diproses. Simpan email ini sebagai bukti transaksi Anda.</p>
             <div class="invoice-no">Order ID: <b>${order.orderNo}</b> • ${new Date(order.paidAt || order.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
             
             <table class="summary-table">
               <tr>
                 <td class="label">Game</td>
-                <td class="value">${order.game.name}</td>
+                <td class="value">${gameName}</td>
               </tr>
               <tr>
                 <td class="label">Item</td>
-                <td class="value">${order.product?.name || order.serviceType}</td>
+                <td class="value">${productName}</td>
               </tr>
               <tr>
                 <td class="label">User ID</td>
@@ -108,7 +112,7 @@ export async function sendInvoiceEmail(orderId: string) {
     const data = await resend.emails.send({
       from: process.env.EMAIL_FROM || "CarenPedia <noreply@carenpedia.com>",
       to: [order.contactEmail],
-      subject: `[LUNAS] Invoice ${order.orderNo} - ${order.game.name}`,
+      subject: `[LUNAS] Invoice ${order.orderNo} - ${gameName}`,
       html: html,
     });
 
