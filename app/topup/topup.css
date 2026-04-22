@@ -402,35 +402,49 @@
 
 .topupScope .tpWaInputGroup {
   display: flex;
-  gap: 8px;
   align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.topupScope .tpWaInputGroup:focus-within {
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
 }
 
 .topupScope .tpWaRegionBtn {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+  background: transparent;
+  border: none;
   padding: 0 14px;
   height: 48px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 90px;
+  transition: opacity 0.2s ease;
+  min-width: 80px;
   justify-content: center;
 }
 
 .topupScope .tpWaRegionBtn:hover {
+  opacity: 0.8;
+}
+
+.topupScope .tpWaDivider {
+  width: 1px;
+  height: 24px;
   background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
 }
 
 .topupScope .tpWaFlag {
-  width: 28px;
+  width: 24px;
   height: auto;
   border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .topupScope .tpWaChevron {
@@ -457,6 +471,9 @@
 .topupScope .tpWaInputWithPrefix {
   padding-left: 50px !important;
   height: 48px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .topupScope .tpContactAttention {

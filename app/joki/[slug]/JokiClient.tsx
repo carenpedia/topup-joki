@@ -833,7 +833,7 @@ export default function JokiClient({
             {/* Step 6 — Kontak */}
             <div className="card">
               <div className="contact-header">
-                <div className="contact-step" style={{ background: "#fbbf24" }}>6</div>
+                <div className="contact-step">6</div>
                 <div className="contact-title-wrap">
                   <h4 className="contact-title">Detail Kontak</h4>
                 </div>
@@ -855,6 +855,7 @@ export default function JokiClient({
                     <img src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${waCountry.iso}.svg`} className="tpWaFlag" alt={waCountry.name} />
                     <span className="tpWaChevron">▼</span>
                   </button>
+                  <div className="tpWaDivider" />
                   <div className="tpWaNumberWrap">
                     <div className="tpWaPrefix">{waCountry.code}</div>
                     <input

@@ -570,7 +570,7 @@ export default function TopupClient({
             {/* Step 5: Contact */}
             <div className="card" id="section-contact">
               <div className="contact-header">
-                <div className="contact-step" style={{ background: "#fbbf24" }}>5</div>
+                <div className="contact-step">5</div>
                 <div className="contact-title-wrap"><h4 className="contact-title">Detail Kontak</h4></div>
               </div>
               <div className="contact-body">
@@ -590,6 +590,7 @@ export default function TopupClient({
                     <img src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${waCountry.iso}.svg`} className="tpWaFlag" alt={waCountry.name} />
                     <span className="tpWaChevron">▼</span>
                   </button>
+                  <div className="tpWaDivider" />
                   <div className="tpWaNumberWrap">
                     <div className="tpWaPrefix">{waCountry.code}</div>
                     <input 
