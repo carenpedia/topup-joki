@@ -394,7 +394,7 @@
 .topupScope .tpContactLabel {
   display: block;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 500;
   color: #fff;
   margin-bottom: 10px;
   margin-top: 4px;
@@ -463,7 +463,7 @@
   position: absolute;
   left: 12px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.6);
   pointer-events: none;
 }
@@ -479,7 +479,7 @@
 
 .topupScope .tpContactAttention {
   display: block;
-  font-size: 10px;
+  font-size: 9px;
   color: rgba(255, 255, 255, 0.6);
   margin-top: 14px;
   font-style: italic;
