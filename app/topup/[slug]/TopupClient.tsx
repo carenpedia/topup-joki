@@ -99,6 +99,7 @@ export default function TopupClient({
   const [openCategory, setOpenCategory] = useState<string | null>("E-Wallet"); // Default open E-Wallet
 
   const [contact, setContact] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
   const [voucher, setVoucher] = useState("");
   const [voucherApplied, setVoucherApplied] = useState(false);
   const [voucherMsg, setVoucherMsg] = useState("");
@@ -226,8 +227,21 @@ export default function TopupClient({
       return;
     }
 
+    if (!contactEmail.trim()) {
+      toast.critical("Harap masukkan alamat email untuk pengiriman invoice");
+      scrollTo("section-contact");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactEmail)) {
+      toast.critical("Format email tidak valid");
+      scrollTo("section-contact");
+      return;
+    }
+
     if (!contact.trim()) {
-      toast.critical("Harap masukkan nomer whatsapp/email kamu");
+      toast.critical("Harap masukkan nomor WhatsApp kamu");
       scrollTo("section-contact");
       return;
     }
@@ -240,6 +254,7 @@ export default function TopupClient({
           inputUserId: userId,
           inputServer: hasServer ? server : undefined,
           contactWhatsapp: contact,
+          contactEmail: contactEmail,
           paymentMethod: activePaymentType,
           methodId: selectedMethodId,
           voucherCode: voucherApplied ? voucher.trim().toUpperCase() : undefined,
@@ -557,9 +572,10 @@ export default function TopupClient({
                 <div className="contact-title-wrap"><h4 className="contact-title">Konfirmasi WhatsApp</h4></div>
               </div>
               <div className="contact-body">
+                <input className="contact-input" placeholder="Masukkan Alamat Email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} style={{ marginBottom: 12 }} />
                 <input className="contact-input" placeholder="Masukkan Nomor WhatsApp (628...)" value={contact} onChange={(e) => setContact(e.target.value)} />
                 <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
-                  Nomer ini akan dihubungi jika terjadi masalah
+                  Invoice akan dikirimkan ke email Anda. Nomor WA digunakan jika terjadi masalah.
                 </p>
               </div>
             </div>

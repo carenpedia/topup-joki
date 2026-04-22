@@ -112,6 +112,7 @@ export default function JokiClient({
 
   // Step 6 — Kontak
   const [contact, setContact] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
 
   const [reviewsData, setReviewsData] = useState<{ reviews: any[], totalCount: number, averageRating: number }>({
     reviews: [],
@@ -290,20 +291,29 @@ export default function JokiClient({
     if (!password.trim()) return false;
     if (!selectedItem && nominals.length > 0) return false;
     if (!contact.trim()) return false;
+    if (!contactEmail.trim()) return false;
     return true;
-  }, [userIdNickname, loginId, password, selectedItem, nominals.length, contact]);
+  }, [userIdNickname, loginId, password, selectedItem, nominals.length, contact, contactEmail]);
 
   const checkoutStatus = useMemo(() => {
     if (!userIdNickname.trim()) return "Isi User ID & Nickname dulu";
     if (!loginId.trim()) return "Isi Login ID dulu";
     if (!password.trim()) return "Isi Password dulu";
     if (!selectedItem && nominals.length > 0) return "Pilih paket dulu";
-    if (!contact.trim()) return "Isi kontak dulu";
-    return "Siap order";
-  }, [userIdNickname, loginId, password, selectedItem, nominals.length, contact]);
+    if (!contactEmail.trim()) return "Isi email dulu";
+    if (!contact.trim()) return "Isi WhatsApp dulu";
+    return null;
+  }, [userIdNickname, loginId, password, selectedItem, nominals.length, contact, contactEmail]);
 
   async function onCheckout() {
     if (!canCheckout || submitting) return;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactEmail)) {
+      toast.error("Format email tidak valid!");
+      return;
+    }
+
     setSubmitErr("");
     setSubmitting(true);
 
@@ -331,6 +341,7 @@ export default function JokiClient({
 
       body.paymentMethod = activePaymentType;
       body.methodId = selectedMethodId;
+      body.contactEmail = contactEmail;
 
       const res = await fetch("/api/checkout/joki", {
         method: "POST",
@@ -826,15 +837,23 @@ export default function JokiClient({
                 </div>
               </div>
               <div className="contact-body">
-                <label className="contact-label">No. WhatsApp / Email</label>
+                <label className="contact-label">Alamat Email</label>
+                <input
+                  className="contact-input"
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  placeholder="Masukkan Alamat Email"
+                  style={{ marginBottom: "12px" }}
+                />
+                <label className="contact-label">No. WhatsApp</label>
                 <input
                   className="contact-input"
                   value={contact}
                   onChange={(e) => setContact(e.target.value)}
-                  placeholder="Masukkan No. WhatsApp / email"
+                  placeholder="Masukkan Nomor WhatsApp (628...)"
                 />
                 <p className="contact-hint">
-                  Kami akan mengirim update progress joki lewat kontak ini.
+                  Invoice akan dikirimkan ke email Anda. Nomor WA digunakan jika terjadi masalah.
                 </p>
               </div>
             </div>

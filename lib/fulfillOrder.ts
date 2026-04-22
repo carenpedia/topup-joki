@@ -6,6 +6,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { topup as digiflazzTopup } from "@/lib/digiflazz";
+import { sendInvoiceEmail } from "@/lib/email";
 
 /**
  * Fulfillment pipeline setelah payment berhasil
@@ -39,6 +40,8 @@ export async function fulfillOrder(orderId: string): Promise<{ success: boolean;
         where: { id: orderId },
         data: { status: "PROCESSING" },
       });
+      // Trigger Email Invoice for Joki (Async) - Pesanan Joki lunas & masuk antrian
+      sendInvoiceEmail(orderId).catch(err => console.error("[Email-Joki] Background error:", err));
       return { success: true, message: "Order bukan TOPUP, diproses manual" };
     }
 
@@ -97,6 +100,9 @@ export async function fulfillOrder(orderId: string): Promise<{ success: boolean;
     });
 
     if (isSuccess) {
+      // Trigger Email Invoice (Async)
+      sendInvoiceEmail(orderId).catch(err => console.error("[Email] Background error:", err));
+      
       return { success: true, message: `Topup berhasil. SN: ${result.sn || "-"}` };
     } else if (isPending) {
       return { success: true, message: "Topup sedang diproses (pending dari provider)" };
