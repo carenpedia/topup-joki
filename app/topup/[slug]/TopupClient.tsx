@@ -100,6 +100,8 @@ export default function TopupClient({
 
   const [contact, setContact] = useState("");
   const [contactEmail, setContactEmail] = useState("");
+  const [waCountry, setWaCountry] = useState({ name: "Indonesia", code: "+62", iso: "ID" });
+  const [showCountryList, setShowCountryList] = useState(false);
   const [voucher, setVoucher] = useState("");
   const [voucherApplied, setVoucherApplied] = useState(false);
   const [voucherMsg, setVoucherMsg] = useState("");
@@ -253,7 +255,7 @@ export default function TopupClient({
           productId: selectedItem.id,
           inputUserId: userId,
           inputServer: hasServer ? server : undefined,
-          contactWhatsapp: contact,
+          contactWhatsapp: waCountry.code + contact,
           contactEmail: contactEmail,
           paymentMethod: activePaymentType,
           methodId: selectedMethodId,
@@ -568,17 +570,78 @@ export default function TopupClient({
             {/* Step 5: Contact */}
             <div className="card" id="section-contact">
               <div className="contact-header">
-                <div className="contact-step">5</div>
-                <div className="contact-title-wrap"><h4 className="contact-title">Konfirmasi WhatsApp</h4></div>
+                <div className="contact-step" style={{ background: "#fbbf24" }}>5</div>
+                <div className="contact-title-wrap"><h4 className="contact-title">Detail Kontak</h4></div>
               </div>
               <div className="contact-body">
-                <input className="contact-input" placeholder="Masukkan Alamat Email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} style={{ marginBottom: 12 }} />
-                <input className="contact-input" placeholder="Masukkan Nomor WhatsApp (628...)" value={contact} onChange={(e) => setContact(e.target.value)} />
-                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
-                  Invoice akan dikirimkan ke email Anda. Nomor WA digunakan jika terjadi masalah.
-                </p>
+                <label className="tpContactLabel">Email</label>
+                <input 
+                  className="contact-input" 
+                  placeholder="example@gmail.com" 
+                  value={contactEmail} 
+                  onChange={(e) => setContactEmail(e.target.value)} 
+                />
+
+                <div style={{ height: 16 }} />
+
+                <label className="tpContactLabel">No. WhatsApp</label>
+                <div className="tpWaInputGroup">
+                  <button className="tpWaRegionBtn" onClick={() => setShowCountryList(true)}>
+                    <img src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${waCountry.iso}.svg`} className="tpWaFlag" alt={waCountry.name} />
+                    <span className="tpWaChevron">▼</span>
+                  </button>
+                  <div className="tpWaNumberWrap">
+                    <div className="tpWaPrefix">{waCountry.code}</div>
+                    <input 
+                      className="contact-input tpWaInputWithPrefix" 
+                      placeholder="8123456789" 
+                      value={contact} 
+                      onChange={(e) => setContact(e.target.value.replace(/\D/g, ""))} 
+                    />
+                  </div>
+                </div>
+
+                <span className="tpContactAttention">
+                  <b>**Nomor ini akan dihubungi jika terjadi masalah</b>
+                </span>
+
+                <div className="tpInfoBox">
+                  <div className="tpInfoIcon">i</div>
+                  <div className="tpInfoText">
+                    invoice transaksi akan dikirimkan ke email yang kamu isi diatas
+                  </div>
+                </div>
               </div>
             </div>
+
+            {/* Region Modal */}
+            {showCountryList && (
+              <div className="tpRegionOverlay" onClick={() => setShowCountryList(false)}>
+                <div className="tpRegionModal" onClick={(e) => e.stopPropagation()}>
+                  <div className="tpRegionTitle">Pilih Negara</div>
+                  <div className="tpRegionList">
+                    {[
+                      { name: "Indonesia", code: "+62", iso: "ID" },
+                      { name: "Malaysia", code: "+60", iso: "MY" },
+                      { name: "Singapore", code: "+65", iso: "SG" },
+                      { name: "Thailand", code: "+66", iso: "TH" },
+                      { name: "Vietnam", code: "+84", iso: "VN" },
+                      { name: "Philippines", code: "+63", iso: "PH" },
+                    ].map((c) => (
+                      <button 
+                        key={c.iso} 
+                        className={`tpRegionItem ${waCountry.iso === c.iso ? "isActive" : ""}`}
+                        onClick={() => { setWaCountry(c); setShowCountryList(false); }}
+                      >
+                        <img src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${c.iso}.svg`} className="tpRegionFlag" alt={c.name} />
+                        <span>{c.name}</span>
+                        <span className="tpRegionCode">{c.code}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="tpRightCol">
