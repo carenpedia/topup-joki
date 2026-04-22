@@ -603,7 +603,7 @@ export default function TopupClient({
                 </div>
 
                 <span className="tpContactAttention">
-                  <b>**Nomor ini akan dihubungi jika terjadi masalah</b>
+                  **Nomor ini akan dihubungi jika terjadi masalah
                 </span>
 
                 <div className="tpInfoBox">
