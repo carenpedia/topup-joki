@@ -419,14 +419,14 @@
 .topupScope .tpWaRegionBtn {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   background: transparent;
   border: none;
-  padding: 0 14px;
-  height: 48px;
+  padding: 0 12px;
+  height: 36px;
   cursor: pointer;
   transition: opacity 0.2s ease;
-  min-width: 80px;
+  min-width: 70px;
   justify-content: center;
 }
 
@@ -436,13 +436,13 @@
 
 .topupScope .tpWaDivider {
   width: 1px;
-  height: 24px;
+  height: 18px;
   background: rgba(255, 255, 255, 0.15);
   flex-shrink: 0;
 }
 
 .topupScope .tpWaFlag {
-  width: 24px;
+  width: 20px;
   height: auto;
   border-radius: 2px;
 }
@@ -461,16 +461,17 @@
 
 .topupScope .tpWaPrefix {
   position: absolute;
-  left: 14px;
-  font-size: 14px;
+  left: 12px;
+  font-size: 12px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.6);
   pointer-events: none;
 }
 
 .topupScope .tpWaInputWithPrefix {
-  padding-left: 50px !important;
-  height: 48px;
+  padding-left: 44px !important;
+  height: 36px;
+  font-size: 12px !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
