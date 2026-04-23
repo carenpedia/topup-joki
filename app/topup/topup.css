@@ -630,21 +630,21 @@
 
 .topupScope .tpNomGrid {
   display: grid;
-  gap: 12px;
+  gap: 16px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 @media (min-width: 768px) {
   .topupScope .tpNomGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
+    gap: 18px;
   }
 }
 
 @media (min-width: 1024px) {
   .topupScope .tpNomGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    gap: 20px;
   }
 }
 
@@ -653,14 +653,15 @@
   flex-direction: column;
   position: relative;
   text-align: left;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
   min-height: 120px;
   background: #2d2f44;
   transition: all 0.2s ease;
   cursor: pointer;
   padding: 0;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
 }
 
 .topupScope .tpNomCard:hover {
@@ -1342,12 +1343,13 @@
   flex-direction: column;
   height: 120px;
   background: rgba(83, 83, 83, 0.993);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
   cursor: pointer;
   overflow: hidden;
   transition: all 0.2s ease;
   padding: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .tpMethodCard:hover {
