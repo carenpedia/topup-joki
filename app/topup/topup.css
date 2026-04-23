@@ -1268,12 +1268,12 @@
 
 .tpRibbon {
   position: absolute;
-  top: 14px;
-  right: -38px;
+  top: 11px;
+  right: -40px;
   background: #3b82f6;
   color: #fff;
   font-size: 8px;
-  font-weight: 950;
+  font-weight: 800;
   padding: 4px 42px;
   transform: rotate(45deg);
   z-index: 10;
