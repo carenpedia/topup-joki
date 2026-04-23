@@ -33,7 +33,7 @@ body{
   margin:0;
   font-family: var(--font-sans);
   color: var(--text);
-  background: #1a1b1f;
+  background: linear-gradient(180deg, #060d26 0%, #020512 100%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

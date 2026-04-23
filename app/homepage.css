@@ -20,7 +20,9 @@
   min-height: 100vh;
   padding-bottom: 60px;
   font-family: var(--font-sans);
-  background: #0b0c10;
+  background: rgba(5, 8, 15, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 /* Ambient glow (Dimatikan sesuai request solid background) */

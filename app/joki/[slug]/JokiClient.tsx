@@ -402,19 +402,29 @@ export default function JokiClient({
               <div className="tpNewHeroFeatures">
                 <div className="tpNewFeatureItem">
                   <div className="tpNewFeatureIcon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <svg className="tpVerifyBadgeAnim" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2L10.24 3.76L7.75 3.12L6.34 5.34L3.89 5.86L3.8 8.41L1.82 10.02L2.83 12.35L1.82 14.68L3.8 16.29L3.89 18.84L6.34 19.36L7.75 21.58L10.24 20.94L12 22.7L13.76 20.94L16.25 21.58L17.66 19.36L20.11 18.84L20.2 16.29L22.18 14.68L21.17 12.35L22.18 10.02L20.2 8.41L20.11 5.86L17.66 5.34L16.25 3.12L13.76 3.76L12 2Z" fill="#3b82f6" />
+                      <path className="tpVerifyCheck" d="M10.5 15.5L6.5 11.5L7.91 10.09L10.5 12.67L16.09 7.09L17.5 8.5L10.5 15.5Z" fill="white" />
+                    </svg>
                   </div>
                   <span>Aman & Terpercaya</span>
                 </div>
                 <div className="tpNewFeatureItem">
                   <div className="tpNewFeatureIcon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <svg className="tpVerifyBadgeAnim" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      <g className="tpVerifyCheck">
+                        <path d="M8 10h.01"></path>
+                        <path d="M12 10h.01"></path>
+                        <path d="M16 10h.01"></path>
+                      </g>
+                    </svg>
                   </div>
                   <span>Layanan 24 Jam</span>
                 </div>
                 <div className="tpNewFeatureItem">
                   <div className="tpNewFeatureIcon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <svg className="tpFlashAnim" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                   </div>
                   <span>Proses satset</span>
                 </div>
@@ -734,12 +744,17 @@ export default function JokiClient({
                           <div className="tpPayCategoryIcon caren-icon">
                             {carenCoinLogo ? <img src={carenCoinLogo} alt="CC" style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : "🪙"}
                           </div>
-                          <div className="tpPayCategorySubTitle">
-                            <div className="tpPayCategoryTitle" style={{ fontSize: '13px' }}>CarenCoin</div>
-                            <div className="tpPayCategoryBalance" style={{ color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff" }}>
-                              {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
-                            </div>
+                          <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div className="tpPayCategoryTitle" style={{ fontSize: '14px' }}>CarenCoin</div>
+                            <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', fontWeight: '600', marginTop: '1px' }}>(Bebas Biaya Admin)</div>
                           </div>
+                        </div>
+                        <div className="tpPayCategoryBalance" style={{ 
+                          color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff",
+                          marginRight: '28px',
+                          marginTop: '2px'
+                        }}>
+                          {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
                         </div>
                       </div>
                     </button>
@@ -863,6 +878,8 @@ export default function JokiClient({
                       placeholder="8123456789"
                       value={contact}
                       onChange={(e) => setContact(e.target.value.replace(/\D/g, ""))}
+                      type="tel"
+                      inputMode="numeric"
                     />
                   </div>
                 </div>

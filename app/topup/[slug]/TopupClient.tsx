@@ -101,9 +101,11 @@ export default function TopupClient({
   const [contact, setContact] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [waCountry, setWaCountry] = useState({ name: "Indonesia", code: "+62", iso: "ID" });
+  const [showStickyDetails, setShowStickyDetails] = useState(false);
   const [showCountryList, setShowCountryList] = useState(false);
   const [voucher, setVoucher] = useState("");
   const [voucherApplied, setVoucherApplied] = useState(false);
+  const [voucherDiscount, setVoucherDiscount] = useState(0);
   const [voucherMsg, setVoucherMsg] = useState("");
 
   const [reviewsData, setReviewsData] = useState<{ reviews: any[], totalCount: number, averageRating: number }>({
@@ -198,13 +200,18 @@ export default function TopupClient({
 
   const { loading: checkoutLoading, run: runCheckout } = useAsyncAction();
 
-  // Helper: calculate total displayed in button (nominal + payment fee)
+  // Helper: calculate total displayed in button (nominal + payment fee - voucher)
   function getComputedTotal() {
     if (!selectedItem) return 0;
-    if (activePaymentType === "CarenCoin") return selectedItem.finalPrice;
-    const m = methodFees.find(x => x.id === selectedMethodId);
-    if (!m) return selectedItem.finalPrice;
-    return calculatePrice(selectedItem.finalPrice, m);
+    let base = selectedItem.finalPrice;
+    let fee = 0;
+    
+    if (activePaymentType === "GATEWAY") {
+      const m = methodFees.find(x => x.id === selectedMethodId);
+      if (m) fee = getFeeAmount(base, m);
+    }
+    
+    return Math.max(base + fee - voucherDiscount, 0);
   }
   const totalToPayComputed = getComputedTotal();
 
@@ -340,19 +347,29 @@ export default function TopupClient({
               <div className="tpNewHeroFeatures">
                 <div className="tpNewFeatureItem">
                   <div className="tpNewFeatureIcon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <svg className="tpVerifyBadgeAnim" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2L10.24 3.76L7.75 3.12L6.34 5.34L3.89 5.86L3.8 8.41L1.82 10.02L2.83 12.35L1.82 14.68L3.8 16.29L3.89 18.84L6.34 19.36L7.75 21.58L10.24 20.94L12 22.7L13.76 20.94L16.25 21.58L17.66 19.36L20.11 18.84L20.2 16.29L22.18 14.68L21.17 12.35L22.18 10.02L20.2 8.41L20.11 5.86L17.66 5.34L16.25 3.12L13.76 3.76L12 2Z" fill="#3b82f6" />
+                      <path className="tpVerifyCheck" d="M10.5 15.5L6.5 11.5L7.91 10.09L10.5 12.67L16.09 7.09L17.5 8.5L10.5 15.5Z" fill="white" />
+                    </svg>
                   </div>
                   <span>Aman & Terpercaya</span>
                 </div>
                 <div className="tpNewFeatureItem">
                   <div className="tpNewFeatureIcon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <svg className="tpVerifyBadgeAnim" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      <g className="tpVerifyCheck">
+                        <path d="M8 10h.01"></path>
+                        <path d="M12 10h.01"></path>
+                        <path d="M16 10h.01"></path>
+                      </g>
+                    </svg>
                   </div>
                   <span>Layanan 24 Jam</span>
                 </div>
                 <div className="tpNewFeatureItem">
                   <div className="tpNewFeatureIcon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <svg className="tpFlashAnim" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                   </div>
                   <span>Proses satset</span>
                 </div>
@@ -418,7 +435,14 @@ export default function TopupClient({
                   {targetConfig.fields.map((f) => (
                     <div key={f.key} style={{ flex: "1 0 calc(50% - 6px)" }}>
                       <label className="contact-label">{f.label}</label>
-                      <input className="contact-input" placeholder={f.label} value={targetInputs[f.key] || ""} onChange={(e) => setTargetInputs({ ...targetInputs, [f.key]: e.target.value })} />
+                      <input 
+                        className="contact-input" 
+                        placeholder={f.label} 
+                        value={targetInputs[f.key] || ""} 
+                        onChange={(e) => setTargetInputs({ ...targetInputs, [f.key]: e.target.value })}
+                        type={(game.key.includes("mobile-legends") || game.key.includes("free-fire") || game.key.includes("genshin") || game.key.includes("pubg") || game.key.includes("higgs") || game.key.includes("domino") || game.key.includes("stumble") || game.key.includes("eggy")) && (f.label.toLowerCase().includes("id") || f.label.toLowerCase().includes("uid") || f.label.toLowerCase().includes("zone") || f.label.toLowerCase().includes("server")) ? "tel" : "text"}
+                        inputMode={(game.key.includes("mobile-legends") || game.key.includes("free-fire") || game.key.includes("genshin") || game.key.includes("pubg") || game.key.includes("higgs") || game.key.includes("domino") || game.key.includes("stumble") || game.key.includes("eggy")) && (f.label.toLowerCase().includes("id") || f.label.toLowerCase().includes("uid") || f.label.toLowerCase().includes("zone") || f.label.toLowerCase().includes("server")) ? "numeric" : "text"}
+                      />
                     </div>
                   ))}
                 </div>
@@ -490,12 +514,17 @@ export default function TopupClient({
                           <div className="tpPayCategoryIcon caren-icon">
                             {carenCoinLogo ? <img src={carenCoinLogo} alt="CC" style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : "🪙"}
                           </div>
-                          <div className="tpPayCategorySubTitle">
-                            <div className="tpPayCategoryTitle" style={{ fontSize: '13px' }}>CarenCoin</div>
-                            <div className="tpPayCategoryBalance" style={{ color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff" }}>
-                              {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
-                            </div>
+                          <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div className="tpPayCategoryTitle" style={{ fontSize: '14px' }}>CarenCoin</div>
+                            <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', fontWeight: '600', marginTop: '1px' }}>(Bebas Biaya Admin)</div>
                           </div>
+                        </div>
+                        <div className="tpPayCategoryBalance" style={{ 
+                          color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff",
+                          marginRight: '28px',
+                          marginTop: '2px'
+                        }}>
+                          {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
                         </div>
                       </div>
                     </button>
@@ -555,8 +584,34 @@ export default function TopupClient({
               </div>
               <div className="contact-body">
                 <div style={{ display: "flex", gap: 10 }}>
-                  <input className="contact-input" placeholder="Masukkan Kode Voucher" value={voucher} onChange={(e) => setVoucher(e.target.value)} />
-                  <button className="btn-promo" onClick={() => { setVoucherApplied(true); setVoucherMsg("Voucher dicek..."); }}>Gunakan</button>
+                  <input className="contact-input" placeholder="Masukkan Kode Voucher" value={voucher} onChange={(e) => { setVoucher(e.target.value); if(voucherApplied) { setVoucherApplied(false); setVoucherDiscount(0); setVoucherMsg(""); } }} />
+                  <button 
+                    className="btn-promo" 
+                    disabled={!voucher.trim() || !selectedItem}
+                    onClick={async () => { 
+                      setVoucherMsg("Mengecek...");
+                      try {
+                        const res = await fetch("/api/vouchers/check", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ code: voucher, basePrice: selectedItem?.finalPrice || 0 })
+                        });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.error);
+                        setVoucherApplied(true);
+                        setVoucherDiscount(data.discount);
+                        setVoucherMsg(data.message);
+                        toast.success(data.message);
+                      } catch (err: any) {
+                        setVoucherApplied(false);
+                        setVoucherDiscount(0);
+                        setVoucherMsg(err.message);
+                        toast.error(err.message);
+                      }
+                    }}
+                  >
+                    Gunakan
+                  </button>
                 </div>
                 <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 6, fontStyle: "italic" }}>
                   Masukkan kode promo jika ada (Opsional)
@@ -598,6 +653,8 @@ export default function TopupClient({
                       placeholder="8123456789" 
                       value={contact} 
                       onChange={(e) => setContact(e.target.value.replace(/\D/g, ""))} 
+                      type="tel"
+                      inputMode="numeric"
                     />
                   </div>
                 </div>
@@ -700,6 +757,12 @@ export default function TopupClient({
                       : "Rp 0"}
                   </b>
                 </div>
+                {voucherApplied && voucherDiscount > 0 && (
+                  <div className="tpSideRow" style={{ color: "#4ade80" }}>
+                    <span>Potongan Promo</span>
+                    <b style={{ color: "#4ade80" }}>-{rupiah(voucherDiscount)}</b>
+                  </div>
+                )}
               </div>
 
               <div className="tpSideTotal">
@@ -777,7 +840,7 @@ export default function TopupClient({
                   <div className="stickyInfoGame">{game.name}</div>
                   <div className="stickyInfoProduct">{selectedItem.name}</div>
                 </div>
-                <div className="stickyInfoChevron">
+                <div className={`stickyInfoChevron ${showStickyDetails ? "isExpanded" : ""}`} onClick={(e) => { e.stopPropagation(); setShowStickyDetails(!showStickyDetails); }}>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
                 </div>
               </>
@@ -785,6 +848,35 @@ export default function TopupClient({
               <div className="stickyInfoText">Belum ada item produk yang dipilih.</div>
             )}
           </div>
+
+          {/* New Expanded Details */}
+          {selectedItem && (
+            <div className={`stickyDetailsArea ${showStickyDetails ? "isOpen" : ""}`}>
+              <div className="stickyDetailRow">
+                <span>Harga Produk</span>
+                <b>{rupiah(selectedItem.finalPrice)}</b>
+              </div>
+              <div className="stickyDetailRow">
+                <span>Biaya Layanan</span>
+                <b>
+                  {activePaymentType === "GATEWAY" && selectedMethodId
+                    ? rupiah(getFeeAmount(selectedItem.finalPrice, methodFees.find(x => x.id === selectedMethodId)!))
+                    : "Rp 0"}
+                </b>
+              </div>
+              {voucherApplied && voucherDiscount > 0 && (
+                <div className="stickyDetailRow" style={{ color: "#4ade80" }}>
+                  <span>Potongan Promo</span>
+                  <b style={{ color: "#4ade80" }}>-{rupiah(voucherDiscount)}</b>
+                </div>
+              )}
+              <div className="stickyDetailDivider" />
+              <div className="stickyDetailRow total">
+                <span>Total Pembayaran</span>
+                <b>{rupiah(totalToPayComputed)}</b>
+              </div>
+            </div>
+          )}
           <div className="stickyAction">
             <button className="stickyBtn" disabled={checkoutLoading || !selectedItem} onClick={onCheckout}>
               <div className="stickyBtnIcon">

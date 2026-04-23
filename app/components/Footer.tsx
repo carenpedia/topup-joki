@@ -9,7 +9,7 @@ export default function Footer() {
     <footer style={{
       marginTop: "80px",
       padding: "40px 20px 40px",
-      background: "linear-gradient(180deg, #08080d 0%, rgba(14,18,28,0.95) 100%)",
+      background: "linear-gradient(180deg, #050a1a 0%, #010208 100%)",
       borderTop: "1px solid rgba(255,255,255,0.03)",
       position: "relative",
       overflow: "hidden"
