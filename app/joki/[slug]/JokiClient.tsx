@@ -118,6 +118,7 @@ export default function JokiClient({
   const [contactEmail, setContactEmail] = useState("");
   const [waCountry, setWaCountry] = useState({ name: "Indonesia", code: "+62", iso: "ID" });
   const [showCountryList, setShowCountryList] = useState(false);
+  const [showStickyDetails, setShowStickyDetails] = useState(false);
 
   const [reviewsData, setReviewsData] = useState<{ reviews: any[], totalCount: number, averageRating: number }>({
     reviews: [],
@@ -1144,14 +1145,43 @@ export default function JokiClient({
                 )}
                 <div className="stickyInfoContent">
                   <div className="stickyInfoGame">{game.name}</div>
-                  <div className="stickyInfoProduct">{selectedItem.name}</div>
+                  <div className="stickyInfoProduct">{selectedItem.name} {quantity > 1 ? `(×${quantity})` : ""}</div>
                 </div>
-                <div className="stickyInfoChevron">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                <div className={`stickyInfoChevron ${showStickyDetails ? "isExpanded" : ""}`} onClick={(e) => { e.stopPropagation(); setShowStickyDetails(!showStickyDetails); }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
                 </div>
               </>
             )}
           </div>
+
+          {/* Expanded Details */}
+          {selectedItem && (
+            <div className={`stickyDetailsArea ${showStickyDetails ? "isOpen" : ""}`}>
+              <div className="stickyDetailRow">
+                <span>Harga Produk</span>
+                <b>{rupiah(selectedItem.finalPrice)}</b>
+              </div>
+              {quantity > 1 && (
+                <div className="stickyDetailRow">
+                  <span>Jumlah</span>
+                  <b>×{quantity}</b>
+                </div>
+              )}
+              <div className="stickyDetailRow">
+                <span>Biaya Layanan</span>
+                <b>
+                  {activePaymentType === "GATEWAY" && selectedMethodId
+                    ? rupiah(getFeeAmount(qtyBasePrice, methodFees.find(x => x.id === selectedMethodId)!))
+                    : "Rp 0"}
+                </b>
+              </div>
+              <div className="stickyDetailDivider" />
+              <div className="stickyDetailRow total">
+                <span>Total Pembayaran</span>
+                <b>{rupiah(totalToPayComputed)}</b>
+              </div>
+            </div>
+          )}
 
           <div className="stickyAction">
             <button
@@ -1164,12 +1194,12 @@ export default function JokiClient({
                   <div className="spinner-border spinner-border-sm" role="status" style={{ width: 16, height: 16, border: '2px solid' }}></div>
                 ) : (
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" />
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                     <path d="M16 10V6a4 4 0 0 0-8 0v4" />
                   </svg>
                 )}
               </div>
-              {submitting ? "Memproses..." : "Pesan Sekarang!"}
+              {submitting ? "Memproses..." : selectedItem ? `Pesan Sekarang — ${rupiah(totalToPayComputed)}` : "Pilih Paket Joki"}
             </button>
           </div>
         </div>
