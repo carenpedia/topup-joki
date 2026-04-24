@@ -47,12 +47,12 @@ export async function POST(req: Request) {
 
       const tripayRes = await createTripayTransaction({
         method: method.methodKey,
-        merchant_ref: order.orderNo,
+        merchantRef: order.orderNo,
         amount: price,
-        customer_name: user.username,
-        customer_email: "customer@carenpedia.id",
-        customer_phone: user.whatsapp,
-        order_items: [{ name: "Upgrade Reseller VIP", price: price, quantity: 1 }]
+        customerName: user.username,
+        customerEmail: "customer@carenpedia.id",
+        customerPhone: user.whatsapp,
+        orderItems: [{ name: "Upgrade Reseller VIP", price: price, quantity: 1 }]
       });
 
       if (!tripayRes.success) throw new Error(tripayRes.message);
