@@ -10,6 +10,7 @@ type Row = {
   username: string;
   whatsapp: string;
   total: number;
+  quantity: number;
   status: string;
   jokiStatus: string | null;
   createdAt: string;
@@ -92,6 +93,12 @@ export default function AdminJokiOrdersPage() {
       title: "Total",
       width: 130,
       render: (r: Row) => `Rp ${rupiah(Number(r.total || 0))}`,
+    },
+    {
+      key: "quantity",
+      title: "Qty",
+      width: 60,
+      render: (r: Row) => `${r.quantity || 1}×`,
     },
     {
       key: "status",

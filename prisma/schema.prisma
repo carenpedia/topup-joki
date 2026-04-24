@@ -295,6 +295,7 @@ model Order {
   paymentGateway    PaymentGateway?
   gatewayMethodKey  String?
   gatewayFeeApplied Int               @default(0)
+  quantity          Int               @default(1)
   paidAt            DateTime?
   expiresAt         DateTime?
   provider          Provider?

@@ -60,8 +60,7 @@ export async function POST(req: Request) {
       contactWhatsapp,
       contactEmail,
       paymentMethod,
-      paymentGateway,
-      gatewayMethodKey,
+      methodId,
       loginVia,
       userIdNickname,
       loginId,
@@ -69,7 +68,10 @@ export async function POST(req: Request) {
       noteForJoki,
       heroes,
       finalPayable: finalPayableRaw,
+      quantity: quantityRaw,
     } = body;
+
+    const quantity = Math.max(1, Math.floor(Number(quantityRaw) || 1));
 
     // ========== VALIDASI ==========
     if (!gameKey || !contactWhatsapp || !paymentMethod) {
@@ -126,15 +128,39 @@ export async function POST(req: Request) {
       if (!priceRow) {
         return NextResponse.json({ error: "Harga produk tidak ditemukan" }, { status: 400 });
       }
-      basePrice = priceRow.price;
+      basePrice = priceRow.price * quantity;
       resolvedProductId = product.id;
     } else if (typeof finalPayableRaw === "number" && finalPayableRaw > 0) {
-      basePrice = Math.floor(finalPayableRaw);
+      basePrice = Math.floor(finalPayableRaw) * quantity;
     } else {
       return NextResponse.json({ error: "productId atau finalPayable harus diisi" }, { status: 400 });
     }
 
-    const finalPayable = basePrice;
+    // ========== HITUNG FEE & GATEWAY ==========
+    let gatewayToUse = null;
+    let methodKeyToUse = null;
+    let feeAmount = 0;
+    let totalToPay = basePrice;
+
+    if (paymentMethod === "GATEWAY") {
+      if (!methodId) return NextResponse.json({ error: "Pilih metode pembayaran" }, { status: 400 });
+      
+      const mFee = await prisma.paymentMethodFee.findUnique({ where: { id: methodId } });
+      if (!mFee || !mFee.isActive) return NextResponse.json({ error: "Metode pembayaran tidak tersedia" }, { status: 400 });
+
+      gatewayToUse = mFee.gateway;
+      methodKeyToUse = mFee.methodKey;
+
+      // Hitung fee
+      let calculatedFee = mFee.feeFixed + Math.floor((basePrice * mFee.feePercent) / 100);
+      if (mFee.minFee !== null && calculatedFee < mFee.minFee) calculatedFee = mFee.minFee;
+      if (mFee.maxFee !== null && calculatedFee > mFee.maxFee) calculatedFee = mFee.maxFee;
+      
+      feeAmount = calculatedFee;
+      totalToPay = basePrice + feeAmount;
+    }
+
+    const finalPayable = totalToPay;
     const heroList: string[] = Array.isArray(heroes) ? heroes.filter((h) => typeof h === "string" && h.trim()) : [];
 
     // ========== BUAT ORDER ==========
@@ -152,9 +178,11 @@ export async function POST(req: Request) {
         contactEmail: contactEmail || null,
         basePrice,
         finalPayable,
+        gatewayFeeApplied: feeAmount,
         paymentMethod: paymentMethod === "CARENCOIN" ? "CARENCOIN" : "GATEWAY",
-        paymentGateway: paymentMethod === "GATEWAY" ? (paymentGateway || "TRIPAY") : null,
-        gatewayMethodKey: paymentMethod === "GATEWAY" ? (gatewayMethodKey || null) : null,
+        paymentGateway: gatewayToUse,
+        gatewayMethodKey: methodKeyToUse,
+        quantity,
         expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
         jokiDetail: {
           create: {
@@ -216,9 +244,9 @@ export async function POST(req: Request) {
     }
 
     // Jalur B: Tripay
-    if (paymentGateway === "TRIPAY") {
+    if (gatewayToUse === "TRIPAY") {
       const tripayTx = await tripayCreate({
-        method: gatewayMethodKey || "QRIS",
+        method: methodKeyToUse || "QRIS",
         merchantRef: orderNo,
         amount: finalPayable,
         customerName: dbUser?.username || "Guest",
@@ -226,7 +254,7 @@ export async function POST(req: Request) {
         customerPhone: contactWhatsapp,
         orderItems: [
           {
-            name: `Joki ${game.name}`,
+            name: `Joki ${game.name}${quantity > 1 ? " x" + quantity : ""}`,
             price: finalPayable,
             quantity: 1,
           },
@@ -257,7 +285,7 @@ export async function POST(req: Request) {
     }
 
     // Jalur C: Xendit
-    if (paymentGateway === "XENDIT") {
+    if (gatewayToUse === "XENDIT") {
       const xenditInv = await xenditCreate({
         externalId: orderNo,
         amount: finalPayable,

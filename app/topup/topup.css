@@ -1864,3 +1864,87 @@
   animation: tpLightningBolt 3s infinite;
   transform-origin: center;
 }
+
+/* ===== JOKI QUANTITY SELECTOR ===== */
+.jokiQtyWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.jokiQtyInput {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  padding: 10px 16px;
+  text-align: left;
+  outline: none;
+  transition: all 0.2s ease;
+  -moz-appearance: textfield;
+}
+
+.jokiQtyInput::-webkit-outer-spin-button,
+.jokiQtyInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.jokiQtyInput:focus {
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+.jokiQtyBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.jokiQtyBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+  filter: brightness(1.1);
+}
+
+.jokiQtyBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.jokiQtyBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.jokiQtyInfo {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jokiQtyInfo b {
+  color: #fbbf24;
+  font-weight: 800;
+}

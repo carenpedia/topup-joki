@@ -23,6 +23,7 @@ type Detail = {
   createdAt: string;
   paidAt: string | null;
   total: number;
+  quantity: number;
   basePrice: number;
   contactWhatsapp: string;
   contactEmail: string;
@@ -146,6 +147,12 @@ export default function AdminJokiOrderDetailPage() {
                 <div className="order-k">Total</div>
                 <div className="order-v">Rp {rupiah(data.total || 0)}</div>
               </div>
+              {(data.quantity || 1) > 1 && (
+                <div className="order-kv">
+                  <div className="order-k">Jumlah Order</div>
+                  <div className="order-v" style={{ fontWeight: 800, color: "#fbbf24" }}>{data.quantity}×</div>
+                </div>
+              )}
               <div className="order-kv">
                 <div className="order-k">Created</div>
                 <div className="order-v">{data.createdAt}</div>

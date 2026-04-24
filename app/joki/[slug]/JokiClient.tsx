@@ -97,6 +97,9 @@ export default function JokiClient({
   const [nominalLoading, setNominalLoading] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  // Step 3 — Jumlah Pembelian
+  const [quantity, setQuantity] = useState(1);
+
   // Step 3 — Request Hero
   const [heroes, setHeroes] = useState<string[]>([""]);
 
@@ -230,12 +233,13 @@ export default function JokiClient({
   const selectedItem = useMemo(() => nominals.find((x) => x.id === selectedId) || null, [selectedId, nominals]);
 
   // Helper: calculate total displayed in button (nominal + payment fee)
+  const qtyBasePrice = selectedItem ? selectedItem.finalPrice * quantity : 0;
   function getComputedTotal() {
     if (!selectedItem) return 0;
-    if (activePaymentType === "CARENCOIN") return selectedItem.finalPrice;
+    if (activePaymentType === "CARENCOIN") return qtyBasePrice;
     const m = methodFees.find(x => x.id === selectedMethodId);
-    if (!m) return selectedItem.finalPrice;
-    return calculatePrice(selectedItem.finalPrice, m);
+    if (!m) return qtyBasePrice;
+    return calculatePrice(qtyBasePrice, m);
   }
   const totalToPayComputed = getComputedTotal();
 
@@ -332,6 +336,7 @@ export default function JokiClient({
         noteForJoki: noteForJoki.trim() || undefined,
         heroes: filteredHeroes,
         voucherCode: voucherApplied ? voucher.trim().toUpperCase() : undefined,
+        quantity,
       };
 
       if (selectedItem) {
@@ -722,10 +727,64 @@ export default function JokiClient({
 
             <div className="spacer" />
 
-            {/* Step 4 — Pilihan Pembayaran */}
-            <div className="card" id="section-payment">
+            {/* Step 4 — Jumlah Pembelian */}
+            <div className="card">
               <div className="contact-header">
                 <div className="contact-step">4</div>
+                <div className="contact-title-wrap">
+                  <h4 className="contact-title">Masukkan Jumlah Pembelian</h4>
+                </div>
+              </div>
+              <div className="contact-body">
+                <div className="jokiQtyWrap">
+                  <input
+                    type="number"
+                    className="jokiQtyInput"
+                    value={quantity === 0 ? "" : quantity}
+                    onChange={(e) => {
+                      if (e.target.value === "") {
+                        setQuantity(0);
+                        return;
+                      }
+                      const val = parseInt(e.target.value, 10);
+                      if (!isNaN(val)) setQuantity(val);
+                    }}
+                    onBlur={() => {
+                      if (quantity < 1) setQuantity(1);
+                    }}
+                    min={1}
+                    inputMode="numeric"
+                  />
+                  <button
+                    type="button"
+                    className="jokiQtyBtn"
+                    onClick={() => setQuantity((q) => q + 1)}
+                  >
+                    +
+                  </button>
+                  <button
+                    type="button"
+                    className="jokiQtyBtn"
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    disabled={quantity <= 1}
+                  >
+                    −
+                  </button>
+                </div>
+                {selectedItem && quantity > 1 && (
+                  <div className="jokiQtyInfo">
+                    {selectedItem.name} × {quantity} = <b>{rupiah(selectedItem.finalPrice * quantity)}</b>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="spacer" />
+
+            {/* Step 5 — Pilihan Pembayaran */}
+            <div className="card" id="section-payment">
+              <div className="contact-header">
+                <div className="contact-step">5</div>
                 <div className="contact-title-wrap">
                   <h4 className="contact-title">Pilih Pembayaran</h4>
                 </div>
@@ -784,13 +843,13 @@ export default function JokiClient({
                                   {m.image ? <img src={m.image} alt={m.label} className="expand-logo" /> : <span className="expand-logo-text">{m.label?.[0]}</span>}
                                 </div>
                                 <div className="tpMethodPriceMain">
-                                  {selectedItem ? rupiah(calculatePrice(selectedItem.finalPrice, m)) : "Pilih nominal"}
+                                  {selectedItem ? rupiah(calculatePrice(qtyBasePrice, m)) : "Pilih nominal"}
                                 </div>
                               </div>
                               <div className="tpMethodDashed" />
                               <div className="tpMethodBottom">
                                 <div className="tpMethodFeeText">
-                                  Biaya: {selectedItem ? rupiah(getFeeAmount(selectedItem.finalPrice, m)) : "-"}
+                                  Biaya: {selectedItem ? rupiah(getFeeAmount(qtyBasePrice, m)) : "-"}
                                 </div>
                               </div>
                               {selectedMethodId === m.id && <div className="tpMethodMark">✓</div>}
@@ -809,7 +868,7 @@ export default function JokiClient({
             {/* Step 5 — Voucher */}
             <div className="card">
               <div className="contact-header">
-                <div className="contact-step">5</div>
+                <div className="contact-step">6</div>
                 <div className="contact-title-wrap">
                   <h4 className="contact-title">Kode Voucher</h4>
                 </div>
@@ -848,7 +907,7 @@ export default function JokiClient({
             {/* Step 6 — Kontak */}
             <div className="card">
               <div className="contact-header">
-                <div className="contact-step">6</div>
+                <div className="contact-step">7</div>
                 <div className="contact-title-wrap">
                   <h4 className="contact-title">Detail Kontak</h4>
                 </div>
@@ -979,6 +1038,12 @@ export default function JokiClient({
                   <span>Harga</span>
                   <b>{selectedItem ? rupiah(selectedItem.finalPrice) : "-"}</b>
                 </div>
+                {quantity > 1 && (
+                  <div className="tpSideRow">
+                    <span>Jumlah</span>
+                    <b>×{quantity}</b>
+                  </div>
+                )}
                 <div className="tpSideRow">
                   <span>Metode Pembayaran</span>
                   <b>{activePaymentType === "CARENCOIN" ? "CarenCoin" : (methodFees.find(x => x.id === selectedMethodId)?.label || "-")}</b>
@@ -987,7 +1052,7 @@ export default function JokiClient({
                   <span>Biaya Layanan</span>
                   <b>
                     {selectedItem && activePaymentType === "GATEWAY" && selectedMethodId
-                      ? rupiah(getFeeAmount(selectedItem.finalPrice, methodFees.find(x => x.id === selectedMethodId)!))
+                      ? rupiah(getFeeAmount(qtyBasePrice, methodFees.find(x => x.id === selectedMethodId)!))
                       : "Rp 0"}
                   </b>
                 </div>
