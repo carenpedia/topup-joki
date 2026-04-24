@@ -1,23 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-// Mock Data
-const categories = ["Games", "Voucher", "Pulsa"];
-const mockProducts = [
-  { id: 1, game: "Mobile Legends", product: "86 Diamonds", public: 22000, reseller: 19500 },
-  { id: 2, game: "Mobile Legends", product: "172 Diamonds", public: 44000, reseller: 39000 },
-  { id: 3, game: "Mobile Legends", product: "257 Diamonds", public: 66000, reseller: 58500 },
-  { id: 4, game: "Mobile Legends", product: "Weekly Diamond Pass", public: 28000, reseller: 25500 },
-  { id: 5, game: "Free Fire", product: "140 Diamonds", public: 20000, reseller: 18000 },
-  { id: 6, game: "Free Fire", product: "355 Diamonds", public: 50000, reseller: 45000 },
-  { id: 7, game: "PUBG Mobile", product: "60 UC", public: 15000, reseller: 13500 },
-];
+type ProductPriceRow = {
+  id: string;
+  game: string;
+  product: string;
+  public: number;
+  reseller: number;
+};
 
 export default function ResellerPriceList() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [products, setProducts] = useState<ProductPriceRow[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredProducts = mockProducts.filter(p => 
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/user/pricelist");
+        const j = await res.json();
+        if (res.ok) setProducts(j.rows);
+      } catch (e) {
+        console.error("Pricelist Load Error:", e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  const filteredProducts = products.filter(p => 
     p.game.toLowerCase().includes(searchTerm.toLowerCase()) || 
     p.product.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -43,34 +56,38 @@ export default function ResellerPriceList() {
         </div>
       </div>
 
-      <div className="tableWrap" style={{ padding: 1 }}>
-         <table style={{ width: "100%", minWidth: 600 }}>
+      <div className="tableWrap" style={{ padding: 1, overflowX: "auto" }}>
+         <table style={{ width: "100%", minWidth: 700 }}>
             <thead>
                <tr>
-                  <th style={{ padding: "16px 20px" }}>Game</th>
-                  <th style={{ padding: "16px 20px" }}>Produk</th>
+                  <th style={{ padding: "16px 20px", textAlign: "left" }}>Game</th>
+                  <th style={{ padding: "16px 20px", textAlign: "left" }}>Produk</th>
                   <th style={{ padding: "16px 20px", textAlign: "right", color: "rgba(255,255,255,0.4)" }}>Harga Publik</th>
                   <th style={{ padding: "16px 20px", textAlign: "right", color: "#10b981" }}>Harga Reseller</th>
                   <th style={{ padding: "16px 20px", textAlign: "right", color: "#f59e0b" }}>Profit Margin</th>
                </tr>
             </thead>
             <tbody>
-               {filteredProducts.map((p) => {
+               {loading ? (
+                  <tr>
+                    <td colSpan={5} style={{ padding: "40px", textAlign: "center", color: "rgba(255,255,255,0.4)" }}>Memuat data harga...</td>
+                  </tr>
+               ) : filteredProducts.map((p) => {
                  const profit = p.public - p.reseller;
                  return (
-                   <tr key={p.id}>
+                   <tr key={p.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
                       <td style={{ padding: "16px 20px", fontWeight: 700 }}>{p.game}</td>
                       <td style={{ padding: "16px 20px", color: "rgba(255,255,255,0.7)" }}>{p.product}</td>
-                      <td style={{ padding: "16px 20px", textAlign: "right", color: "rgba(255,255,255,0.4)", textDecoration: "line-through" }}>Rp {p.public.toLocaleString("id-ID")}</td>
+                      <td style={{ padding: "16px 20px", textAlign: "right", color: "rgba(255,255,255,0.4)", textDecoration: "line-through", fontSize: 13 }}>Rp {p.public.toLocaleString("id-ID")}</td>
                       <td style={{ padding: "16px 20px", textAlign: "right", color: "#10b981", fontWeight: 800 }}>Rp {p.reseller.toLocaleString("id-ID")}</td>
                       <td style={{ padding: "16px 20px", textAlign: "right", color: "#f59e0b", fontWeight: 700 }}>+ Rp {profit.toLocaleString("id-ID")}</td>
                    </tr>
                  );
                })}
-               {filteredProducts.length === 0 && (
-                 <tr>
-                   <td colSpan={5} style={{ padding: "40px", textAlign: "center", color: "rgba(255,255,255,0.4)" }}>Produk tidak ditemukan.</td>
-                 </tr>
+               {!loading && filteredProducts.length === 0 && (
+                  <tr>
+                    <td colSpan={5} style={{ padding: "40px", textAlign: "center", color: "rgba(255,255,255,0.4)" }}>Produk tidak ditemukan.</td>
+                  </tr>
                )}
             </tbody>
          </table>

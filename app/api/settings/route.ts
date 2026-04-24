@@ -9,7 +9,7 @@ export async function GET() {
     const settings = await prisma.globalSetting.findMany({
       where: {
         group: {
-          in: ["GENERAL", "CONTACT", "SEO"]
+          in: ["GENERAL", "CONTACT", "SEO", "DEPOSIT", "GATEWAY"]
         }
       },
       select: {

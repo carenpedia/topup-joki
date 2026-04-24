@@ -1,7 +1,14 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import JoinResellerClient from "./JoinResellerClient";
+import { prisma } from "@/lib/prisma";
 
-export default function Reseller() {
+export default async function Reseller() {
+  const priceSetting = await prisma.globalSetting.findUnique({
+    where: { key: "RESELLER_UPGRADE_PRICE" }
+  });
+  const price = priceSetting?.value || "45000";
+
   return (
     <main className="page">
       <div className="bgGlow" aria-hidden="true" />
@@ -9,6 +16,8 @@ export default function Reseller() {
       <Navbar />
       <div className="shell">
 
+        {/* ... (Hero & Benefit Section remain same) ... */}
+        
         {/* HERO SECTION */}
         <div className="section" style={{ textAlign: "center", marginTop: 60, marginBottom: 80 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 100, color: "#60a5fa", fontSize: 13, fontWeight: 700, marginBottom: 24 }}>
@@ -27,7 +36,7 @@ export default function Reseller() {
           <h2 style={{ fontSize: 24, fontWeight: 800, textAlign: "center", marginBottom: 40 }}>Kenapa Harus Join Reseller?</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 24 }}>
             {/* Benefit 1 */}
-            <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 24, padding: 32, transition: "transform 0.3s ease, background 0.3s ease" }}>
+            <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 24, padding: 32 }}>
               <div style={{ width: 56, height: 56, borderRadius: 16, background: "linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.05))", border: "1px solid rgba(16,185,129,0.3)", color: "#10b981", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
               </div>
@@ -97,7 +106,10 @@ export default function Reseller() {
                   <tr style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
                     <td style={{ padding: "24px", color: "rgba(255,255,255,0.8)" }}>Biaya Upgrade</td>
                     <td style={{ padding: "24px", textAlign: "center", color: "rgba(255,255,255,0.5)" }}>Gratis</td>
-                    <td style={{ padding: "24px", textAlign: "center", color: "white", fontSize: 18, fontWeight: 900, background: "rgba(59,130,246,0.05)" }}>Rp 45.000 <span style={{ fontSize: 12, fontWeight: 500, color: "rgba(255,255,255,0.5)", display: "block" }}>Sekali Bayar Seumur Hidup</span></td>
+                    <td style={{ padding: "24px", textAlign: "center", color: "white", fontSize: 18, fontWeight: 900, background: "rgba(59,130,246,0.05)" }}>
+                      Rp {Number(price).toLocaleString("id-ID")} 
+                      <span style={{ fontSize: 12, fontWeight: 500, color: "rgba(255,255,255,0.5)", display: "block" }}>Sekali Bayar Seumur Hidup</span>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -110,9 +122,8 @@ export default function Reseller() {
           <div className="authCard" style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", padding: "48px 32px", background: "linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(0,0,0,0.4) 100%)", borderColor: "rgba(59,130,246,0.3)" }}>
             <h2 style={{ fontSize: 28, fontWeight: 900, marginBottom: 12 }}>Siap Mendapatkan Cuan?</h2>
             <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: 32, fontSize: 16 }}>Upgrade akun Anda sekarang dan rasakan kemudahan berbisnis topup game dengan CarenPedia.</p>
-            <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-              <button className="btn btnPrimary" style={{ padding: "16px 40px", fontSize: 16 }}>Daftar Reseller Sekarang</button>
-              <button className="btn btnGhost" style={{ padding: "16px 40px", fontSize: 16 }}>Baca Panduan Lengkap</button>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <JoinResellerClient />
             </div>
           </div>
         </div>

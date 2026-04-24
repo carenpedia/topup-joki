@@ -63,6 +63,7 @@ export default function AdminSettingsPage() {
     { id: "GENERAL", label: "Umum", icon: "🌐" },
     { id: "CONTACT", label: "Kontak", icon: "📞" },
     { id: "GATEWAY", label: "Payment Gateway", icon: "💳" },
+    { id: "DEPOSIT", label: "Pengaturan Deposit", icon: "💰" },
     { id: "SEO", label: "SEO & Metadata", icon: "🔍" },
   ];
 
@@ -172,6 +173,55 @@ export default function AdminSettingsPage() {
                 value={formData["ENABLE_XENDIT"] || "ON"} 
                 onChange={(v) => setFormData(p => ({ ...p, ENABLE_XENDIT: v }))}
                 help="Ketik 'ON' untuk aktif, 'OFF' untuk nonaktif."
+              />
+            </>
+          )}
+
+          {activeTab === "DEPOSIT" && (
+            <>
+              <div style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)", marginBottom: 20 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#f59e0b" }}>🏦 Akun Deposit Manual</h3>
+                <p style={{ fontSize: 13, opacity: 0.6 }}>Informasi rekening yang muncul saat user memilih metode manual.</p>
+              </div>
+              <FormGroup 
+                label="Nama Bank / E-Wallet" 
+                value={formData["DEPOSIT_MANUAL_BANK"] || ""} 
+                onChange={(v) => setFormData(p => ({ ...p, DEPOSIT_MANUAL_BANK: v }))}
+                help="Misal: Bank BCA, Dana, OVO."
+              />
+              <FormGroup 
+                label="Nomor Rekening / HP" 
+                value={formData["DEPOSIT_MANUAL_NOREK"] || ""} 
+                onChange={(v) => setFormData(p => ({ ...p, DEPOSIT_MANUAL_NOREK: v }))}
+                help="Nomor rekening tujuan transfer."
+              />
+              <FormGroup 
+                label="Atas Nama" 
+                value={formData["DEPOSIT_MANUAL_NAME"] || ""} 
+                onChange={(v) => setFormData(p => ({ ...p, DEPOSIT_MANUAL_NAME: v }))}
+                help="Nama pemilik rekening."
+              />
+
+              <div style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)", margin: "20px 0" }}>
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#3b82f6" }}>⚡ Deposit Otomatis (Gateway)</h3>
+                <p style={{ fontSize: 13, opacity: 0.6 }}>Pilih gateway mana yang digunakan untuk deposit otomatis.</p>
+              </div>
+              <FormGroup 
+                label="Preferred Gateway" 
+                value={formData["DEPOSIT_AUTO_GATEWAY"] || "TRIPAY"} 
+                onChange={(v) => setFormData(p => ({ ...p, DEPOSIT_AUTO_GATEWAY: v.toUpperCase() }))}
+                help="Ketik TRIPAY, XENDIT, MIDTRANS, atau DUITKU."
+              />
+
+              <div style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)", margin: "20px 0" }}>
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#ec4899" }}>💎 Join Reseller</h3>
+                <p style={{ fontSize: 13, opacity: 0.6 }}>Atur biaya pendaftaran reseller.</p>
+              </div>
+              <FormGroup 
+                label="Harga Upgrade Reseller (Rp)" 
+                value={formData["RESELLER_UPGRADE_PRICE"] || "45000"} 
+                onChange={(v) => setFormData(p => ({ ...p, RESELLER_UPGRADE_PRICE: v }))}
+                help="Harga yang harus dibayar user untuk menjadi Reseller."
               />
             </>
           )}

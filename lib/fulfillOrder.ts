@@ -34,6 +34,22 @@ export async function fulfillOrder(orderId: string): Promise<{ success: boolean;
       return { success: false, message: `Order ${orderId} status bukan PAID (saat ini: ${order.status})` };
     }
 
+    if (order.serviceType === "RESELLER_JOIN") {
+      if (order.userId) {
+        await prisma.user.update({
+          where: { id: order.userId },
+          data: { role: "RESELLER", resellerJoinedAt: new Date() }
+        });
+      }
+      await prisma.order.update({
+        where: { id: orderId },
+        data: { status: "SUCCESS" }
+      });
+      // Trigger Email Invoice (Async)
+      sendInvoiceEmail(orderId).catch(err => console.error("[Email-Reseller] Background error:", err));
+      return { success: true, message: "User upgraded to RESELLER" };
+    }
+
     if (order.serviceType !== "TOPUP") {
       // Untuk JOKI atau service lain, skip Digiflazz, langsung tandai PROCESSING
       await prisma.order.update({
