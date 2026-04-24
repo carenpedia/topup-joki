@@ -165,13 +165,13 @@ export default function JokiClient({
 
   const handlePackageSelect = (id: string) => {
     if (!userIdNickname.trim() || !loginId.trim() || !password.trim()) {
-      toast.error("⚠️ Silakan lengkapi data akun Anda terlebih dahulu!");
+      toast.critical("⚠️ Silakan lengkapi data akun Anda terlebih dahulu!");
       scrollTo("section-account");
       return;
     }
 
     setSelectedId(id);
-    setTimeout(() => scrollTo("section-payment"), 100);
+    setTimeout(() => scrollTo("section-quantity"), 100);
   };
 
   // Load nominals
@@ -561,22 +561,6 @@ export default function JokiClient({
                 <p className="contact-hint">
                   ⚠️ Data akun kamu hanya digunakan untuk proses joki dan akan dijaga kerahasiaannya.
                 </p>
-                <p style={{
-                  margin: "10px 0 0",
-                  fontSize: 11,
-                  lineHeight: 1.4,
-                  color: "rgba(250,204,21,.7)",
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: 6,
-                }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(250,204,21,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}>
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                    <line x1="12" y1="9" x2="12" y2="13" />
-                    <line x1="12" y1="17" x2="12.01" y2="17" />
-                  </svg>
-                  <span>Harap masukkan ID Server dengan benar, kesalahan input bukan tanggung jawab kami.</span>
-                </p>
               </div>
             </div>
 
@@ -729,7 +713,7 @@ export default function JokiClient({
             <div className="spacer" />
 
             {/* Step 4 — Jumlah Pembelian */}
-            <div className="card">
+            <div className="card" id="section-quantity">
               <div className="contact-header">
                 <div className="contact-step">4</div>
                 <div className="contact-title-wrap">
@@ -774,7 +758,7 @@ export default function JokiClient({
                 </div>
                 {selectedItem && quantity > 1 && (
                   <div className="jokiQtyInfo">
-                    {selectedItem.name} × {quantity} = <b>{rupiah(selectedItem.finalPrice * quantity)}</b>
+                    {selectedItem.name} × {quantity} = <b>{selectedItem.name.replace(/^joki\s+/i, "").replace(/\d+/, (m) => (parseInt(m, 10) * quantity).toString())}</b>
                   </div>
                 )}
               </div>
