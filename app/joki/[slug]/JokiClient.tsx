@@ -101,7 +101,7 @@ export default function JokiClient({
   const [quantity, setQuantity] = useState(1);
 
   // Step 3 — Request Hero
-  const [heroes, setHeroes] = useState<string[]>([""]);
+  const [heroes, setHeroes] = useState<string[]>(["", ""]);
 
   // Step 4 — Pembayaran
   const [activePaymentType, setActivePaymentType] = useState<"CARENCOIN" | "GATEWAY">("GATEWAY");
@@ -119,6 +119,7 @@ export default function JokiClient({
   const [waCountry, setWaCountry] = useState({ name: "Indonesia", code: "+62", iso: "ID" });
   const [showCountryList, setShowCountryList] = useState(false);
   const [showStickyDetails, setShowStickyDetails] = useState(false);
+  const [heroError, setHeroError] = useState(false);
 
   const [reviewsData, setReviewsData] = useState<{ reviews: any[], totalCount: number, averageRating: number }>({
     reviews: [],
@@ -314,6 +315,15 @@ export default function JokiClient({
 
   async function onCheckout() {
     if (!canCheckout || submitting) return;
+
+    // Validasi Hero: Minimal 2
+    const filledHeroes = heroes.filter(h => h.trim());
+    if (filledHeroes.length < 2) {
+      setHeroError(true);
+      scrollTo("section-hero");
+      return;
+    }
+    setHeroError(false);
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(contactEmail)) {
@@ -567,25 +577,28 @@ export default function JokiClient({
             <div className="spacer" />
 
             {/* Step 2 — Request Hero */}
-            <div className="card">
+            <div className="card" id="section-hero">
               <div className="contact-header">
                 <div className="contact-step">2</div>
                 <div className="contact-title-wrap">
-                  <h4 className="contact-title">Request Hero (Opsional)</h4>
+                  <h4 className="contact-title">Request Hero</h4>
                 </div>
               </div>
               <div className="contact-body">
-                <label className="contact-label">Hero yang ingin dipakai penjoki</label>
+                <label className="contact-label">Hero yang ingin dipakai penjoki (Min. 2)</label>
                 {heroes.map((h, i) => (
                   <div key={i} style={{ display: "flex", gap: 8, marginBottom: 8 }}>
                     <input
                       className="contact-input"
                       value={h}
-                      onChange={(e) => setHero(i, e.target.value)}
+                      onChange={(e) => {
+                        setHero(i, e.target.value);
+                        if (heroError && heroes.filter(x => x.trim()).length >= 2) setHeroError(false);
+                      }}
                       placeholder={`Nama hero ${i + 1}`}
                       style={{ flex: 1 }}
                     />
-                    {heroes.length > 1 && (
+                    {heroes.length > 2 && (
                       <button
                         type="button"
                         onClick={() => removeHero(i)}
@@ -605,6 +618,12 @@ export default function JokiClient({
                     )}
                   </div>
                 ))}
+                {heroError && (
+                  <div style={{ color: "#f87171", fontSize: 11, fontWeight: 700, marginBottom: 10, display: "flex", alignItems: "center", gap: 4 }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    Harap isi minimal 2 hero
+                  </div>
+                )}
                 <button
                   type="button"
                   onClick={addHero}
