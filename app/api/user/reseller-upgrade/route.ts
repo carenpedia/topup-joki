@@ -55,18 +55,16 @@ export async function POST(req: Request) {
         orderItems: [{ name: "Upgrade Reseller VIP", price: price, quantity: 1 }]
       });
 
-      if (!tripayRes.success) throw new Error(tripayRes.message);
-
       await prisma.payment.create({
         data: {
           orderId: order.id,
           gateway: "TRIPAY",
-          gatewayRef: tripayRes.data.reference,
+          gatewayRef: tripayRes.reference,
           status: "PENDING"
         }
       });
 
-      return NextResponse.json({ ok: true, checkoutUrl: tripayRes.data.checkout_url });
+      return NextResponse.json({ ok: true, checkoutUrl: tripayRes.checkout_url });
     } else {
       // Manual payment
       return NextResponse.json({ ok: true, manual: true, orderNo: order.orderNo });
