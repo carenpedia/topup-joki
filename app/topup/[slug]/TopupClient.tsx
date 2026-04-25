@@ -341,7 +341,7 @@ export default function TopupClient({
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
-    if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   const handleProductSelect = (id: string) => {
