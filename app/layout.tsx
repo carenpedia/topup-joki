@@ -13,14 +13,21 @@ import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await prisma.globalSetting.findMany({
-    where: { key: { in: ["SITE_NAME", "SITE_SLOGAN", "SITE_LOGO"] } }
-  });
+  let config: Record<string, string> = {};
   
-  const config = settings.reduce((acc: any, curr) => {
-    acc[curr.key] = curr.value;
-    return acc;
-  }, {});
+  try {
+    const settings = await prisma.globalSetting.findMany({
+      where: { key: { in: ["SITE_NAME", "SITE_SLOGAN", "SITE_LOGO"] } }
+    });
+    
+    config = settings.reduce((acc: any, curr) => {
+      acc[curr.key] = curr.value;
+      return acc;
+    }, {});
+  } catch (e) {
+    console.error("[LAYOUT] Failed to load settings from DB:", (e as Error).message);
+    // Fallback ke default values agar website tetap bisa diakses
+  }
 
   const name = config.SITE_NAME || "CarenPedia";
   const slogan = config.SITE_SLOGAN || "Platform Top Up Terpercaya";

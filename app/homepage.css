@@ -764,4 +764,17 @@
 .animateCard {
   animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   opacity: 0; /* Hidden before animation starts */
-}
+}
+
+/* Spinner & Animations for Check ID */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner-tiny {
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #3b82f6;
+  animation: spin 0.8s linear infinite;
+}

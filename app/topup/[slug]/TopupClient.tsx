@@ -102,6 +102,11 @@ export default function TopupClient({
   const [contactEmail, setContactEmail] = useState("");
   const [waCountry, setWaCountry] = useState({ name: "Indonesia", code: "+62", iso: "ID" });
   const [showStickyDetails, setShowStickyDetails] = useState(false);
+  
+  // States untuk Cek ID Otomatis
+  const [checkResult, setCheckResult] = useState<{ nickname: string, region: string | null } | null>(null);
+  const [checkLoading, setCheckLoading] = useState(false);
+  const [checkError, setCheckError] = useState<string | null>(null);
   const [showCountryList, setShowCountryList] = useState(false);
   const [voucher, setVoucher] = useState("");
   const [voucherApplied, setVoucherApplied] = useState(false);
@@ -132,6 +137,40 @@ export default function TopupClient({
   const userId = targetInputs["userId"] || "";
   const server = targetInputs["server"] || "";
   const hasServer = targetConfig.fields.some((f) => f.key === "server");
+
+  // Logika Cek ID Otomatis (Debounced)
+  useEffect(() => {
+    if (!userId.trim() || (hasServer && !server.trim())) {
+      setCheckResult(null);
+      setCheckError(null);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setCheckLoading(true);
+      setCheckError(null);
+      
+      try {
+        const res = await fetch("/api/check-id", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, zoneId: server, gameCode: game.key })
+        });
+        const data = await res.json();
+        if (data.success) {
+          setCheckResult({ nickname: data.nickname, region: data.region });
+        } else {
+          setCheckError(data.message);
+        }
+      } catch (e) {
+        console.error("Check ID Error:", e);
+      } finally {
+        setCheckLoading(false);
+      }
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [userId, server, game.key, hasServer]);
 
   // Load Nominals
   useEffect(() => {
@@ -446,6 +485,47 @@ export default function TopupClient({
                     </div>
                   ))}
                 </div>
+
+                {/* Display Hasil Cek ID */}
+                {(checkLoading || checkResult || checkError) && (
+                  <div style={{ 
+                    marginTop: 16, padding: "12px 16px", borderRadius: 12, 
+                    background: checkError ? "rgba(239,68,68,0.05)" : "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.05) 100%)",
+                    border: `1px solid ${checkError ? "rgba(239,68,68,0.2)" : "rgba(59, 130, 246, 0.3)"}`,
+                    boxShadow: checkError ? "none" : "0 4px 20px -2px rgba(59, 130, 246, 0.1)",
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    minHeight: 48, position: "relative", overflow: "hidden"
+                  }}>
+                    {checkLoading && (
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, color: "rgba(255,255,255,0.5)", fontSize: 13 }}>
+                        <div className="spinner-tiny" style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.1)", borderTopColor: "#3b82f6", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+                        Mengecek Username...
+                      </div>
+                    )}
+                    
+                    {checkResult && (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 700, textTransform: "uppercase" }}>Username Terdeteksi</span>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                          <span style={{ fontSize: 15, fontWeight: 900, color: "#4ade80" }}>{checkResult.nickname}</span>
+                          {checkResult.region && (
+                            <span style={{ fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.6)" }}>
+                              from <span style={{ fontWeight: 800, color: "rgba(255,255,255,0.85)" }}>{checkResult.region}</span> {{"Indonesia":"🇮🇩","Malaysia":"🇲🇾","Singapore":"🇸🇬","Thailand":"🇹🇭","Philippines":"🇵🇭","Vietnam":"🇻🇳","Brazil":"🇧🇷","India":"🇮🇳","Japan":"🇯🇵","Korea":"🇰🇷","Russia":"🇷🇺","Turkey":"🇹🇷","Myanmar":"🇲🇲","Cambodia":"🇰🇭","Taiwan":"🇹🇼"}[checkResult.region] || "🌐"}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {checkError && !checkLoading && (
+                      <div style={{ color: "#f87171", fontSize: 13, fontWeight: 700, display: "flex", alignItems: "center", gap: 8 }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        {checkError}
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <p style={{ margin: "10px 0 0", fontSize: 11, lineHeight: 1.4, color: "rgba(250,204,21,.7)", display: "flex", alignItems: "flex-start", gap: 6 }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(250,204,21,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
                   <span>Harap masukkan {targetConfig.fields.map((f) => f.label).join(" & ")} dengan benar, kesalahan input bukan tanggung jawab kami.</span>
