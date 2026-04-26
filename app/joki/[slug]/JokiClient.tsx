@@ -111,6 +111,7 @@ export default function JokiClient({
   // Step 5 — Voucher
   const [voucher, setVoucher] = useState("");
   const [voucherApplied, setVoucherApplied] = useState(false);
+  const [voucherDiscount, setVoucherDiscount] = useState(0);
   const [voucherMsg, setVoucherMsg] = useState("");
 
   // Step 6 — Kontak
@@ -119,6 +120,7 @@ export default function JokiClient({
   const [waCountry, setWaCountry] = useState({ name: "Indonesia", code: "+62", iso: "ID" });
   const [showCountryList, setShowCountryList] = useState(false);
   const [showStickyDetails, setShowStickyDetails] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [heroError, setHeroError] = useState(false);
 
   const [reviewsData, setReviewsData] = useState<{ reviews: any[], totalCount: number, averageRating: number }>({
@@ -238,12 +240,18 @@ export default function JokiClient({
   const qtyBasePrice = selectedItem ? selectedItem.finalPrice * quantity : 0;
   function getComputedTotal() {
     if (!selectedItem) return 0;
-    if (activePaymentType === "CARENCOIN") return qtyBasePrice;
-    const m = methodFees.find(x => x.id === selectedMethodId);
-    if (!m) return qtyBasePrice;
-    return calculatePrice(qtyBasePrice, m);
+    let base = selectedItem.finalPrice * quantity;
+    let fee = 0;
+    
+    if (activePaymentType === "GATEWAY") {
+      const m = methodFees.find(x => x.id === selectedMethodId);
+      if (m) fee = getFeeAmount(base, m);
+    }
+    
+    return Math.max(base + fee - voucherDiscount, 0);
   }
   const totalToPayComputed = getComputedTotal();
+  const selectedMethod = methodFees.find(x => x.id === selectedMethodId);
 
   const grouped = useMemo((): Array<[string, NominalRow[]]> => {
     const map = new Map<string, NominalRow[]>();
@@ -313,7 +321,8 @@ export default function JokiClient({
     return null;
   }, [userIdNickname, loginId, password, selectedItem, nominals.length, contact, contactEmail]);
 
-  async function onCheckout() {
+  // Validate inputs and show modal
+  function onCheckoutClick() {
     if (!canCheckout || submitting) return;
 
     // Validasi Hero: Minimal 2
@@ -331,6 +340,11 @@ export default function JokiClient({
       return;
     }
 
+    setShowConfirmModal(true);
+  }
+
+  async function processCheckout() {
+    setShowConfirmModal(false);
     setSubmitErr("");
     setSubmitting(true);
 
@@ -883,13 +897,39 @@ export default function JokiClient({
                     className="contact-input"
                     placeholder="Masukkan Kode Voucher"
                     value={voucher}
-                    onChange={(e) => setVoucher(e.target.value)}
+                    onChange={(e) => {
+                      setVoucher(e.target.value);
+                      if (voucherApplied) {
+                        setVoucherApplied(false);
+                        setVoucherDiscount(0);
+                        setVoucherMsg("");
+                      }
+                    }}
                   />
                   <button
                     className="btn-promo"
-                    onClick={() => {
-                      setVoucherApplied(true);
-                      setVoucherMsg("Voucher dicek...");
+                    disabled={!voucher.trim() || !selectedItem}
+                    onClick={async () => {
+                      setVoucherMsg("Mengecek...");
+                      try {
+                        const basePriceValue = selectedItem ? selectedItem.finalPrice * quantity : 0;
+                        const res = await fetch("/api/vouchers/check", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ code: voucher, basePrice: basePriceValue })
+                        });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.error);
+                        setVoucherApplied(true);
+                        setVoucherDiscount(data.discount);
+                        setVoucherMsg(data.message);
+                        toast.success(data.message);
+                      } catch (err: any) {
+                        setVoucherApplied(false);
+                        setVoucherDiscount(0);
+                        setVoucherMsg(err.message);
+                        toast.error(err.message);
+                      }
                     }}
                   >
                     Gunakan
@@ -1050,13 +1090,13 @@ export default function JokiClient({
                 )}
                 <div className="tpSideRow">
                   <span>Metode Pembayaran</span>
-                  <b>{activePaymentType === "CARENCOIN" ? "CarenCoin" : (methodFees.find(x => x.id === selectedMethodId)?.label || "-")}</b>
+                  <b>{activePaymentType === "CARENCOIN" ? "CarenCoin" : (selectedMethod?.label || "-")}</b>
                 </div>
                 <div className="tpSideRow">
                   <span>Biaya Layanan</span>
                   <b>
-                    {selectedItem && activePaymentType === "GATEWAY" && selectedMethodId
-                      ? rupiah(getFeeAmount(qtyBasePrice, methodFees.find(x => x.id === selectedMethodId)!))
+                    {selectedItem && activePaymentType === "GATEWAY" && selectedMethod !== undefined
+                      ? rupiah(getFeeAmount(qtyBasePrice, selectedMethod))
                       : "Rp 0"}
                   </b>
                 </div>
@@ -1067,7 +1107,7 @@ export default function JokiClient({
                 <div className="tpSideTotalValue">{selectedItem ? rupiah(totalToPayComputed) : "Rp 0"}</div>
               </div>
 
-              <button className="tpBtnCheckoutSide" disabled={submitting || !selectedItem} onClick={onCheckout}>
+              <button className="tpBtnCheckoutSide" disabled={submitting || !selectedItem} onClick={onCheckoutClick}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                 {submitting ? "Memproses..." : "Pesan Sekarang"}
               </button>
@@ -1173,8 +1213,8 @@ export default function JokiClient({
               <div className="stickyDetailRow">
                 <span>Biaya Layanan</span>
                 <b>
-                  {activePaymentType === "GATEWAY" && selectedMethodId
-                    ? rupiah(getFeeAmount(qtyBasePrice, methodFees.find(x => x.id === selectedMethodId)!))
+                  {activePaymentType === "GATEWAY" && selectedMethod !== undefined
+                    ? rupiah(getFeeAmount(qtyBasePrice, selectedMethod))
                     : "Rp 0"}
                 </b>
               </div>
@@ -1190,7 +1230,7 @@ export default function JokiClient({
             <button
               className="stickyBtn"
               disabled={!canCheckout || submitting}
-              onClick={onCheckout}
+              onClick={onCheckoutClick}
             >
               <div className="stickyBtnIcon">
                 {submitting ? (
@@ -1207,6 +1247,91 @@ export default function JokiClient({
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && selectedItem && (
+        <div className="tpModalOverlay" onClick={() => !submitting && setShowConfirmModal(false)}>
+          <div className="tpModalBox" onClick={e => e.stopPropagation()}>
+            <div className="tpModalHeader">
+              <h3 className="tpModalTitle">Konfirmasi Pesanan</h3>
+              <button className="tpModalClose" onClick={() => setShowConfirmModal(false)}>✕</button>
+            </div>
+            
+            <div className="tpModalContent">
+              <div className="tpModalItemCard">
+                <img src={selectedItem.imageUrl || logoUrl || ""} alt="Game" className="tpModalItemImg" />
+                <div className="tpModalItemInfo">
+                  <h5>{game.name}</h5>
+                  <p>{selectedItem.name} {quantity > 1 ? `(×${quantity})` : ""}</p>
+                </div>
+              </div>
+
+              <div className="tpModalDetailList">
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel">Data Akun</span>
+                  <span className="tpModalDetailValue">
+                    {userIdNickname}
+                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginTop: 4 }}>
+                      Via: {LOGIN_VIA_OPTIONS.find(o => o.value === loginVia)?.label || loginVia}
+                    </div>
+                  </span>
+                </div>
+                
+                <div className="tpModalDivider" />
+
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel">Harga Paket</span>
+                  <span className="tpModalDetailValue">{rupiah(selectedItem.finalPrice)} {quantity > 1 ? `× ${quantity}` : ""}</span>
+                </div>
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel">Metode Bayar</span>
+                  <span className="tpModalDetailValue">
+                    {activePaymentType === "CARENCOIN" ? "CarenCoin" : selectedMethod?.label}
+                  </span>
+                </div>
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel">Biaya Layanan</span>
+                  <span className="tpModalDetailValue">
+                    {activePaymentType === "GATEWAY" && selectedMethod !== undefined
+                      ? rupiah(getFeeAmount(qtyBasePrice, selectedMethod))
+                      : "Rp 0"}
+                  </span>
+                </div>
+                {voucherApplied && voucherDiscount > 0 && (
+                  <div className="tpModalDetailRow">
+                    <span className="tpModalDetailLabel">Diskon Promo</span>
+                    <span className="tpModalDetailValue success">-{rupiah(voucherDiscount)}</span>
+                  </div>
+                )}
+                
+                <div className="tpModalDivider" />
+                
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel" style={{ fontSize: 16 }}>Total Bayar</span>
+                  <span className="tpModalDetailValue highlight">{rupiah(totalToPayComputed)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="tpModalFooter">
+              <button 
+                className="tpModalBtnCancel" 
+                onClick={() => setShowConfirmModal(false)}
+                disabled={submitting}
+              >
+                Batal
+              </button>
+              <button 
+                className="tpModalBtnConfirm" 
+                onClick={processCheckout}
+                disabled={submitting}
+              >
+                {submitting ? "Memproses..." : "Konfirmasi Pesanan"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

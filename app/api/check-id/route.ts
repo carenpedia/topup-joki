@@ -274,10 +274,14 @@ async function checkViaCodashop(
       return { success: false, message: "Username tidak ditemukan dalam respon" };
     }
 
+    // Log all confirmationFields keys for debugging
+    console.log("[CHECK_ID] confirmationFields keys:", Object.keys(cf));
+    console.log("[CHECK_ID] confirmationFields:", JSON.stringify(cf, null, 2));
+
     return {
       success: true,
       nickname,
-      region: cf.country || cf.region || null,
+      region: cf.country || cf.userCountry || cf.userCountryCode || cf.region || null,
     };
   }
 
@@ -321,7 +325,7 @@ async function checkViaFallbackAPI(
     return {
       success: true,
       nickname,
-      region: data.server || null,
+      region: data.country || data.server || null,
     };
   }
 

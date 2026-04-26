@@ -102,6 +102,7 @@ export default function TopupClient({
   const [contactEmail, setContactEmail] = useState("");
   const [waCountry, setWaCountry] = useState({ name: "Indonesia", code: "+62", iso: "ID" });
   const [showStickyDetails, setShowStickyDetails] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   
   // States untuk Cek ID Otomatis
   const [checkResult, setCheckResult] = useState<{ nickname: string, region: string | null } | null>(null);
@@ -254,7 +255,8 @@ export default function TopupClient({
   }
   const totalToPayComputed = getComputedTotal();
 
-  async function onCheckout() {
+  // Validate inputs and show modal
+  function onCheckoutClick() {
     if (!selectedItem) {
       toast.critical("Pilih nominal produk terlebih dahulu.");
       scrollTo("section-nominal");
@@ -294,6 +296,11 @@ export default function TopupClient({
       return;
     }
 
+    setShowConfirmModal(true);
+  }
+
+  async function processCheckout() {
+    setShowConfirmModal(false);
     await runCheckout(async () => {
       try {
         const body = {
@@ -850,7 +857,7 @@ export default function TopupClient({
                 <div className="tpSideTotalValue">{selectedItem ? rupiah(totalToPayComputed) : "Rp 0"}</div>
               </div>
 
-              <button className="tpBtnCheckoutSide" disabled={checkoutLoading || !selectedItem} onClick={onCheckout}>
+              <button className="tpBtnCheckoutSide" disabled={checkoutLoading || !selectedItem} onClick={onCheckoutClick}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                 {checkoutLoading ? "Memproses..." : "Pesan Sekarang"}
               </button>
@@ -958,7 +965,7 @@ export default function TopupClient({
             </div>
           )}
           <div className="stickyAction">
-            <button className="stickyBtn" disabled={checkoutLoading || !selectedItem} onClick={onCheckout}>
+            <button className="stickyBtn" disabled={checkoutLoading || !selectedItem} onClick={onCheckoutClick}>
               <div className="stickyBtnIcon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
               </div>
@@ -970,6 +977,89 @@ export default function TopupClient({
 
       <ProductFaqAccordion />
       <Footer />
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && selectedItem && (
+        <div className="tpModalOverlay" onClick={() => !checkoutLoading && setShowConfirmModal(false)}>
+          <div className="tpModalBox" onClick={e => e.stopPropagation()}>
+            <div className="tpModalHeader">
+              <h3 className="tpModalTitle">Konfirmasi Pesanan</h3>
+              <button className="tpModalClose" onClick={() => setShowConfirmModal(false)}>✕</button>
+            </div>
+            
+            <div className="tpModalContent">
+              <div className="tpModalItemCard">
+                <img src={selectedItem.imageUrl || logoUrl || ""} alt="Game" className="tpModalItemImg" />
+                <div className="tpModalItemInfo">
+                  <h5>{game.name}</h5>
+                  <p>{selectedItem.name}</p>
+                </div>
+              </div>
+
+              <div className="tpModalDetailList">
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel">Data Tujuan</span>
+                  <span className="tpModalDetailValue">
+                    {userId} {hasServer && server ? `(${server})` : ""}
+                    {checkResult?.nickname && <div style={{ fontSize: 12, color: "#4ade80", marginTop: 4 }}>{checkResult.nickname}</div>}
+                  </span>
+                </div>
+                
+                <div className="tpModalDivider" />
+
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel">Harga Produk</span>
+                  <span className="tpModalDetailValue">{rupiah(selectedItem.finalPrice)}</span>
+                </div>
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel">Metode Bayar</span>
+                  <span className="tpModalDetailValue">
+                    {activePaymentType === "CarenCoin" ? "CarenCoin" : methodFees.find(x => x.id === selectedMethodId)?.label}
+                  </span>
+                </div>
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel">Biaya Layanan</span>
+                  <span className="tpModalDetailValue">
+                    {activePaymentType === "GATEWAY" && selectedMethodId
+                      ? rupiah(getFeeAmount(selectedItem.finalPrice, methodFees.find(x => x.id === selectedMethodId)!))
+                      : "Rp 0"}
+                  </span>
+                </div>
+                {voucherApplied && voucherDiscount > 0 && (
+                  <div className="tpModalDetailRow">
+                    <span className="tpModalDetailLabel">Diskon Promo</span>
+                    <span className="tpModalDetailValue success">-{rupiah(voucherDiscount)}</span>
+                  </div>
+                )}
+                
+                <div className="tpModalDivider" />
+                
+                <div className="tpModalDetailRow">
+                  <span className="tpModalDetailLabel" style={{ fontSize: 16 }}>Total Bayar</span>
+                  <span className="tpModalDetailValue highlight">{rupiah(totalToPayComputed)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="tpModalFooter">
+              <button 
+                className="tpModalBtnCancel" 
+                onClick={() => setShowConfirmModal(false)}
+                disabled={checkoutLoading}
+              >
+                Batal
+              </button>
+              <button 
+                className="tpModalBtnConfirm" 
+                onClick={processCheckout}
+                disabled={checkoutLoading}
+              >
+                {checkoutLoading ? "Memproses..." : "Konfirmasi Pesanan"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
