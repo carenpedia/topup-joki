@@ -301,6 +301,8 @@ export default function TopupClient({
 
   async function processCheckout() {
     setShowConfirmModal(false);
+    if (!selectedItem) return; // Fix TS Error
+
     await runCheckout(async () => {
       try {
         const body = {
