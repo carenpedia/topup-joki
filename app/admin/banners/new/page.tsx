@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useToast } from "@/app/components/ToastProvider";
 
 export default function NewBannerPage() {
   const r = useRouter();
+  const toast = useToast();
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [linkType, setLinkType] = useState("GAME");
@@ -30,6 +32,7 @@ export default function NewBannerPage() {
       return;
     }
 
+    toast.success("Banner berhasil dibuat!");
     r.push("/admin/banners");
     r.refresh();
   }

@@ -46,7 +46,7 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
             endAt: { gte: new Date() },
           },
           orderBy: { endAt: "asc" },
-          select: { id: true, flashPrice: true, endAt: true },
+          select: { id: true, flashPrice: true, endAt: true, maxStock: true, soldCount: true },
           take: 1,
         },
       },
@@ -54,7 +54,13 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
 
     const rows = products.map((p) => {
       const basePrice = Number(p.prices?.[0]?.price || 0);
-      const flash = p.flashSales?.[0] || null;
+      let flash = p.flashSales?.[0] || null;
+      
+      // Filter out if exhausted
+      if (flash && flash.maxStock !== null && flash.soldCount >= flash.maxStock) {
+        flash = null;
+      }
+
       const finalPrice = flash ? Number(flash.flashPrice || 0) : basePrice;
 
       return {

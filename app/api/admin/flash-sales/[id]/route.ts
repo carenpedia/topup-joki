@@ -17,6 +17,8 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
         startAt: true,
         endAt: true,
         isActive: true,
+        maxStock: true,
+        soldCount: true,
         createdAt: true,
         updatedAt: true,
         product: {
@@ -47,6 +49,8 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
         startAt: row.startAt.toISOString(),
         endAt: row.endAt.toISOString(),
         isActive: row.isActive,
+        maxStock: row.maxStock,
+        soldCount: row.soldCount,
         createdAt: row.createdAt.toISOString(),
         updatedAt: row.updatedAt.toISOString(),
       },
@@ -75,6 +79,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       body.endAt !== undefined ? String(body.endAt).trim() : undefined;
     const isActive =
       body.isActive !== undefined ? Boolean(body.isActive) : undefined;
+    const maxStockRaw = body.maxStock;
 
     const data: any = {};
 
@@ -141,6 +146,10 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     }
 
     if (isActive !== undefined) data.isActive = isActive;
+
+    if (maxStockRaw !== undefined) {
+      data.maxStock = maxStockRaw && toInt(maxStockRaw, 0) > 0 ? toInt(maxStockRaw, 0) : null;
+    }
 
     const updated = await prisma.flashSale.update({
       where: { id: params.id },

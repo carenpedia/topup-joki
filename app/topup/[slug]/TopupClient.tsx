@@ -559,13 +559,20 @@ export default function TopupClient({
                     <div className="tpNomGrid">
                       {items.map((p) => (
                         <button key={p.id} className={`tpNomCard ${selectedItemId === p.id ? "isActive" : ""}`} onClick={() => handleProductSelect(p.id)}>
-                          {p.flash && <span className="tpNomFlash">FLASH SALE</span>}
+                          {p.flash && p.basePrice > p.finalPrice && (
+                            <div className="tpRibbon">FLASH SALE</div>
+                          )}
                           <div className="tpNomTop"><span className="tpNomName">{p.name}</span></div>
                           <div className="tpNomMain">
                             <div className="tpNomIcon">
                               {p.imageUrl ? <img src={p.imageUrl} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} /> : <svg viewBox="0 0 24 24" fill="none" stroke="#4ed6ff" strokeWidth="2.5"><path d="M6 3h12l4 8-10 10L2 11l4-8z"></path><path d="M12 3v18"></path><path d="M2 11h20"></path><path d="M6 3L12 11L18 3"></path></svg>}
                             </div>
-                            <span className="tpNomPriceNow">{rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}</span>
+                            <div className="tpNomPriceWrap">
+                              {p.flash && p.basePrice > p.finalPrice && (
+                                <span className="tpNomPriceOriginal">{rupiah(p.basePrice).replace(",00", "").replace("Rp", "Rp ")}</span>
+                              )}
+                              <span className="tpNomPriceNow">{rupiah(p.finalPrice).replace(",00", "").replace("Rp", "Rp ")}</span>
+                            </div>
                           </div>
                           <div className="tpNomBottom">
                             <div className="tpInstanBadge">

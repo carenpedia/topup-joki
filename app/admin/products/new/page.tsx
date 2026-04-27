@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useToast } from "@/app/components/ToastProvider";
 
 type Game = { id: string; name: string };
 
 export default function AdminProductNewPage() {
   const router = useRouter();
+  const toast = useToast();
 
   const [games, setGames] = useState<Game[]>([]);
   const [gameId, setGameId] = useState("");
@@ -98,6 +100,7 @@ export default function AdminProductNewPage() {
       const j = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(j.error ?? "Gagal membuat product");
 
+      toast.success("Produk berhasil dibuat!");
       router.push("/admin/products");
       router.refresh();
     } catch (e: any) {

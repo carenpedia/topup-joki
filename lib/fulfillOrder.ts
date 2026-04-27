@@ -34,6 +34,18 @@ export async function fulfillOrder(orderId: string): Promise<{ success: boolean;
       return { success: false, message: `Order ${orderId} status bukan PAID (saat ini: ${order.status})` };
     }
 
+    // Increment Flash Sale soldCount jika order menggunakan flash sale
+    if (order.flashSaleId) {
+      try {
+        await prisma.flashSale.update({
+          where: { id: order.flashSaleId },
+          data: { soldCount: { increment: order.quantity || 1 } },
+        });
+      } catch (e) {
+        console.error("Gagal increment soldCount FlashSale:", e);
+      }
+    }
+
     if (order.serviceType === "RESELLER_JOIN") {
       if (order.userId) {
         await prisma.user.update({

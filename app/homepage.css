@@ -196,34 +196,246 @@
 
 /* Removed promoDesc as it is now 100% image */
 
-/* ===== FLASH SALE STRIP ===== */
+/* ===== FLASH SALE COMPONENT ===== */
 
-.homePage .flashStrip {
-  border-radius: 18px;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, .03);
-  border: 1px solid rgba(255, 255, 255, .06);
+.flashStripInteractive {
+  border-radius: 24px;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+}
+
+.fsStripHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fsStripLeft {
   display: flex;
   align-items: center;
   gap: 14px;
+  flex: 1;
 }
 
-.homePage .flashIcon {
-  font-size: 20px;
-  flex: 0 0 auto;
+.fsStripIcon {
+  font-size: 24px;
+  animation: pulse 2s infinite;
 }
 
-.homePage .flashTitle {
-  font-weight: 800;
-  font-size: 14px;
-  color: rgba(255, 255, 255, .92);
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); text-shadow: 0 0 10px rgba(250, 204, 21, 0.5); }
+  100% { transform: scale(1); }
 }
 
-.homePage .flashSub {
-  font-size: 12px;
-  color: rgba(255, 255, 255, .5);
+.fsStripTitle {
+  font-weight: 900;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.fsStripSub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, .7);
   font-weight: 500;
   margin-top: 2px;
+}
+
+.fsGridWrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.fsGrid {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.fsGrid.fsAnimate {
+  animation: marquee 30s linear infinite;
+  width: max-content;
+  overflow-x: visible;
+}
+
+.fsGrid.fsAnimate:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.fsGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.fsCard {
+  flex: 0 0 190px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(35, 37, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  backdrop-filter: blur(5px);
+}
+
+.fsCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.fsCardImageWrapper {
+  position: relative;
+  aspect-ratio: 16/10;
+  background: #111216;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fsCardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.fsCard:hover .fsCardImage {
+  transform: scale(1.05);
+}
+
+.fsCardFallback {
+  font-size: 32px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.fsSaveBadge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
+  z-index: 2;
+}
+
+.fsTimerOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  padding: 16px 8px 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.fsTimerWrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fsTimerBox {
+  background: rgba(35, 35, 35, 0.95);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 6px;
+  border-radius: 4px;
+  min-width: 24px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+.fsColon {
+  color: #aaa;
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.fsExpired {
+  background: rgba(100, 100, 100, 0.8);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.fsCardContent {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.fsGameName {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 700;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fsProductName {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fsPriceWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fsPriceOriginal {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: line-through;
+  font-weight: 600;
+}
+
+.fsPriceNow {
+  font-size: 15px;
+  color: #60a5fa;
+  font-weight: 900;
 }
 
 /* ===== TABS STRIP ===== */

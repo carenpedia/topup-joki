@@ -32,6 +32,7 @@ export default function NewFlashSalePage() {
     toLocalInputValue(new Date(now.getTime() + 2 * 60 * 60 * 1000))
   );
   const [flashPrice, setFlashPrice] = useState<number>(0);
+  const [maxStock, setMaxStock] = useState("");
   const [isActive, setIsActive] = useState(true);
 
   // dropdown data
@@ -145,6 +146,7 @@ export default function NewFlashSalePage() {
           startAt: new Date(startAt).toISOString(),
           endAt: new Date(endAt).toISOString(),
           isActive,
+          maxStock: maxStock ? parseInt(maxStock) : null,
         }),
       });
 
@@ -279,6 +281,21 @@ export default function NewFlashSalePage() {
                 value={flashPrice}
                 onChange={(e) => setFlashPrice(Number(e.target.value))}
                 placeholder="contoh: 25000"
+              />
+            </label>
+
+            {/* MAX STOCK */}
+            <label style={{ display: "grid", gap: 6 }}>
+              <span style={{ fontWeight: 900, color: "#fff" }}>
+                Maksimal Stok (Opsional)
+              </span>
+              <input
+                className="contact-input"
+                type="number"
+                value={maxStock}
+                onChange={(e) => setMaxStock(e.target.value)}
+                placeholder="Biarkan kosong jika tidak dibatasi"
+                min="1"
               />
             </label>
 

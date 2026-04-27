@@ -62,7 +62,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const api = useMemo<ToastApi>(
     () => ({
       show: (m, v = "info", ms) => push(m, v, "bottom-right", ms),
-      success: (m, ms) => push(m, "success", "bottom-right", ms),
+      success: (m, ms) => push(m, "success", "top-center", ms ?? 3000),
       error: (m, ms) => push(m, "error", "bottom-right", ms),
       warn: (m, ms) => push(m, "warn", "bottom-right", ms),
       info: (m, ms) => push(m, "info", "bottom-right", ms),
@@ -95,12 +95,21 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           ))}
       </div>
 
-      {/* TOP CENTER (CRITICAL) */}
+      {/* TOP CENTER */}
       <div className="toastStack top-center">
         {items
           .filter((t) => t.position === "top-center")
           .map((t) => (
-            <div key={t.id} className={`toast toast--critical`}>
+            <div key={t.id} className={`toast toast--${t.variant === 'error' ? 'critical' : t.variant}`}>
+              <div className="toastIcon">
+                {t.variant === "success"
+                  ? "✓"
+                  : t.variant === "error"
+                  ? "!"
+                  : t.variant === "warn"
+                  ? "⚠"
+                  : "i"}
+              </div>
               <div className="toastMsg">{t.message}</div>
             </div>
           ))}

@@ -14,6 +14,8 @@ type Detail = {
   startAt: string;
   endAt: string;
   isActive: boolean;
+  maxStock: number | null;
+  soldCount: number;
   createdAt: string;
   updatedAt: string;
 };
@@ -49,6 +51,7 @@ export default function FlashSaleDetailPage() {
   const [flashPrice, setFlashPrice] = useState<number>(0);
   const [startAt, setStartAt] = useState("");
   const [endAt, setEndAt] = useState("");
+  const [maxStock, setMaxStock] = useState("");
   const [isActive, setIsActive] = useState(true);
 
   // dropdown
@@ -112,6 +115,7 @@ export default function FlashSaleDetailPage() {
       setFlashPrice(Number(row.flashPrice || 0));
       setStartAt(toLocalInputValue(row.startAt));
       setEndAt(toLocalInputValue(row.endAt));
+      setMaxStock(row.maxStock !== null && row.maxStock !== undefined ? String(row.maxStock) : "");
       setIsActive(Boolean(row.isActive));
 
       // dropdown base
@@ -166,6 +170,7 @@ export default function FlashSaleDetailPage() {
           startAt: new Date(startAt).toISOString(),
           endAt: new Date(endAt).toISOString(),
           isActive,
+          maxStock: maxStock ? parseInt(maxStock) : null,
         }),
       });
 
@@ -309,6 +314,32 @@ export default function FlashSaleDetailPage() {
                   onChange={(e) => setFlashPrice(Number(e.target.value))}
                 />
               </label>
+
+              {/* MAX STOCK & SOLD */}
+              <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
+                <label style={{ display: "grid", gap: 6 }}>
+                  <span style={{ fontWeight: 900, color: "#fff" }}>Maksimal Stok (Opsional)</span>
+                  <input
+                    className="contact-input"
+                    type="number"
+                    value={maxStock}
+                    onChange={(e) => setMaxStock(e.target.value)}
+                    placeholder="Biarkan kosong jika tidak dibatasi"
+                    min="1"
+                  />
+                </label>
+
+                <label style={{ display: "grid", gap: 6 }}>
+                  <span style={{ fontWeight: 900, color: "#fff" }}>Stok Terjual</span>
+                  <input
+                    className="contact-input"
+                    type="number"
+                    value={data.soldCount || 0}
+                    disabled
+                    style={{ opacity: 0.7 }}
+                  />
+                </label>
+              </div>
 
               {/* DATES */}
               <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>

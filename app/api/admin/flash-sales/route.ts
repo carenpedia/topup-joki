@@ -49,6 +49,8 @@ export async function GET(req: Request) {
         startAt: true,
         endAt: true,
         isActive: true,
+        maxStock: true,
+        soldCount: true,
         createdAt: true,
         product: {
           select: {
@@ -68,10 +70,13 @@ export async function GET(req: Request) {
       startAt: r.startAt?.toISOString(),
       endAt: r.endAt?.toISOString(),
       isActive: r.isActive,
+      maxStock: r.maxStock,
+      soldCount: r.soldCount,
       createdAt: r.createdAt?.toISOString(),
       // computed status
       status:
         !r.isActive ? "INACTIVE"
+        : (r.maxStock !== null && r.soldCount >= r.maxStock) ? "EXHAUSTED"
         : r.startAt > now ? "UPCOMING"
         : r.endAt < now ? "EXPIRED"
         : "ACTIVE",
@@ -92,6 +97,7 @@ export async function POST(req: Request) {
     const startAtRaw = String(body.startAt || "").trim();
     const endAtRaw = String(body.endAt || "").trim();
     const isActive = Boolean(body.isActive ?? true);
+    const maxStock = body.maxStock && toInt(body.maxStock, 0) > 0 ? toInt(body.maxStock, 0) : null;
 
     if (!productId) {
       return NextResponse.json({ error: "Product wajib dipilih" }, { status: 400 });
@@ -127,6 +133,7 @@ export async function POST(req: Request) {
         startAt,
         endAt,
         isActive,
+        maxStock,
       },
       select: { id: true },
     });

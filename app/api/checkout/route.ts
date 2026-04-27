@@ -103,9 +103,13 @@ export async function POST(req: Request) {
 
     const activeFlash = product.flashSales?.[0];
     if (activeFlash) {
-      flashSaleId = activeFlash.id;
-      flashPriceApplied = activeFlash.flashPrice;
-      basePrice = activeFlash.flashPrice;
+      // NOTE: `maxStock` checks. If maxStock defined and soldCount >= maxStock, skip flash sale
+      const isAvailable = activeFlash.maxStock === null || activeFlash.soldCount < activeFlash.maxStock;
+      if (isAvailable) {
+        flashSaleId = activeFlash.id;
+        flashPriceApplied = activeFlash.flashPrice;
+        basePrice = activeFlash.flashPrice;
+      }
     }
 
     let voucherId: string | null = null;
@@ -199,6 +203,10 @@ export async function POST(req: Request) {
             reason: `Pembayaran order ${orderNo}`,
             refOrderId: order.id,
           },
+        }),
+        prisma.order.update({
+          where: { id: order.id },
+          data: { status: "PAID", carencoinUsed: finalPayable, paidAt: new Date() },
         }),
       ]);
 

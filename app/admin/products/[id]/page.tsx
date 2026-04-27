@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useToast } from "@/app/components/ToastProvider";
 
 type Product = {
   id: string;
@@ -24,6 +25,7 @@ type Game = { id: string; name: string };
 export default function AdminProductEditPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
+  const toast = useToast();
   const id = params.id;
 
   const [loading, setLoading] = useState(true);
@@ -159,6 +161,7 @@ export default function AdminProductEditPage() {
       const j = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(j.error ?? "Gagal update product");
 
+      toast.success("Produk berhasil diperbarui!");
       await load();
       router.refresh();
     } catch (e: any) {
@@ -180,6 +183,7 @@ export default function AdminProductEditPage() {
       const j = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(j.error ?? "Gagal hapus product");
 
+      toast.success("Produk berhasil dihapus!");
       router.push("/admin/products");
       router.refresh();
     } catch (e: any) {

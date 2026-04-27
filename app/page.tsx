@@ -4,6 +4,7 @@ import PromoSlider from "./components/PromoSlider";
 import GameCard, { GameDisplay } from "./components/GameCard";
 import HomeCategoryTabs from "./components/HomeCategoryTabs";
 import Footer from "./components/Footer";
+import HomeFlashSale, { FlashSaleItem } from "./components/HomeFlashSale";
 import "./homepage.css";
 
 export const dynamic = "force-dynamic";
@@ -49,7 +50,16 @@ export default async function Home({ searchParams }: { searchParams: any }) {
           startAt: { lte: now },
           endAt: { gte: now },
         },
-        take: 5,
+        include: {
+          product: {
+            include: {
+              game: { select: { name: true, key: true } },
+              prices: { where: { audience: "PUBLIC" }, take: 1 },
+            },
+          },
+        },
+        take: 10, // Fetch more to allow filtering out exhausted ones
+        orderBy: { endAt: "asc" }
       }),
     ]);
 
@@ -78,6 +88,20 @@ export default async function Home({ searchParams }: { searchParams: any }) {
     // 6) Split: populer tampil di atas dengan layout horizontal, lain tampil grid di bawah
     const populer = searched.filter((g) => g.category === "populer");
     const lain = activeCatId ? filtered : filtered.filter((g) => g.category !== "populer");
+
+    // 7) Format Flash Sales Data
+    const flashSaleData: FlashSaleItem[] = flashSales.slice(0, 5).map((fs) => ({
+      id: fs.id,
+      gameName: fs.product.game.name,
+      gameKey: fs.product.game.key,
+      productName: fs.product.name,
+      imageUrl: fs.product.imageUrl || null,
+      basePrice: fs.product.prices[0]?.price || 0,
+      flashPrice: fs.flashPrice,
+      endAt: fs.endAt.toISOString(),
+      maxStock: fs.maxStock,
+      soldCount: fs.soldCount,
+    }));
  
     return (
       <main className="homePage">
@@ -103,20 +127,8 @@ export default async function Home({ searchParams }: { searchParams: any }) {
             </div>
           </div>
  
-          {/* Flash Sale Strip (Hanya muncul jika ada promo aktif) */}
-          {flashSales.length > 0 && (
-            <div className="homeSection">
-              <div className="flashStrip">
-                <span className="flashIcon">⚡</span>
-                <div style={{ flex: 1 }}>
-                  <div className="flashTitle">Flash Sale Sedang Berlangsung!</div>
-                  <div className="flashSub">
-                    Dapatkan harga spesial untuk {flashSales.length} item pilihan. Buruan sebelum kehabisan!
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Flash Sale Component */}
+          <HomeFlashSale items={flashSaleData} />
  
           {/* POPULER SEKARANG – horizontal card layout (hanya tampil bila tidak ada filter kategori) */}
           {populer.length > 0 && !activeCatId && (

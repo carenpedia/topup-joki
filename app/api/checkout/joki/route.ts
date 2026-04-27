@@ -118,7 +118,13 @@ export async function POST(req: Request) {
 
       const product = await prisma.product.findUnique({
         where: { id: productId },
-        include: { prices: true },
+        include: { 
+          prices: true,
+          flashSales: {
+            where: { isActive: true, startAt: { lte: new Date() }, endAt: { gte: new Date() } },
+            take: 1
+          }
+        },
       });
       if (!product || !product.isActive) {
         return NextResponse.json({ error: "Produk tidak ditemukan atau tidak aktif" }, { status: 404 });
@@ -128,7 +134,16 @@ export async function POST(req: Request) {
       if (!priceRow) {
         return NextResponse.json({ error: "Harga produk tidak ditemukan" }, { status: 400 });
       }
-      basePrice = priceRow.price * quantity;
+
+      // Check for active flash sale (joki can also have flash sales if admin set it)
+      const activeFlash = product.flashSales?.[0];
+      if (activeFlash) {
+        const isAvailable = activeFlash.maxStock === null || activeFlash.soldCount < activeFlash.maxStock;
+        if (isAvailable) {
+          basePrice = activeFlash.flashPrice * quantity;
+        }
+      }
+
       resolvedProductId = product.id;
     } else if (typeof finalPayableRaw === "number" && finalPayableRaw > 0) {
       basePrice = Math.floor(finalPayableRaw) * quantity;

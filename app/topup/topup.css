@@ -758,17 +758,41 @@
   line-height: 1;
 }
 
-.topupScope .tpNomFlash {
+.topupScope .tpNomFlashCircle {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -10px;
+  right: -10px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+  color: #fff;
   font-size: 9px;
   font-weight: 900;
-  padding: 3px 7px;
-  border-radius: 5px;
-  background: #ef4444;
-  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 14px rgba(59,130,246,0.4);
   z-index: 5;
+  transform: rotate(15deg);
+  border: 2px solid #2d2f44;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.topupScope .tpNomPriceWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.topupScope .tpNomPriceOriginal {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: line-through;
+  margin-bottom: -2px;
 }
 
 /* ===== PAYMENT BUTTONS ===== */
@@ -1266,17 +1290,19 @@
 
 .tpRibbon {
   position: absolute;
-  top: 11px;
-  right: -40px;
+  width: 110px;
+  top: 13px;
+  right: -32px;
   background: #3b82f6;
   color: #fff;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 800;
-  padding: 4px 42px;
+  padding: 4px 0;
   transform: rotate(45deg);
   z-index: 10;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   letter-spacing: 0.5px;
+  text-align: center;
   text-transform: uppercase;
 }
 
