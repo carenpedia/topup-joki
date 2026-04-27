@@ -54,12 +54,11 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
 
     const rows = products.map((p) => {
       const basePrice = Number(p.prices?.[0]?.price || 0);
-      let flash = p.flashSales?.[0] || null;
+      const rawFlash = p.flashSales?.[0] || null;
       
       // Filter out if exhausted
-      if (flash && flash.maxStock !== null && flash.soldCount >= flash.maxStock) {
-        flash = null;
-      }
+      const isExhausted = rawFlash && rawFlash.maxStock !== null && rawFlash.soldCount >= rawFlash.maxStock;
+      const flash = isExhausted ? null : rawFlash;
 
       const finalPrice = flash ? Number(flash.flashPrice || 0) : basePrice;
 
