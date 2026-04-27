@@ -1312,6 +1312,29 @@
   background: #525252;
 }
 
+.tpPayHeaderBottom {
+  padding: 7px 20px;
+}
+
+.tpPayLogoPreview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-logo-tiny {
+  height: 18px;
+  width: auto;
+  max-width: 60px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.preview-logo-tiny:hover {
+  transform: scale(1.1);
+}
+
 .caren-left-group {
   display: flex;
   align-items: center;
@@ -1393,7 +1416,7 @@
   align-items: center;
   justify-content: center;
   padding: 10px;
-  gap: 6px;
+  gap: 10px;
 }
 
 .tpMethodLogoExpand {
@@ -1436,7 +1459,8 @@
 .tpMethodFeeText {
   font-size: 10px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-style: italic;
 }
 
 .tpMethodMark {

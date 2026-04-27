@@ -612,7 +612,7 @@ export default function TopupClient({
                           </div>
                           <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div className="tpPayCategoryTitle" style={{ fontSize: '14px' }}>CarenCoin</div>
-                            <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', fontWeight: '600', marginTop: '1px' }}>(Bebas Biaya Admin)</div>
+                            <div style={{ fontSize: '10px', color: '#fff', fontWeight: '600', marginTop: '1px', fontStyle: 'italic' }}>(Bebas Biaya Admin)</div>
                           </div>
                         </div>
                         <div className="tpPayCategoryBalance" style={{ 
@@ -656,7 +656,7 @@ export default function TopupClient({
                               <div className="tpMethodDashed" />
                               <div className="tpMethodBottom">
                                 <div className="tpMethodFeeText">
-                                  Biaya: {selectedItem ? rupiah(getFeeAmount(selectedItem.finalPrice, m)) : "-"}
+                                  Biaya Admin: {selectedItem ? rupiah(getFeeAmount(selectedItem.finalPrice, m)) : "-"}
                                 </div>
                               </div>
                               {selectedMethodId === m.id && <div className="tpMethodMark">✓</div>}
