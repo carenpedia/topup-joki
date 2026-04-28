@@ -156,28 +156,44 @@ export default function UserSidebar() {
             position: static;
             padding: 12px;
             border-radius: 16px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            backdrop-filter: none;
           }
-          .userSidebarHeader, .userSidebarFooter, .userSidebarLabel {
+          .userSidebarHeader, .userSidebarFooter {
             display: none;
+          }
+          .userSidebarLabel {
+            display: block;
+            font-size: 12px;
+            white-space: nowrap;
           }
           .userSidebarList {
             flex-direction: row;
             overflow-x: auto;
-            padding-bottom: 4px;
+            padding: 4px 0 12px;
+            gap: 12px;
             scrollbar-width: none;
           }
           .userSidebarList::-webkit-scrollbar {
             display: none;
           }
           .userSidebarLink {
-            padding: 10px;
+            padding: 10px 16px;
             flex-shrink: 0;
             justify-content: center;
-            min-width: 50px;
+            min-width: fit-content;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+          }
+          .userSidebarLink.isActive {
+            background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(59,130,246,0.1));
+            border-color: rgba(59,130,246,0.4);
           }
           .userSidebarIcon {
-            font-size: 20px;
-            margin: 0;
+            font-size: 16px;
           }
         }
       `}</style>
