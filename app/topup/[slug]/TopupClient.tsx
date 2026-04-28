@@ -656,7 +656,7 @@ export default function TopupClient({
                               <div className="tpMethodDashed" />
                               <div className="tpMethodBottom">
                                 <div className="tpMethodFeeText">
-                                  Biaya Admin: {selectedItem ? rupiah(getFeeAmount(selectedItem.finalPrice, m)) : "-"}
+                                  Sudah termasuk pajak
                                 </div>
                               </div>
                               {selectedMethodId === m.id && <div className="tpMethodMark">✓</div>}

@@ -10,7 +10,7 @@ type Detail = {
   label: string;
   category: string;
   image: string | null;
-  feeFlat: number;
+  feeFixed: number;
   feePercent: number;
   minFee: number | null;
   maxFee: number | null;
@@ -168,8 +168,8 @@ export default function PaymentMethodFeeDetailPage() {
                 <input
                   className="contact-input"
                   type="number"
-                  value={data.feeFlat}
-                  onChange={(e) => setData({ ...data, feeFlat: Number(e.target.value) })}
+                  value={data.feeFixed}
+                  onChange={(e) => setData({ ...data, feeFixed: Number(e.target.value) })}
                 />
               </div>
               <div>

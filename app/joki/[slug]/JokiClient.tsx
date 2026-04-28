@@ -867,7 +867,7 @@ export default function JokiClient({
                               <div className="tpMethodDashed" />
                               <div className="tpMethodBottom">
                                 <div className="tpMethodFeeText">
-                                  Biaya Admin: {selectedItem ? rupiah(getFeeAmount(qtyBasePrice, m)) : "-"}
+                                  Sudah termasuk pajak
                                 </div>
                               </div>
                               {selectedMethodId === m.id && <div className="tpMethodMark">✓</div>}

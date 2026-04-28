@@ -11,7 +11,7 @@ export default function NewPaymentMethodFeePage() {
   const [label, setLabel] = useState("");
   const [category, setCategory] = useState("E-Wallet");
   const [image, setImage] = useState("");
-  const [feeFlat, setFeeFlat] = useState(0);
+  const [feeFixed, setFeeFixed] = useState(0);
   const [feePercent, setFeePercent] = useState(0);
   const [minFee, setMinFee] = useState("");
   const [maxFee, setMaxFee] = useState("");
@@ -33,7 +33,7 @@ export default function NewPaymentMethodFeePage() {
           label,
           category,
           image,
-          feeFlat,
+          feeFixed,
           feePercent,
           minFee,
           maxFee,
@@ -119,8 +119,8 @@ export default function NewPaymentMethodFeePage() {
                 className="contact-input"
                 type="number"
                 placeholder="Fee Flat"
-                value={feeFlat}
-                onChange={(e) => setFeeFlat(Number(e.target.value))}
+                value={feeFixed}
+                onChange={(e) => setFeeFixed(Number(e.target.value))}
               />
               <input
                 className="contact-input"
