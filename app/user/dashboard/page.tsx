@@ -24,9 +24,9 @@ export default function UserDashboard() {
   const loadData = async () => {
     try {
       const [authRes, ledgerRes, statsRes] = await Promise.all([
-        fetch("/api/auth/me"),
-        fetch("/api/user/ledger"),
-        fetch("/api/user/dashboard/stats")
+        fetch("/api/auth/me", { cache: "no-store" }),
+        fetch("/api/user/ledger", { cache: "no-store" }),
+        fetch("/api/user/dashboard/stats", { cache: "no-store" })
       ]);
       
       const authJ = await authRes.json();

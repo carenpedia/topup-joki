@@ -65,7 +65,7 @@ export default function UserLayout({
       
       <Footer />
 
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .mobileSidebarToggle {
           display: none;
           padding: 16px 20px 0;
@@ -117,7 +117,7 @@ export default function UserLayout({
             z-index: 1999;
           }
         }
-      `}</style>
+      `}} />
     </main>
   );
 }

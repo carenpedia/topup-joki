@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
-  const [userRole, setUserRole] = useState("MEMBER");
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -16,9 +16,11 @@ export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onC
         const data = await res.json();
         if (alive && data?.user?.role) {
           setUserRole(data.user.role);
+        } else if (alive) {
+          setUserRole("GUEST");
         }
       } catch (error) {
-        // Abaikan
+        if (alive) setUserRole("GUEST");
       }
     })();
     return () => { alive = false; };
@@ -33,12 +35,15 @@ export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onC
     { label: "Pusat Bantuan", href: "/bantuan", icon: "🎧" },
   ];
 
+  // Helper untuk cek apakah user punya akses reseller
+  const hasResellerAccess = userRole === "RESELLER" || userRole === "ADMIN";
+
   return (
     <div className="userSidebarNav">
       <div className="userSidebarHeader">
         <h3 className="userSidebarTitle">Menu Dashboard</h3>
         {onClose && (
-          <button className="mobileCloseBtn" onClick={onClose}>
+          <button className="mobileCloseBtn" onClick={onClose} aria-label="Close">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
         )}
@@ -46,7 +51,9 @@ export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onC
 
       <div className="userSidebarList">
         {menuItems.map((item) => {
-          if (item.resellerOnly && userRole !== "RESELLER") return null;
+          // Jika menu khusus reseller, sembunyikan jika user bukan reseller/admin
+          if (item.resellerOnly && !hasResellerAccess) return null;
+          
           const isActive = pathname === item.href;
 
           return (
@@ -64,26 +71,26 @@ export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onC
       </div>
 
       <div className="userSidebarFooter">
-        <button className="userLogoutBtn">
+        <button className="userLogoutBtn" onClick={() => window.location.href = "/keluar"}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
           <span>Keluar</span>
         </button>
       </div>
 
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .userSidebarNav {
           background: rgba(255, 255, 255, 0.02);
           border: 1px solid rgba(255, 255, 255, 0.05);
-          borderRadius: 20px;
+          border-radius: 20px;
           padding: 24px;
           display: flex;
-          flexDirection: column;
+          flex-direction: column;
           gap: 8px;
           height: fit-content;
           position: sticky;
           top: 100px;
-          backdropFilter: blur(12px);
-          boxShadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          backdrop-filter: blur(12px);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
         .userSidebarHeader {
           padding: 0 12px 16px;
@@ -207,7 +214,7 @@ export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onC
             font-size: 18px;
           }
         }
-      `}</style>
+      ` }} />
     </div>
   );
 }
