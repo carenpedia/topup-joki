@@ -209,6 +209,5 @@ export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onC
         }
       `}</style>
     </div>
-    </div>
   );
 }
