@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function UserSidebar() {
+export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
   const [userRole, setUserRole] = useState("MEMBER");
 
@@ -18,7 +18,7 @@ export default function UserSidebar() {
           setUserRole(data.user.role);
         }
       } catch (error) {
-        // Abaikan error fetch mockup
+        // Abaikan
       }
     })();
     return () => { alive = false; };
@@ -37,6 +37,11 @@ export default function UserSidebar() {
     <div className="userSidebarNav">
       <div className="userSidebarHeader">
         <h3 className="userSidebarTitle">Menu Dashboard</h3>
+        {onClose && (
+          <button className="mobileCloseBtn" onClick={onClose}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        )}
       </div>
 
       <div className="userSidebarList">
@@ -49,6 +54,7 @@ export default function UserSidebar() {
               key={item.href}
               href={item.href}
               className={`userSidebarLink ${isActive ? "isActive" : ""}`}
+              onClick={() => onClose?.()}
             >
               <span className="userSidebarIcon">{item.icon}</span>
               <span className="userSidebarLabel">{item.label}</span>
@@ -83,6 +89,17 @@ export default function UserSidebar() {
           padding: 0 12px 16px;
           margin-bottom: 8px;
           border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .mobileCloseBtn {
+          display: none;
+          background: none;
+          border: none;
+          color: rgba(255,255,255,0.4);
+          cursor: pointer;
+          padding: 4px;
         }
         .userSidebarTitle {
           font-size: 11px;
@@ -153,50 +170,45 @@ export default function UserSidebar() {
 
         @media (max-width: 900px) {
           .userSidebarNav {
-            position: static;
-            padding: 12px;
-            border-radius: 16px;
+            position: relative;
+            top: 0;
             background: transparent;
             border: none;
             box-shadow: none;
             backdrop-filter: none;
+            height: 100%;
+            padding: 20px;
           }
-          .userSidebarHeader, .userSidebarFooter {
-            display: none;
+          .mobileCloseBtn {
+            display: block;
           }
           .userSidebarLabel {
             display: block;
-            font-size: 12px;
-            white-space: nowrap;
+            font-size: 14px;
           }
           .userSidebarList {
-            flex-direction: row;
-            overflow-x: auto;
-            padding: 4px 0 12px;
-            gap: 12px;
-            scrollbar-width: none;
-          }
-          .userSidebarList::-webkit-scrollbar {
-            display: none;
+            flex-direction: column;
+            overflow-x: visible;
+            gap: 8px;
           }
           .userSidebarLink {
-            padding: 10px 16px;
-            flex-shrink: 0;
-            justify-content: center;
-            min-width: fit-content;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 14px;
+            min-width: auto;
+            justify-content: flex-start;
           }
           .userSidebarLink.isActive {
-            background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(59,130,246,0.1));
-            border-color: rgba(59,130,246,0.4);
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05));
+            border-color: rgba(59,130,246,0.3);
           }
           .userSidebarIcon {
-            font-size: 16px;
+            font-size: 18px;
           }
         }
       `}</style>
+    </div>
     </div>
   );
 }
