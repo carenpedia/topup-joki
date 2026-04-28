@@ -42,11 +42,13 @@ export default function UserLayout({
       {/* Basic responsive layout injection specifically for User Dashboard */}
       <style dangerouslySetInnerHTML={{__html: `
         @media (max-width: 900px) {
-          .userSidebarWrapper {
-            display: none; /* Sementara sembunyikan sidebar di mobile, atau jadikan bottom navigation/drawer nanti */
-          }
           .shell > div {
             grid-template-columns: 1fr !important;
+            gap: 20px !important;
+            margin-top: 20px !important;
+          }
+          .userSidebarWrapper {
+            margin-bottom: 0;
           }
         }
       `}} />

@@ -34,83 +34,153 @@ export default function UserSidebar() {
   ];
 
   return (
-    <div style={{
-      background: "rgba(255, 255, 255, 0.02)",
-      border: "1px solid rgba(255, 255, 255, 0.05)",
-      borderRadius: "20px",
-      padding: "24px",
-      display: "flex",
-      flexDirection: "column",
-      gap: "8px",
-      height: "fit-content",
-      position: "sticky",
-      top: "100px",
-      backdropFilter: "blur(12px)",
-      WebkitBackdropFilter: "blur(12px)",
-      boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)"
-    }}>
-      <div style={{ padding: "0 12px 16px", marginBottom: 8, borderBottom: "1px dashed rgba(255, 255, 255, 0.1)" }}>
-        <h3 style={{ fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: 0.5 }}>Menu Dashboard</h3>
+    <div className="userSidebarNav">
+      <div className="userSidebarHeader">
+        <h3 className="userSidebarTitle">Menu Dashboard</h3>
       </div>
 
-      {menuItems.map((item) => {
-        // Sembunyikan menu reseller jika user bukan reseller
-        if (item.resellerOnly && userRole !== "RESELLER") return null;
+      <div className="userSidebarList">
+        {menuItems.map((item) => {
+          if (item.resellerOnly && userRole !== "RESELLER") return null;
+          const isActive = pathname === item.href;
 
-        const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`userSidebarLink ${isActive ? "isActive" : ""}`}
+            >
+              <span className="userSidebarIcon">{item.icon}</span>
+              <span className="userSidebarLabel">{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
 
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              padding: "12px 16px",
-              borderRadius: "12px",
-              color: isActive ? "#fff" : "rgba(255,255,255,0.6)",
-              background: isActive ? "linear-gradient(90deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05))" : "transparent",
-              border: isActive ? "1px solid rgba(59,130,246,0.2)" : "1px solid transparent",
-              fontWeight: isActive ? 700 : 500,
-              fontSize: 14,
-              transition: "all 0.2s ease"
-            }}
-            onMouseOver={(e) => {
-              if (!isActive) {
-                e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-                e.currentTarget.style.color = "#fff";
-              }
-            }}
-            onMouseOut={(e) => {
-              if (!isActive) {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.color = "rgba(255,255,255,0.6)";
-              }
-            }}
-          >
-            <span style={{ fontSize: 18, filter: isActive ? "none" : "grayscale(100%) opacity(70%)", transition: "all 0.2s ease" }}>{item.icon}</span>
-            {item.label}
-          </Link>
-        );
-      })}
-
-      <div style={{ marginTop: "auto", paddingTop: "24px" }}>
-        <button style={{
-          width: "100%", padding: "12px", borderRadius: "12px",
-          background: "rgba(239, 68, 68, 0.1)", color: "#ef4444",
-          border: "1px solid rgba(239, 68, 68, 0.2)",
-          fontWeight: 700, fontSize: 14, cursor: "pointer",
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-          transition: "all 0.2s"
-        }}
-        onMouseOver={(e) => e.currentTarget.style.background = "rgba(239, 68, 68, 0.15)"}
-        onMouseOut={(e) => e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)"}
-        >
+      <div className="userSidebarFooter">
+        <button className="userLogoutBtn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-          Keluar
+          <span>Keluar</span>
         </button>
       </div>
+
+      <style jsx>{`
+        .userSidebarNav {
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          borderRadius: 20px;
+          padding: 24px;
+          display: flex;
+          flexDirection: column;
+          gap: 8px;
+          height: fit-content;
+          position: sticky;
+          top: 100px;
+          backdropFilter: blur(12px);
+          boxShadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .userSidebarHeader {
+          padding: 0 12px 16px;
+          margin-bottom: 8px;
+          border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        .userSidebarTitle {
+          font-size: 11px;
+          font-weight: 800;
+          color: rgba(255,255,255,0.4);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .userSidebarList {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .userSidebarLink {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 16px;
+          border-radius: 12px;
+          color: rgba(255,255,255,0.6);
+          font-weight: 500;
+          font-size: 14px;
+          transition: all 0.2s ease;
+          border: 1px solid transparent;
+          text-decoration: none;
+        }
+        .userSidebarLink:hover {
+          background: rgba(255,255,255,0.04);
+          color: #fff;
+        }
+        .userSidebarLink.isActive {
+          color: #fff;
+          background: linear-gradient(90deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05));
+          border-color: rgba(59,130,246,0.2);
+          font-weight: 700;
+        }
+        .userSidebarIcon {
+          font-size: 18px;
+          opacity: 0.7;
+        }
+        .isActive .userSidebarIcon {
+          opacity: 1;
+        }
+        .userSidebarFooter {
+          margin-top: 16px;
+          padding-top: 16px;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .userLogoutBtn {
+          width: 100%;
+          padding: 12px;
+          border-radius: 12px;
+          background: rgba(239, 68, 68, 0.1);
+          color: #ef4444;
+          border: 1px solid rgba(239, 68, 68, 0.2);
+          font-weight: 700;
+          font-size: 14px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          transition: all 0.2s;
+        }
+        .userLogoutBtn:hover {
+          background: rgba(239, 68, 68, 0.15);
+        }
+
+        @media (max-width: 900px) {
+          .userSidebarNav {
+            position: static;
+            padding: 12px;
+            border-radius: 16px;
+          }
+          .userSidebarHeader, .userSidebarFooter, .userSidebarLabel {
+            display: none;
+          }
+          .userSidebarList {
+            flex-direction: row;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+          }
+          .userSidebarList::-webkit-scrollbar {
+            display: none;
+          }
+          .userSidebarLink {
+            padding: 10px;
+            flex-shrink: 0;
+            justify-content: center;
+            min-width: 50px;
+          }
+          .userSidebarIcon {
+            font-size: 20px;
+            margin: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 }

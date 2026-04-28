@@ -21,6 +21,18 @@ export default function JoinResellerClient() {
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isSuccessManual, setIsSuccessManual] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const res = await fetch("/api/auth/me");
+        const j = await res.json();
+        if (res.ok && j.user) setCurrentUser(j.user);
+      } catch (e) {}
+    }
+    checkAuth();
+  }, []);
 
   useEffect(() => {
     if (showModal && !isSuccessManual) {
@@ -45,6 +57,14 @@ export default function JoinResellerClient() {
   }, [autoMethods]);
 
   async function handleJoin() {
+    if (!currentUser) {
+      toast.error("Silakan login terlebih dahulu untuk mendaftar reseller.");
+      setTimeout(() => {
+        window.location.href = `/masuk?next=${encodeURIComponent(window.location.pathname)}`;
+      }, 1500);
+      return;
+    }
+
     if (methodType === "otomatis" && !selectedMethodId) {
       toast.error("Pilih metode pembayaran otomatis");
       return;
@@ -69,7 +89,11 @@ export default function JoinResellerClient() {
         setIsSuccessManual(true);
       }
     } catch (e: any) {
-      toast.error(e.message);
+      if (e.message === "Unauthorized") {
+        toast.error("Sesi Anda telah berakhir. Silakan login kembali.");
+      } else {
+        toast.error(e.message);
+      }
     } finally {
       setLoading(false);
     }
