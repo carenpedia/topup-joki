@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
-  const router = useRouter();
   const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
@@ -14,22 +13,26 @@ export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onC
     (async () => {
       try {
         const res = await fetch("/api/auth/me", { cache: "no-store" });
-        const data = await res.json();
-        if (alive && data?.user?.role) {
-          setUserRole(data.user.role);
+        if (res.ok) {
+          const data = await res.json();
+          if (alive && data?.user?.role) {
+            setUserRole(data.user.role);
+          } else if (alive) {
+            // Fallback ke MEMBER jika data user tidak lengkap
+            setUserRole("MEMBER");
+          }
         } else if (alive) {
-          // Sesi tidak valid, redirect ke halaman login
-          router.push("/masuk");
+          // API error (401, 500, dll) — fallback ke MEMBER
+          // Middleware sudah handle redirect jika sesi benar-benar invalid
+          setUserRole("MEMBER");
         }
       } catch (error) {
-        if (alive) {
-          // Error sesi, redirect ke halaman login
-          router.push("/masuk");
-        }
+        // Network error — fallback ke MEMBER, jangan redirect
+        if (alive) setUserRole("MEMBER");
       }
     })();
     return () => { alive = false; };
-  }, [router]);
+  }, []);
 
   const menuItems = [
     { label: "Data Penjualan", href: "/user/dashboard", icon: "📊", resellerOnly: true },
