@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
@@ -17,14 +18,18 @@ export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onC
         if (alive && data?.user?.role) {
           setUserRole(data.user.role);
         } else if (alive) {
-          setUserRole("GUEST");
+          // Sesi tidak valid, redirect ke halaman login
+          router.push("/masuk");
         }
       } catch (error) {
-        if (alive) setUserRole("GUEST");
+        if (alive) {
+          // Error sesi, redirect ke halaman login
+          router.push("/masuk");
+        }
       }
     })();
     return () => { alive = false; };
-  }, []);
+  }, [router]);
 
   const menuItems = [
     { label: "Data Penjualan", href: "/user/dashboard", icon: "📊", resellerOnly: true },
