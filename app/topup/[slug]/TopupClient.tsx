@@ -96,7 +96,7 @@ export default function TopupClient({
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [activePaymentType, setActivePaymentType] = useState<PaymentMethodType>("GATEWAY");
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
-  const [openCategory, setOpenCategory] = useState<string | null>("E-Wallet"); // Default open E-Wallet
+  const [openCategory, setOpenCategory] = useState<string | null>(null); // Default closed
 
   const [contact, setContact] = useState("");
   const [contactEmail, setContactEmail] = useState("");

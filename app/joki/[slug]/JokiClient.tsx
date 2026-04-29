@@ -106,7 +106,7 @@ export default function JokiClient({
   // Step 4 — Pembayaran
   const [activePaymentType, setActivePaymentType] = useState<"CARENCOIN" | "GATEWAY">("GATEWAY");
   const [selectedMethodId, setSelectedMethodId] = useState<string | null>(null);
-  const [openCategory, setOpenCategory] = useState<string | null>("E-Wallet");
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   // Step 5 — Voucher
   const [voucher, setVoucher] = useState("");

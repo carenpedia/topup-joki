@@ -621,11 +621,6 @@
   padding-left: 4px;
 }
 
-.topupScope .nominalGroupHeader::before {
-  content: "⚡";
-  font-size: 14px;
-}
-
 .topupScope .tpNomGrid {
   display: grid;
   gap: 16px;
@@ -716,7 +711,9 @@
 .topupScope .tpNomPriceNow {
   font-size: 17px;
   font-weight: 900;
-  color: #3b82f6;
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   letter-spacing: -0.3px;
   white-space: nowrap;
 }
@@ -1389,8 +1386,8 @@
   display: flex;
   flex-direction: column;
   height: 120px;
-  background: rgba(83, 83, 83, 0.993);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   cursor: pointer;
   overflow: hidden;
@@ -1399,8 +1396,8 @@
 }
 
 .tpMethodCard:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .tpMethodCard.isSelected {
