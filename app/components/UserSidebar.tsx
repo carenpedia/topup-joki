@@ -79,7 +79,10 @@ export default function UserSidebar({ isOpen, onClose }: { isOpen?: boolean; onC
       </div>
 
       <div className="userSidebarFooter">
-        <button className="userLogoutBtn" onClick={() => window.location.href = "/keluar"}>
+        <button className="userLogoutBtn" onClick={async () => {
+          try { await fetch("/api/auth/logout", { method: "POST" }); } catch {}
+          window.location.href = "/masuk";
+        }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
           <span>Keluar</span>
         </button>

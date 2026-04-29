@@ -286,7 +286,7 @@ export default function Navbar() {
                 <Link href="/user/profile" className="siteAuthBtn siteAuthPrimary">
                   Dashboard
                 </Link>
-                <Link href="/keluar" className="siteAuthBtn siteAuthGhost">
+                <Link href="/keluar" className="siteAuthBtn siteAuthGhost" prefetch={false}>
                   Keluar
                 </Link>
               </>
@@ -360,7 +360,7 @@ export default function Navbar() {
               <Link href="/user/profile" className="siteAuthBtn siteAuthPrimary siteMobileBtn">
                 Dashboard
               </Link>
-              <Link href="/keluar" className="siteAuthBtn siteAuthGhost siteMobileBtn">
+              <Link href="/keluar" className="siteAuthBtn siteAuthGhost siteMobileBtn" prefetch={false}>
                 Keluar
               </Link>
             </>
