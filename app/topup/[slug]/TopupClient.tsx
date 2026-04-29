@@ -616,11 +616,11 @@ export default function TopupClient({
                           </div>
                         </div>
                         <div className="tpPayCategoryBalance" style={{ 
-                          color: userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff",
+                          color: !selectedItem && userBalance === 0 && audienceProp === "PUBLIC" ? "#f87171" : "#fff",
                           marginRight: '28px',
                           marginTop: '2px'
                         }}>
-                          {userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance)}
+                          {selectedItem ? rupiah(selectedItem.finalPrice) : (userBalance === 0 && audienceProp === "PUBLIC" ? "Max. Rp 0" : rupiah(userBalance))}
                         </div>
                       </div>
                     </button>

@@ -46,10 +46,13 @@ export async function POST(req: Request) {
       inputServer,
       contactWhatsapp,
       contactEmail,
-      paymentMethod,     // "CARENCOIN" | "GATEWAY"
+      paymentMethod: rawPaymentMethod,     // "CarenCoin" | "CARENCOIN" | "GATEWAY"
       methodId,          // NEW: ID from PaymentMethodFee
       voucherCode,
     } = body;
+
+    // Normalize: frontend kirim "CarenCoin", backend butuh "CARENCOIN"
+    const paymentMethod = typeof rawPaymentMethod === "string" ? rawPaymentMethod.toUpperCase() : rawPaymentMethod;
 
     if (!gameKey || !productId || !inputUserId || !contactWhatsapp || !paymentMethod) {
       return NextResponse.json({ error: "Data tidak lengkap" }, { status: 400 });

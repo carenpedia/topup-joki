@@ -42,7 +42,7 @@ function generateOrderNo(): string {
 async function getUser() {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
+    const token = cookieStore.get("session")?.value;
     if (!token) return null;
     const { payload } = await jwtVerify(token, JWT_SECRET);
     return payload as { id: string; role: string };
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       productId,
       contactWhatsapp,
       contactEmail,
-      paymentMethod,
+      paymentMethod: rawPaymentMethod,
       methodId,
       loginVia,
       userIdNickname,
@@ -70,6 +70,9 @@ export async function POST(req: Request) {
       finalPayable: finalPayableRaw,
       quantity: quantityRaw,
     } = body;
+
+    // Normalize: frontend kirim "CarenCoin", backend butuh "CARENCOIN"
+    const paymentMethod = typeof rawPaymentMethod === "string" ? rawPaymentMethod.toUpperCase() : rawPaymentMethod;
 
     const quantity = Math.max(1, Math.floor(Number(quantityRaw) || 1));
 
