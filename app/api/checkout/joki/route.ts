@@ -45,7 +45,7 @@ async function getUser() {
     const token = cookieStore.get("session")?.value;
     if (!token) return null;
     const { payload } = await jwtVerify(token, JWT_SECRET);
-    return payload as { id: string; role: string };
+    return payload as { userId: string; role: string };
   } catch {
     return null;
   }
@@ -103,9 +103,9 @@ export async function POST(req: Request) {
     const jwtUser = await getUser();
     let dbUser: { id: string; role: string; carencoinBalance: number; username: string; whatsapp: string } | null = null;
 
-    if (jwtUser?.id) {
+    if (jwtUser?.userId) {
       const u = await prisma.user.findUnique({
-        where: { id: jwtUser.id },
+        where: { id: jwtUser.userId },
         select: { id: true, role: true, carencoinBalance: true, username: true, whatsapp: true },
       });
       if (u) dbUser = u;
