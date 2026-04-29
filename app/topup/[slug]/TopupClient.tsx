@@ -11,7 +11,7 @@ import { useAsyncAction } from "@/app/components/useAsyncAction";
 import { getTargetConfig } from "@/lib/targetConfig";
 import Script from "next/script";
 
-export type Audience = "PUBLIC" | "GOLD" | "SILVER";
+export type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
 type PaymentMethodType = "CarenCoin" | "GATEWAY";
 
 type MethodFee = {

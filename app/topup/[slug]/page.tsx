@@ -5,7 +5,7 @@ import Footer from "@/app/components/Footer";
 import { cookies } from "next/headers";
 import { verifySession } from "@/lib/session";
 
-type Audience = "PUBLIC" | "GOLD" | "SILVER";
+type Audience = "PUBLIC" | "MEMBER" | "RESELLER";
 
 type Props = {
   params: { slug: string };
@@ -17,10 +17,10 @@ type Props = {
 function roleToAudience(role: string): Audience {
   switch (role) {
     case "ADMIN":
-    case "GOLD":
-      return "GOLD";
-    case "SILVER":
-      return "SILVER";
+    case "RESELLER":
+      return "RESELLER";
+    case "MEMBER":
+      return "MEMBER";
     default:
       return "PUBLIC";
   }

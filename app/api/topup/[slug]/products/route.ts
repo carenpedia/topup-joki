@@ -1,8 +1,8 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
- 
-// kalau kamu belum punya helper ini, lihat catatan di bawah.
+import { cookies } from "next/headers";
+import { verifySession } from "@/lib/session";
 
 export async function GET(_req: Request, { params }: { params: { slug: string } }) {
   try {
@@ -17,7 +17,17 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
 
     const { searchParams } = new URL(_req.url);
     const type = searchParams.get("type") || "TOPUP";
-    const audience = "PUBLIC" as const;
+    
+    // Ambil audience dari session
+    let audience: "PUBLIC" | "MEMBER" | "RESELLER" = "PUBLIC";
+    const token = cookies().get("session")?.value;
+    if (token) {
+      try {
+        const s = await verifySession(token);
+        if (s.role === "ADMIN" || s.role === "RESELLER") audience = "RESELLER";
+        else if (s.role === "MEMBER") audience = "MEMBER";
+      } catch {}
+    }
 
     // ambil product + harga sesuai audience + flash sale aktif (jika ada)
     const products = await prisma.product.findMany({

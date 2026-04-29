@@ -21,7 +21,9 @@ export async function fulfillOrder(orderId: string): Promise<{ success: boolean;
     const order = await prisma.order.findUnique({
       where: { id: orderId },
       include: {
-        product: true,
+        product: {
+          include: { game: true }
+        },
       },
     });
 

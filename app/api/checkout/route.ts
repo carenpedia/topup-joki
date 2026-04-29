@@ -82,7 +82,7 @@ export async function POST(req: Request) {
     }
 
     const jwtUser = await getUser();
-    let audience: "PUBLIC" | "GOLD" | "SILVER" = "PUBLIC";
+    let audience: "PUBLIC" | "MEMBER" | "RESELLER" = "PUBLIC";
     let dbUser: any = null;
 
     if (jwtUser?.userId) {
