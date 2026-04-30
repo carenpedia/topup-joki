@@ -49,6 +49,7 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
           select: { price: true },
           take: 1,
         },
+        imageUrl: true,
         flashSales: {
           where: {
             isActive: true,
@@ -79,6 +80,7 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
         category: p.productCategory,
         basePrice,
         finalPrice,
+        imageUrl: p.imageUrl,
         flash: flash
           ? { id: flash.id, flashPrice: Number(flash.flashPrice || 0), endAt: flash.endAt }
           : null,
