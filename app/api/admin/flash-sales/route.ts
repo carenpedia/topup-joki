@@ -51,6 +51,7 @@ export async function GET(req: Request) {
         isActive: true,
         maxStock: true,
         soldCount: true,
+        imageType: true,
         createdAt: true,
         product: {
           select: {
@@ -72,6 +73,7 @@ export async function GET(req: Request) {
       isActive: r.isActive,
       maxStock: r.maxStock,
       soldCount: r.soldCount,
+      imageType: r.imageType,
       createdAt: r.createdAt?.toISOString(),
       // computed status
       status:
@@ -98,6 +100,7 @@ export async function POST(req: Request) {
     const endAtRaw = String(body.endAt || "").trim();
     const isActive = Boolean(body.isActive ?? true);
     const maxStock = body.maxStock && toInt(body.maxStock, 0) > 0 ? toInt(body.maxStock, 0) : null;
+    const imageType = body.imageType === "GAME" ? "GAME" : "PRODUCT";
 
     if (!productId) {
       return NextResponse.json({ error: "Product wajib dipilih" }, { status: 400 });
@@ -134,6 +137,7 @@ export async function POST(req: Request) {
         endAt,
         isActive,
         maxStock,
+        imageType,
       },
       select: { id: true },
     });

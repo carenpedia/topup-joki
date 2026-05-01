@@ -34,6 +34,7 @@ export default function NewFlashSalePage() {
   const [flashPrice, setFlashPrice] = useState<number>(0);
   const [maxStock, setMaxStock] = useState("");
   const [isActive, setIsActive] = useState(true);
+  const [imageType, setImageType] = useState<"PRODUCT" | "GAME">("PRODUCT");
 
   // dropdown data
   const [games, setGames] = useState<GameMini[]>([]);
@@ -147,6 +148,7 @@ export default function NewFlashSalePage() {
           endAt: new Date(endAt).toISOString(),
           isActive,
           maxStock: maxStock ? parseInt(maxStock) : null,
+          imageType,
         }),
       });
 
@@ -297,6 +299,24 @@ export default function NewFlashSalePage() {
                 placeholder="Biarkan kosong jika tidak dibatasi"
                 min="1"
               />
+            </label>
+
+            {/* IMAGE TYPE */}
+            <label style={{ display: "grid", gap: 6 }}>
+              <span style={{ fontWeight: 900, color: "#fff" }}>
+                Tipe Gambar Tampilan
+              </span>
+              <select
+                className="contact-input"
+                value={imageType}
+                onChange={(e) => setImageType(e.target.value as any)}
+              >
+                <option value="PRODUCT">Gambar Produk (Icon Nominal)</option>
+                <option value="GAME">Gambar Game (Logo Utama)</option>
+              </select>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>
+                Pilih gambar mana yang akan muncul di section Flash Sale homepage.
+              </div>
             </label>
 
             {/* DATES */}

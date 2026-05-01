@@ -19,6 +19,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
         isActive: true,
         maxStock: true,
         soldCount: true,
+        imageType: true,
         createdAt: true,
         updatedAt: true,
         product: {
@@ -51,6 +52,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
         isActive: row.isActive,
         maxStock: row.maxStock,
         soldCount: row.soldCount,
+        imageType: row.imageType,
         createdAt: row.createdAt.toISOString(),
         updatedAt: row.updatedAt.toISOString(),
       },
@@ -80,6 +82,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     const isActive =
       body.isActive !== undefined ? Boolean(body.isActive) : undefined;
     const maxStockRaw = body.maxStock;
+    const imageType = body.imageType;
 
     const data: any = {};
 
@@ -149,6 +152,9 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
     if (maxStockRaw !== undefined) {
       data.maxStock = maxStockRaw && toInt(maxStockRaw, 0) > 0 ? toInt(maxStockRaw, 0) : null;
+    }
+    if (imageType !== undefined) {
+      data.imageType = imageType === "GAME" ? "GAME" : "PRODUCT";
     }
 
     const updated = await prisma.flashSale.update({

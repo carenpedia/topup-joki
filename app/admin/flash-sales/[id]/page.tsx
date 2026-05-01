@@ -16,6 +16,7 @@ type Detail = {
   isActive: boolean;
   maxStock: number | null;
   soldCount: number;
+  imageType: "PRODUCT" | "GAME";
   createdAt: string;
   updatedAt: string;
 };
@@ -53,6 +54,7 @@ export default function FlashSaleDetailPage() {
   const [endAt, setEndAt] = useState("");
   const [maxStock, setMaxStock] = useState("");
   const [isActive, setIsActive] = useState(true);
+  const [imageType, setImageType] = useState<"PRODUCT" | "GAME">("PRODUCT");
 
   // dropdown
   const [games, setGames] = useState<GameMini[]>([]);
@@ -117,6 +119,7 @@ export default function FlashSaleDetailPage() {
       setEndAt(toLocalInputValue(row.endAt));
       setMaxStock(row.maxStock !== null && row.maxStock !== undefined ? String(row.maxStock) : "");
       setIsActive(Boolean(row.isActive));
+      setImageType(row.imageType || "PRODUCT");
 
       // dropdown base
       setGameId(row.gameId || "");
@@ -171,6 +174,7 @@ export default function FlashSaleDetailPage() {
           endAt: new Date(endAt).toISOString(),
           isActive,
           maxStock: maxStock ? parseInt(maxStock) : null,
+          imageType,
         }),
       });
 
@@ -340,6 +344,22 @@ export default function FlashSaleDetailPage() {
                   />
                 </label>
               </div>
+
+              {/* IMAGE TYPE */}
+              <label style={{ display: "grid", gap: 6 }}>
+                <span style={{ fontWeight: 900, color: "#fff" }}>Tipe Gambar Tampilan</span>
+                <select
+                  className="contact-input"
+                  value={imageType}
+                  onChange={(e) => setImageType(e.target.value as any)}
+                >
+                  <option value="PRODUCT">Gambar Produk (Icon Nominal)</option>
+                  <option value="GAME">Gambar Game (Logo Utama)</option>
+                </select>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>
+                  Pilih gambar mana yang akan muncul di section Flash Sale homepage.
+                </div>
+              </label>
 
               {/* DATES */}
               <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>

@@ -53,7 +53,7 @@ export default async function Home({ searchParams }: { searchParams: any }) {
         include: {
           product: {
             include: {
-              game: { select: { name: true, key: true } },
+              game: { select: { name: true, key: true, logoUrl: true } },
               prices: { where: { audience: "PUBLIC" }, take: 1 },
             },
           },
@@ -95,7 +95,9 @@ export default async function Home({ searchParams }: { searchParams: any }) {
       gameName: fs.product.game.name,
       gameKey: fs.product.game.key,
       productName: fs.product.name,
-      imageUrl: fs.product.imageUrl || null,
+      imageUrl: fs.imageType === "GAME" 
+        ? (fs.product.game.logoUrl || fs.product.imageUrl || null)
+        : (fs.product.imageUrl || fs.product.game.logoUrl || null),
       basePrice: fs.product.prices[0]?.price || 0,
       flashPrice: fs.flashPrice,
       endAt: fs.endAt.toISOString(),
