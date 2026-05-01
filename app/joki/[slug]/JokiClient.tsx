@@ -1093,7 +1093,7 @@ export default function JokiClient({
                   <b>{activePaymentType === "CARENCOIN" ? "CarenCoin" : (selectedMethod?.label || "-")}</b>
                 </div>
                 <div className="tpSideRow">
-                  <span>Biaya Layanan</span>
+                  <span>Biaya Admin</span>
                   <b>
                     {selectedItem && activePaymentType === "GATEWAY" && selectedMethod !== undefined
                       ? rupiah(getFeeAmount(qtyBasePrice, selectedMethod))
@@ -1211,7 +1211,7 @@ export default function JokiClient({
                 </div>
               )}
               <div className="stickyDetailRow">
-                <span>Biaya Layanan</span>
+                <span>Biaya Admin</span>
                 <b>
                   {activePaymentType === "GATEWAY" && selectedMethod !== undefined
                     ? rupiah(getFeeAmount(qtyBasePrice, selectedMethod))
@@ -1290,7 +1290,7 @@ export default function JokiClient({
                   </span>
                 </div>
                 <div className="tpModalDetailRow">
-                  <span className="tpModalDetailLabel">Biaya Layanan</span>
+                  <span className="tpModalDetailLabel">Biaya Admin</span>
                   <span className="tpModalDetailValue">
                     {activePaymentType === "GATEWAY" && selectedMethod !== undefined
                       ? rupiah(getFeeAmount(qtyBasePrice, selectedMethod))

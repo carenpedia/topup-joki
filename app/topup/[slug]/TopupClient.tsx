@@ -846,7 +846,7 @@ export default function TopupClient({
                   <b>{activePaymentType === "CarenCoin" ? "CarenCoin" : (methodFees.find(x => x.id === selectedMethodId)?.label || "-")}</b>
                 </div>
                 <div className="tpSideRow">
-                  <span>Biaya Layanan</span>
+                  <span>Biaya Admin</span>
                   <b>
                     {selectedItem && activePaymentType === "GATEWAY" && selectedMethodId
                       ? rupiah(getFeeAmount(selectedItem.finalPrice, methodFees.find(x => x.id === selectedMethodId)!))
@@ -953,7 +953,7 @@ export default function TopupClient({
                 <b>{rupiah(selectedItem.finalPrice)}</b>
               </div>
               <div className="stickyDetailRow">
-                <span>Biaya Layanan</span>
+                <span>Biaya Admin</span>
                 <b>
                   {activePaymentType === "GATEWAY" && selectedMethodId
                     ? rupiah(getFeeAmount(selectedItem.finalPrice, methodFees.find(x => x.id === selectedMethodId)!))
@@ -1027,7 +1027,7 @@ export default function TopupClient({
                   </span>
                 </div>
                 <div className="tpModalDetailRow">
-                  <span className="tpModalDetailLabel">Biaya Layanan</span>
+                  <span className="tpModalDetailLabel">Biaya Admin</span>
                   <span className="tpModalDetailValue">
                     {activePaymentType === "GATEWAY" && selectedMethodId
                       ? rupiah(getFeeAmount(selectedItem.finalPrice, methodFees.find(x => x.id === selectedMethodId)!))

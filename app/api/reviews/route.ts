@@ -49,7 +49,7 @@ export async function GET(req: Request) {
           rating: 5,
           comment: "udah murah, proses nya cepet banget gilak, thanks carenpedia",
           isVerified: true,
-          createdAt: new Date().toISOString(),
+          createdAt: "2026-04-21T10:00:00.000Z",
         },
         {
           id: "f5",
@@ -57,7 +57,7 @@ export async function GET(req: Request) {
           rating: 5,
           comment: "baru tau ada store se murah ini, kalo ga dikasih tau temen ya ga pernah cobain disini, jujur recomended banget",
           isVerified: true,
-          createdAt: new Date().toISOString(),
+          createdAt: "2026-04-22T08:30:00.000Z",
         },
         {
           id: "f1",
@@ -65,7 +65,7 @@ export async function GET(req: Request) {
           rating: 5,
           comment: "Gila sih, prosesnya beneran satset! Langsung masuk detikan setelah bayar. UI nya juga mewah banget sekarang!",
           isVerified: true,
-          createdAt: new Date().toISOString(),
+          createdAt: "2026-04-23T14:15:00.000Z",
         },
         {
           id: "f2",
@@ -73,7 +73,7 @@ export async function GET(req: Request) {
           rating: 5,
           comment: "Langganan disini gak pernah mengecewakan. Harga paling bersahabat buat dompet.",
           isVerified: true,
-          createdAt: new Date().toISOString(),
+          createdAt: "2026-04-24T16:45:00.000Z",
         },
         {
           id: "f3",
@@ -81,7 +81,7 @@ export async function GET(req: Request) {
           rating: 5,
           comment: "Pelayanan admin ramah banget, sempat salah tulis ID langsung dibantu. Terbaik lah!",
           isVerified: true,
-          createdAt: new Date().toISOString(),
+          createdAt: "2026-04-25T11:20:00.000Z",
         }
       ] as any;
     }

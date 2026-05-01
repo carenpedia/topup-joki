@@ -145,6 +145,12 @@ export default function AdminSettingsPage() {
                 onChange={(v) => setFormData(p => ({ ...p, INSTAGRAM_URL: v }))}
                 help="Link profil instagram Anda."
               />
+              <FormGroup 
+                label="TikTok URL" 
+                value={formData["TIKTOK_URL"] || ""} 
+                onChange={(v) => setFormData(p => ({ ...p, TIKTOK_URL: v }))}
+                help="Link profil TikTok Anda."
+              />
             </>
           )}
 

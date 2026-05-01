@@ -149,15 +149,15 @@ export default function SyaratKetentuanPage() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21.16 19.38L21.8 22l-2.62-.64A10 10 0 1 1 21.16 14.6l-1 2.5a3 3 0 0 0 .97 2.27z" />
                 </svg>
-                <span>WhatsApp Customer Service: 085737059959</span>
+                <span>WhatsApp Customer Service: {SUPPORT_WHATSAPP}</span>
               </a>
-              <a href="https://www.instagram.com/caren_pedia" target="_blank" rel="noopener noreferrer" className="legalContactItem">
+              <a href={config.INSTAGRAM_URL || "#"} target="_blank" rel="noopener noreferrer" className="legalContactItem">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                   <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                 </svg>
-                <span>Instagram @caren_pedia</span>
+                <span>Instagram @{config.SITE_NAME?.toLowerCase()?.replace(/\s+/g, '_') || "caren_pedia"}</span>
               </a>
             </div>
           </section>
