@@ -41,6 +41,7 @@ function rupiah(n: number) {
 }
 
 export default function Invoice({ params }: { params: { id: string } }) {
+  const config = useConfig();
   const [data, setData] = useState<OrderData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
