@@ -205,12 +205,40 @@ export default function TopupClient({
   // Grouped Nominals
   const groupedNominals = useMemo(() => {
     const map = new Map<string, NominalRow[]>();
+    const orderMap = new Map<string, number>();
+
     for (const it of nominals) {
-      const g = it.category ? `CAT:${it.category.name}` : "NONE";
-      if (!map.has(g)) map.set(g, []);
-      map.get(g)!.push(it);
+      let key = "";
+      let sortVal = 999;
+
+      if (it.category) {
+        key = `CAT:${it.category.name}`;
+        sortVal = it.category.order;
+      } else {
+        key = "NONE";
+        sortVal = 9999;
+      }
+
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(it);
+      orderMap.set(key, sortVal);
     }
-    return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+
+    const result = Array.from(map.entries());
+
+    // Sort items within each group by price (cheapest first)
+    for (const [, arr] of result) {
+      arr.sort((a, b) => (a.finalPrice || 0) - (b.finalPrice || 0));
+    }
+
+    // Sort groups by category order
+    result.sort((a, b) => {
+      const orderA = orderMap.get(a[0]) ?? 9999;
+      const orderB = orderMap.get(b[0]) ?? 9999;
+      return orderA - orderB;
+    });
+
+    return result;
   }, [nominals]);
 
   // Grouped Gateway Methods

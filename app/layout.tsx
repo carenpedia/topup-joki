@@ -7,6 +7,7 @@ import "./globals.css";
 import { ToastProvider } from "./components/ToastProvider";
 import { UiProgressProvider } from "@/app/components/UiProgress";
 import { ConfigProvider } from "./components/ConfigProvider";
+import MaintenanceOverlay from "./components/MaintenanceOverlay";
 import Gascript from "./components/Gascript";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { prisma } from "@/lib/prisma";
@@ -65,7 +66,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ConfigProvider>
           <Gascript />
           <ToastProvider>
-            <UiProgressProvider>{children}</UiProgressProvider>
+            <UiProgressProvider>
+              <MaintenanceOverlay>
+                {children}
+              </MaintenanceOverlay>
+            </UiProgressProvider>
           </ToastProvider>
         </ConfigProvider>
       </body>
