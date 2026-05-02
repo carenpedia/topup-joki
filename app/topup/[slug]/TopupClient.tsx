@@ -343,7 +343,7 @@ export default function TopupClient({
           router.push(`/invoice/${data.orderNo}`);
         }
       } catch (err: any) {
-        toast.error(err.message);
+        toast.critical(err.message);
       }
     });
   }

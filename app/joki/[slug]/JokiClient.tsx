@@ -384,6 +384,7 @@ export default function JokiClient({
       const j = await res.json().catch(() => ({}));
       if (!res.ok) {
         setSubmitErr(j?.error || `Gagal checkout (${res.status})`);
+        toast.critical(j?.error || `Gagal checkout (${res.status})`);
         return;
       }
 
@@ -396,6 +397,7 @@ export default function JokiClient({
       }
     } catch (e: any) {
       setSubmitErr(e?.message || "Terjadi kesalahan, coba lagi.");
+      toast.critical(e?.message || "Terjadi kesalahan, coba lagi.");
     } finally {
       setSubmitting(false);
     }

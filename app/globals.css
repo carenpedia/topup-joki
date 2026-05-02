@@ -175,11 +175,13 @@ button{ font: inherit; }
 }
 
 .toastStack.top-center {
-  top: 18px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
+  align-items: center;
 }
 
+/* Bottom-right toast default */
 .toast {
   pointer-events: none;
   min-width: 220px;
@@ -198,11 +200,25 @@ button{ font: inherit; }
 
   box-shadow: 0 20px 60px rgba(0,0,0,.45);
 
-  animation: toastIn 180ms ease forwards;
+  animation: toastInBottom 220ms ease forwards;
 }
 
-@keyframes toastIn {
+@keyframes toastInBottom {
   from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Top-center toast enters from above */
+.top-center .toast {
+  animation: toastInTop 320ms cubic-bezier(.16,1,.3,1) forwards;
+  min-width: 280px;
+  max-width: 460px;
+  padding: 14px 22px;
+  border-radius: 16px;
+}
+
+@keyframes toastInTop {
+  from { transform: translateY(-24px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
@@ -212,7 +228,7 @@ button{ font: inherit; }
   border-radius: 999px;
   display: grid;
   place-items: center;
-  font-weight: 900;
+  font-weight: 600;
   font-size: 12px;
   color: white;
   background: rgba(255,255,255,.08);
@@ -220,24 +236,36 @@ button{ font: inherit; }
 
 .toastMsg {
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: white;
+  line-height: 1.35;
 }
 
 /* VARIANTS */
 
+/* Success toast in top-center */
 .top-center .toast--success {
-  background: rgba(34,197,94,.95);
-  border: none;
+  background: linear-gradient(135deg, rgba(34,197,94,.97), rgba(22,163,74,.97));
+  border: 2px solid rgba(255,255,255,.18);
   color: white;
-  font-weight: 900;
-  padding: 14px 18px;
+  font-weight: 600;
+  padding: 16px 24px;
   border-radius: 16px;
-  box-shadow: 0 20px 80px rgba(34,197,94,.35);
+  box-shadow:
+    0 8px 32px rgba(34,197,94,.40),
+    0 0 0 1px rgba(34,197,94,.20);
 }
 
 .top-center .toast--success .toastIcon {
-  display: none; /* Hide icon for top-center to match critical style if desired, or leave it */
+  background: rgba(255,255,255,.22);
+  border: 1.5px solid rgba(255,255,255,.30);
+  font-size: 14px;
+}
+
+.top-center .toast--success .toastMsg {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 .toast--error {
@@ -252,15 +280,32 @@ button{ font: inherit; }
   border-color: rgba(59,130,246,.25);
 }
 
-/* CRITICAL TOP CENTER */
+/* CRITICAL TOP CENTER — Bold & Assertive */
 .toast--critical {
-  background: rgba(239,68,68,.95);
-  border: none;
+  background: linear-gradient(135deg, rgba(220,38,38,.98), rgba(185,28,28,.98));
+  border: 2px solid rgba(255,255,255,.20);
   color: white;
-  font-weight: 900;
-  padding: 14px 18px;
+  font-weight: 600;
+  padding: 16px 24px;
   border-radius: 16px;
-  box-shadow: 0 20px 80px rgba(239,68,68,.35);
+  box-shadow:
+    0 8px 40px rgba(239,68,68,.45),
+    0 0 0 1px rgba(239,68,68,.25),
+    inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+.toast--critical .toastIcon {
+  background: rgba(255,255,255,.22);
+  border: 1.5px solid rgba(255,255,255,.30);
+  width: 26px;
+  height: 26px;
+  font-size: 15px;
+}
+
+.toast--critical .toastMsg {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 /* ===========================
    GLOBAL TOP LOADING BAR
