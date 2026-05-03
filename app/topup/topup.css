@@ -679,10 +679,7 @@
   color: #fff;
   display: block;
   line-height: 1.25;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  word-break: break-word;
 }
 
 /* Middle section — icon + price */
@@ -1210,7 +1207,6 @@
   color: #fff;
   text-align: left;
   padding: 0;
-  overflow: hidden;
 }
 
 .tpPayHeaderTop {
@@ -1385,7 +1381,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 120px;
+  min-height: 120px;
   background: rgba(255, 255, 255, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
@@ -1417,11 +1413,12 @@
 }
 
 .tpMethodLogoExpand {
-  height: 32px;
+  height: 36px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .expand-logo {
