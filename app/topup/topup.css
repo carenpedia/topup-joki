@@ -1438,8 +1438,8 @@
 }
 
 .expand-logo {
-  max-height: 100%;
-  max-width: 95%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   /* Premium look: subtle pop */
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
