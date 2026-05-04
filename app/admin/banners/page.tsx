@@ -63,6 +63,35 @@ export default function AdminBannersPage() {
   const [gamesLoading, setGamesLoading] = useState(false);
   const [gamesQ, setGamesQ] = useState("");
   const [savingGameId, setSavingGameId] = useState<string | null>(null);
+  const [uploadingGameId, setUploadingGameId] = useState<string | null>(null);
+
+  async function handleGameBannerUpload(e: React.ChangeEvent<HTMLInputElement>, gameId: string) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingGameId(gameId);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "games/banner");
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.error || "Upload gagal");
+
+      // After upload, directly update the DB
+      await updateGameBanner(gameId, j.url);
+      alert("Banner berhasil diupload!");
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setUploadingGameId(null);
+    }
+  }
 
   async function loadBanners() {
     setBannersLoading(true);
@@ -203,6 +232,16 @@ export default function AdminBannersPage() {
             >
               {savingGameId === r.id ? "..." : "Simpan"}
             </button>
+            <label className="voucherBtn" style={{ padding: "8px 14px", fontSize: 12, whiteSpace: "nowrap", cursor: "pointer" }}>
+              {uploadingGameId === r.id ? "..." : "📁 Upload"}
+              <input 
+                type="file" 
+                accept="image/*" 
+                style={{ display: "none" }} 
+                onChange={(e) => handleGameBannerUpload(e, r.id)} 
+                disabled={!!uploadingGameId}
+              />
+            </label>
           </div>
         );
       },

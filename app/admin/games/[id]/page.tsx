@@ -25,7 +25,37 @@ export default function AdminGameEditPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [uploading, setUploading] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>, type: "logo" | "banner") {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(type);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", type === "logo" ? "games/logo" : "games/banner");
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.error || "Upload gagal");
+
+      if (type === "logo") setLogoUrl(j.url);
+      else setBannerUrl(j.url);
+
+      alert("Gambar berhasil diupload!");
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setUploading(null);
+    }
+  }
 
   const [g, setG] = useState<Game | null>(null);
 
@@ -177,13 +207,35 @@ export default function AdminGameEditPage() {
                 </div>
 
                 <div style={{ gridColumn: "1 / -1" }}>
-                  <label className="contact-label">Logo URL (opsional)</label>
-                  <input className="contact-input" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://..." />
+                  <label className="contact-label">Logo Game (Upload atau URL)</label>
+                  <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                    <input className="contact-input" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://... atau upload file" style={{ flex: 1 }} />
+                    <label className="voucherBtn" style={{ cursor: "pointer", display: "inline-block", whiteSpace: "nowrap" }}>
+                      {uploading === "logo" ? "..." : "📁 Upload"}
+                      <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFileUpload(e, "logo")} disabled={!!uploading} />
+                    </label>
+                  </div>
+                  {logoUrl && (
+                    <div style={{ marginTop: 8 }}>
+                      <img src={logoUrl} alt="Logo Preview" style={{ height: 60, borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)" }} />
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ gridColumn: "1 / -1" }}>
-                  <label className="contact-label">Banner URL (Hero Section - opsional)</label>
-                  <input className="contact-input" value={bannerUrl} onChange={(e) => setBannerUrl(e.target.value)} placeholder="https://..." />
+                  <label className="contact-label">Banner URL (Hero Section - Upload atau URL)</label>
+                  <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                    <input className="contact-input" value={bannerUrl} onChange={(e) => setBannerUrl(e.target.value)} placeholder="https://... atau upload file" style={{ flex: 1 }} />
+                    <label className="voucherBtn" style={{ cursor: "pointer", display: "inline-block", whiteSpace: "nowrap" }}>
+                      {uploading === "banner" ? "..." : "📁 Upload"}
+                      <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFileUpload(e, "banner")} disabled={!!uploading} />
+                    </label>
+                  </div>
+                  {bannerUrl && (
+                    <div style={{ marginTop: 8 }}>
+                      <img src={bannerUrl} alt="Banner Preview" style={{ width: "100%", maxHeight: 120, objectFit: "cover", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)" }} />
+                    </div>
+                  )}
                   <p className="contact-hint" style={{ marginTop: 4 }}>Muncul di bagian atas halaman topup sebagai background hero</p>
                 </div>
 

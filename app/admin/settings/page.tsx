@@ -17,6 +17,34 @@ export default function AdminSettingsPage() {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const toast = useToast();
   const { loading: saving, run: saveSettings } = useAsyncAction();
+  const [uploading, setUploading] = useState<string | null>(null);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>, key: string, folder: string = "general") {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(key);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", folder);
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.error || "Upload gagal");
+
+      setFormData(prev => ({ ...prev, [key]: j.url }));
+      toast.success("Gambar berhasil diupload!");
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setUploading(null);
+    }
+  }
 
   // Load settings on mount
   useEffect(() => {
@@ -104,12 +132,26 @@ export default function AdminSettingsPage() {
 
           {activeTab === "GENERAL" && (
             <>
-              <FormGroup 
-                label="Logo Website (URL)"
-                value={formData["SITE_LOGO"] || ""}
-                onChange={(url) => setFormData(p => ({ ...p, SITE_LOGO: url }))}
-                help="Masukkan URL logo (PNG Transparan direkomendasikan). Muncul di Navbar dan Footer."
-              />
+              <div style={{ marginBottom: 20 }}>
+                <label className="contact-label">Logo Website (Upload atau URL)</label>
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <input
+                    className="contact-input"
+                    value={formData["SITE_LOGO"] || ""}
+                    onChange={(url) => setFormData(p => ({ ...p, SITE_LOGO: url }))}
+                    placeholder="https://... atau upload file"
+                    style={{ flex: 1 }}
+                  />
+                  <label className="btn-ghost btn-sm" style={{ cursor: "pointer", whiteSpace: "nowrap" }}>
+                    {uploading === "SITE_LOGO" ? "..." : "📁 Upload"}
+                    <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFileUpload(e, "SITE_LOGO", "site")} />
+                  </label>
+                </div>
+                {formData["SITE_LOGO"] && (
+                  <img src={formData["SITE_LOGO"]} alt="Logo Preview" style={{ height: 40, marginTop: 8, borderRadius: 4, background: "rgba(255,255,255,0.05)", padding: 4 }} />
+                )}
+                <p style={{ fontSize: 11, opacity: 0.5, marginTop: 4 }}>Muncul di Navbar dan Footer.</p>
+              </div>
               <FormGroup 
                 label="Nama Website" 
                 value={formData["SITE_NAME"] || ""} 
@@ -122,12 +164,26 @@ export default function AdminSettingsPage() {
                 onChange={(v) => setFormData(p => ({ ...p, SITE_SLOGAN: v }))}
                 help="Akan muncul di bagian footer dan meta deskripsi."
               />
-              <FormGroup 
-                label="Logo CarenCoin (URL)" 
-                value={formData["CARENCOIN_LOGO"] || ""} 
-                onChange={(v) => setFormData(p => ({ ...p, CARENCOIN_LOGO: v }))}
-                help="Masukkan URL gambar koin (PNG Transparan). Digunakan di sistem pembayaran CarenCoin."
-              />
+              <div style={{ marginBottom: 20 }}>
+                <label className="contact-label">Logo CarenCoin (Upload atau URL)</label>
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <input
+                    className="contact-input"
+                    value={formData["CARENCOIN_LOGO"] || ""}
+                    onChange={(url) => setFormData(p => ({ ...p, CARENCOIN_LOGO: url }))}
+                    placeholder="https://... atau upload file"
+                    style={{ flex: 1 }}
+                  />
+                  <label className="btn-ghost btn-sm" style={{ cursor: "pointer", whiteSpace: "nowrap" }}>
+                    {uploading === "CARENCOIN_LOGO" ? "..." : "📁 Upload"}
+                    <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFileUpload(e, "CARENCOIN_LOGO", "site")} />
+                  </label>
+                </div>
+                {formData["CARENCOIN_LOGO"] && (
+                  <img src={formData["CARENCOIN_LOGO"]} alt="CarenCoin Preview" style={{ height: 40, marginTop: 8, borderRadius: 4 }} />
+                )}
+                <p style={{ fontSize: 11, opacity: 0.5, marginTop: 4 }}>PNG Transparan direkomendasikan.</p>
+              </div>
             </>
           )}
 

@@ -27,6 +27,34 @@ export default function PaymentMethodFeeDetailPage() {
   const [data, setData] = useState<Detail | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file || !data) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "payment");
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.error || "Upload gagal");
+
+      setData({ ...data, image: j.url });
+      alert("Gambar berhasil diupload!");
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function load() {
     setLoading(true);
@@ -154,13 +182,36 @@ export default function PaymentMethodFeeDetailPage() {
               onChange={(e) => setData({ ...data, label: e.target.value })}
             />
 
-            <label className="contact-label">Image/Logo URL</label>
-            <input
-              className="contact-input"
-              value={data.image || ""}
-              onChange={(e) => setData({ ...data, image: e.target.value })}
-              placeholder="https://..."
-            />
+            <label className="contact-label">Image/Logo (Upload atau URL)</label>
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <input
+                className="contact-input"
+                value={data.image || ""}
+                onChange={(e) => setData({ ...data, image: e.target.value })}
+                placeholder="https://... atau upload file"
+                style={{ flex: 1 }}
+              />
+              <label className="btn-ghost btn-sm" style={{ cursor: "pointer", display: "inline-block", whiteSpace: "nowrap" }}>
+                {uploading ? "Uploading..." : "📁 Upload"}
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  style={{ display: "none" }} 
+                  onChange={handleFileUpload} 
+                  disabled={uploading}
+                />
+              </label>
+            </div>
+            {data.image && (
+              <div style={{ marginTop: 8 }}>
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 4 }}>Preview:</p>
+                <img 
+                  src={data.image} 
+                  alt="Preview" 
+                  style={{ height: 40, borderRadius: 4, background: "rgba(255,255,255,0.05)", padding: 4 }} 
+                />
+              </div>
+            )}
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               <div>

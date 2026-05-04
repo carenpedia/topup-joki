@@ -18,6 +18,34 @@ export default function NewPaymentMethodFeePage() {
   const [sortOrder, setSortOrder] = useState(0);
   const [isActive, setIsActive] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "payment");
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.error || "Upload gagal");
+
+      setImage(j.url);
+      alert("Gambar berhasil diupload!");
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -107,12 +135,35 @@ export default function NewPaymentMethodFeePage() {
               onChange={(e) => setLabel(e.target.value)}
             />
 
-            <input
-              className="contact-input"
-              placeholder="URL Logo (opsional)"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-            />
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <input
+                className="contact-input"
+                placeholder="URL Logo atau upload file"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+                style={{ flex: 1 }}
+              />
+              <label className="btn-ghost btn-sm" style={{ cursor: "pointer", display: "inline-block", whiteSpace: "nowrap" }}>
+                {uploading ? "Uploading..." : "📁 Upload"}
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  style={{ display: "none" }} 
+                  onChange={handleFileUpload} 
+                  disabled={uploading}
+                />
+              </label>
+            </div>
+            {image && (
+              <div style={{ marginTop: 8 }}>
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 4 }}>Preview:</p>
+                <img 
+                  src={image} 
+                  alt="Preview" 
+                  style={{ height: 40, borderRadius: 4, background: "rgba(255,255,255,0.05)", padding: 4 }} 
+                />
+              </div>
+            )}
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               <input

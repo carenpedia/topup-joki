@@ -14,7 +14,35 @@ export default function NewBannerPage() {
   const [linkValue, setLinkValue] = useState("");
   const [sortOrder, setSortOrder] = useState(0);
   const [isActive, setIsActive] = useState(true);
+  const [uploading, setUploading] = useState(false);
   const [err, setErr] = useState("");
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "banners");
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.error || "Upload gagal");
+
+      setImageUrl(j.url);
+      toast.success("Gambar berhasil diupload!");
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -83,25 +111,16 @@ export default function NewBannerPage() {
               />
             </label>
 
-            <label style={{ display: "grid", gap: 6 }}>
-              <span
-  style={{
-    fontSize: 13,
-    fontWeight: 600,
-    color: "#ffffff",
-    letterSpacing: 0.2,
-  }}
->
-  Image URL
-</span>
-
-              <input
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                style={inp}
-                placeholder="https://..."
-              />
-            </label>
+            <div style={{ display: "grid", gap: 6 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "#ffffff", letterSpacing: 0.2 }}>Image (Upload atau URL)</span>
+              <div style={{ display: "flex", gap: 10 }}>
+                <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} style={{ ...inp, flex: 1 }} placeholder="https://... atau upload file" />
+                <label style={{ ...btnPrimary, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", cursor: "pointer", whiteSpace: "nowrap" }}>
+                  {uploading ? "..." : "📁 Upload"}
+                  <input type="file" accept="image/*" style={{ display: "none" }} onChange={handleFileUpload} disabled={uploading} />
+                </label>
+              </div>
+            </div>
 
             {imageUrl ? (
               <img
