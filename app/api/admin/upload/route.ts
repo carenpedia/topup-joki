@@ -28,8 +28,8 @@ export async function POST(req: Request) {
     const path = join(absoluteDir, fileName);
     await writeFile(path, buffer);
 
-    // Return the relative URL for public access
-    const url = `/${relativeDir.replace(/\\/g, "/")}/${fileName}`;
+    // Return the dynamic API URL for instant access
+    const url = `/api/files/${folder}/${fileName}`;
 
     return NextResponse.json({ url });
   } catch (error: any) {
