@@ -138,7 +138,7 @@ export default function AdminSettingsPage() {
                   <input
                     className="contact-input"
                     value={formData["SITE_LOGO"] || ""}
-                    onChange={(url) => setFormData(p => ({ ...p, SITE_LOGO: url }))}
+                    onChange={(e) => setFormData(p => ({ ...p, SITE_LOGO: e.target.value }))}
                     placeholder="https://... atau upload file"
                     style={{ flex: 1 }}
                   />
@@ -170,7 +170,7 @@ export default function AdminSettingsPage() {
                   <input
                     className="contact-input"
                     value={formData["CARENCOIN_LOGO"] || ""}
-                    onChange={(url) => setFormData(p => ({ ...p, CARENCOIN_LOGO: url }))}
+                    onChange={(e) => setFormData(p => ({ ...p, CARENCOIN_LOGO: e.target.value }))}
                     placeholder="https://... atau upload file"
                     style={{ flex: 1 }}
                   />
