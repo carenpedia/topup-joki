@@ -31,7 +31,35 @@ export default function AdminProductNewPage() {
   const [priceReseller, setPriceReseller] = useState<string>("");
 
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "products");
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.error || "Upload gagal");
+
+      setImageUrl(j.url);
+      toast.success("Gambar produk berhasil diupload!");
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function loadGames() {
     const res = await fetch("/api/admin/games?active=1");
@@ -201,14 +229,26 @@ export default function AdminProductNewPage() {
             </div>
 
             <div style={{ gridColumn: "1 / -1" }}>
-              <label className="contact-label">Product Image URL (opsional)</label>
-              <input
-                className="contact-input"
-                placeholder="https://... (Ganti ikon diamond)"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-              />
-              <div className="contact-hint">Jika dikosongkan, akan otomatis menggunakan ikon Diamond biru.</div>
+              <label className="contact-label">Product Image (Upload atau URL)</label>
+              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <input
+                  className="contact-input"
+                  placeholder="https://... atau upload file"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  style={{ flex: 1 }}
+                />
+                <label className="voucherBtn" style={{ cursor: "pointer", display: "inline-block", whiteSpace: "nowrap" }}>
+                  {uploading ? "..." : "📁 Upload"}
+                  <input type="file" accept="image/*" style={{ display: "none" }} onChange={handleFileUpload} disabled={uploading} />
+                </label>
+              </div>
+              {imageUrl && (
+                <div style={{ marginTop: 8 }}>
+                  <img src={imageUrl} alt="Product Preview" style={{ height: 50, borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)" }} />
+                </div>
+              )}
+              <div className="contact-hint" style={{ marginTop: 4 }}>Jika dikosongkan, akan otomatis menggunakan ikon Diamond biru.</div>
             </div>
 
             <div>
